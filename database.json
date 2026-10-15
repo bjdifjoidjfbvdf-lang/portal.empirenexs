@@ -98,7 +98,33 @@
       "timestamp": "12:18 PM",
       "createdAt": "2026-10-15T19:18:00.812Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792091889707",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "Kitne channel sell huay? (Monthly Sales)",
+      "timestamp": "12:18 PM",
+      "createdAt": "2026-10-15T19:18:09.707Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-calc-1792091889708",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "📊 **EmpireNexs Operations & Sales Summary:**\n- **Total Channels in Vault:** 0\n- **Monetized Channels:** 0\n- **Sold Channels:** 0\n- **Active in Production:** 0\n- **Issues / Demonetized:** 0\n\n💡 Mazeed tafseelat aur monthly calculations dekhne ke liye aap sidebar mein **\"Monthly Operations & Sales\"** tab open kar saktay hain!",
+      "timestamp": "12:18 PM",
+      "createdAt": "2026-10-15T19:18:09.707Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-15T19:18:01.873Z"
+  "updatedAt": "2026-10-15T19:18:10.629Z"
 }
