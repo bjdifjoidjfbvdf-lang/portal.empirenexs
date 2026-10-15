@@ -38,6 +38,7 @@ interface AppContextType {
     branchId: BranchId;
     designation: string;
     avatar?: string;
+    joiningType?: 'PERCENTAGE' | 'SALARY';
   }) => { success: boolean; message: string; requiresApproval: boolean };
   logout: () => void;
   sendEmailOTP: (email: string, purpose?: 'SIGNUP' | 'FORGOT_PASSWORD') => Promise<{ success: boolean; message: string; otp?: string }>;
@@ -190,6 +191,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     branchId: BranchId;
     designation: string;
     avatar?: string;
+    joiningType?: 'PERCENTAGE' | 'SALARY';
   }): { success: boolean; message: string; requiresApproval: boolean } => {
     const cleanEmail = data.email.toLowerCase().trim();
     const cleanUsername = data.username.toLowerCase().trim();
@@ -283,6 +285,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         `https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80`,
       canAccessAllBranches: false,
       status: 'PENDING',
+      joiningType: data.joiningType || 'PERCENTAGE',
       joinedAt: new Date().toISOString().split('T')[0],
       emailVerified: true,
     };

@@ -264,6 +264,15 @@ export const BranchesAndTeams: React.FC = () => {
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
                         {pending.designation}
                       </span>
+                      {pending.joiningType && (
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
+                          pending.joiningType === 'PERCENTAGE'
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                            : 'bg-blue-500/10 text-blue-400 border-blue-500/30'
+                        }`}>
+                          {pending.joiningType === 'PERCENTAGE' ? 'On Percentage' : 'On Salary'}
+                        </span>
+                      )}
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 mt-2 text-[11px] text-slate-300">

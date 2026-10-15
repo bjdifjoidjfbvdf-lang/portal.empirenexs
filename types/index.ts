@@ -32,6 +32,7 @@ export interface UserProfile {
   avatar: string;
   canAccessAllBranches: boolean;
   status: 'ACTIVE' | 'PENDING' | 'REJECTED';
+  joiningType?: 'PERCENTAGE' | 'SALARY';
   joinedAt?: string;
   emailVerified?: boolean;
 }
