@@ -54,25 +54,6 @@
       "personalGoogleSheetApiKey": ""
     },
     {
-      "id": "user-1792089014295",
-      "name": "Ali Raza",
-      "username": "aliraza",
-      "email": "aliraza.editor@gmail.com",
-      "password": "password123",
-      "phone": "+92 300 1234567",
-      "address": "",
-      "role": "TEAM_MEMBER",
-      "designation": "Senior Video Editor",
-      "branchId": "bahawalpur",
-      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
-      "canAccessAllBranches": false,
-      "status": "ACTIVE",
-      "joiningType": "PERCENTAGE",
-      "personalGoogleSheetUrl": "",
-      "joinedAt": "2026-10-15",
-      "emailVerified": true
-    },
-    {
       "id": "user-1792092595203",
       "name": "Khansa Saddique",
       "username": "khansa",
@@ -199,5 +180,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-15T19:51:51.174Z"
+  "updatedAt": "2026-10-15T20:10:44.751Z"
 }
