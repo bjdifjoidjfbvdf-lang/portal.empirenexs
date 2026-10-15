@@ -179,3 +179,15 @@ export interface SystemSettings {
   dailyNicheLimitPerUser: number;
   heroSmsApiKey: string;
 }
+
+export interface NicheSheetItem {
+  id: string;
+  rowNumber: number;
+  url: string;
+  title: string;
+  channelName: string;
+  category: string;
+  type: 'channel' | 'video';
+  tags: string[];
+  description: string;
+}

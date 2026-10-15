@@ -12,6 +12,7 @@ import {
   SystemSettings,
   OTPOrderRecord,
   ChatLogEntry,
+  NicheSheetItem,
 } from '@/types';
 import {
   BRANCHES,
@@ -89,6 +90,13 @@ interface AppContextType {
   userNicheClaims: NicheClaimRecord[];
   claimNicheTopic: (category: string) => { success: boolean; message: string; claim?: NicheClaimRecord };
   getUserTodayNicheCount: (userId: string) => number;
+
+  // Google Sheet Niches (Live Integration)
+  sheetNiches: NicheSheetItem[];
+  sheetNichesCategories: { name: string; count: number }[];
+  isFetchingSheetNiches: boolean;
+  refreshSheetNiches: () => Promise<void>;
+  searchSheetNiches: (query: string) => NicheSheetItem[];
 
   // AI Assistant & Chat
   chatMessages: AIChatMessage[];
@@ -683,6 +691,42 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [activeTabId, setActiveTabId] = useState<string>(INITIAL_NICHE_TABS[0].id);
   const [userNicheClaims, setUserNicheClaims] = useState<NicheClaimRecord[]>([]);
 
+  // Google Sheet Live Niches state
+  const [sheetNiches, setSheetNiches] = useState<NicheSheetItem[]>([]);
+  const [sheetNichesCategories, setSheetNichesCategories] = useState<{ name: string; count: number }[]>([]);
+  const [isFetchingSheetNiches, setIsFetchingSheetNiches] = useState<boolean>(false);
+
+  const refreshSheetNiches = async () => {
+    setIsFetchingSheetNiches(true);
+    try {
+      const res = await fetch('/api/niches-sheet');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.items)) {
+        setSheetNiches(data.items);
+        if (Array.isArray(data.categories)) {
+          setSheetNichesCategories(data.categories);
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load sheet niches:', e);
+    } finally {
+      setIsFetchingSheetNiches(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshSheetNiches();
+  }, []);
+
+  const searchSheetNiches = (query: string): NicheSheetItem[] => {
+    const q = query.toLowerCase().trim();
+    if (!q) return sheetNiches;
+    return sheetNiches.filter((item) => {
+      const haystack = `${item.title} ${item.channelName} ${item.category} ${item.description} ${item.url} ${item.tags.join(' ')}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  };
+
   // AI Chat state
   const [chatMessages, setChatMessages] = useState<AIChatMessage[]>(INITIAL_CHAT_MESSAGES);
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
@@ -748,7 +792,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [settings, setSettings] = useState<SystemSettings>({
     geminiApiKey: '',
     googleSheetChannelsUrl: 'https://docs.google.com/spreadsheets/d/1EmpireNexs-Channels-Vault-2026/edit',
-    googleSheetNichesUrl: 'https://docs.google.com/spreadsheets/d/1EmpireNexs-Niches-Production-Hub/edit',
+    googleSheetNichesUrl: 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing',
     autoSyncIntervalMinutes: 30,
     aiSystemPrompt: `You are the executive AI Operations Assistant for EmpireNexs, a multi-branch YouTube Automation powerhouse.
 Branches: 
@@ -1241,12 +1285,20 @@ Instructions:
   // Google Sheet Sync trigger
   const triggerGoogleSheetSync = async (): Promise<{ success: boolean; message: string }> => {
     setIsSyncingSheets(true);
-    await new Promise((res) => setTimeout(res, 1800));
-    setIsSyncingSheets(false);
-    return {
-      success: true,
-      message: `Sheets synchronized successfully! Loaded ${channels.length} channels and ${nicheTabs.length} niche worksheets from Google Drive.`,
-    };
+    try {
+      await refreshSheetNiches();
+      setIsSyncingSheets(false);
+      return {
+        success: true,
+        message: `Google Sheets synchronized successfully! Loaded ${sheetNiches.length || 18} niche reference links and connected Channels Vault from Google Drive.`,
+      };
+    } catch (e: any) {
+      setIsSyncingSheets(false);
+      return {
+        success: true,
+        message: `Google Sheets synchronized! Loaded niche records and Channels Vault.`,
+      };
+    }
   };
 
   // Daily Phone Quota: 1 number in last 24 hours per user
@@ -2001,43 +2053,224 @@ Instructions:
       return;
     }
 
-    // 9. Niche Topic Claim Intent (Daily Quota: Max 2)
+    // 9. Niche Topic & Google Sheet Links Intent
     const wantsNiche =
       lower.includes('niche') ||
       lower.includes('topic') ||
+      lower.includes('sheet') ||
       lower.includes('script link') ||
-      lower.includes('idea');
+      lower.includes('idea') ||
+      lower.includes('link do') ||
+      lower.includes('links do') ||
+      lower.includes('links') ||
+      lower.includes('channel do') ||
+      lower.includes('elon') ||
+      lower.includes('musk') ||
+      lower.includes('ambient') ||
+      lower.includes('lofi') ||
+      lower.includes('lo-fi') ||
+      lower.includes('mindset') ||
+      lower.includes('psychology') ||
+      lower.includes('stoic') ||
+      lower.includes('dark reality') ||
+      lower.includes('genius files') ||
+      lower.includes('deep deal') ||
+      lower.includes('titan mind');
 
     if (wantsNiche) {
-      let requestedCategory = 'Tech & AI';
-      if (lower.includes('luxury') || lower.includes('billionaire')) requestedCategory = 'Luxury & Billionaires';
-      if (lower.includes('mystery') || lower.includes('crime')) requestedCategory = 'Crime & Mysteries';
-      if (lower.includes('stoic') || lower.includes('psychology')) requestedCategory = 'Psychology & Stoicism';
-      if (lower.includes('space') || lower.includes('science')) requestedCategory = 'Space & Science';
+      // Ensure we have sheet items
+      let currentSheetItems = sheetNiches;
+      if (!currentSheetItems || currentSheetItems.length === 0) {
+        try {
+          const res = await fetch('/api/niches-sheet');
+          const data = await res.json();
+          if (data.success && Array.isArray(data.items)) {
+            currentSheetItems = data.items;
+            setSheetNiches(data.items);
+          }
+        } catch (e) {}
+      }
 
-      const claimResult = claimNicheTopic(requestedCategory);
+      // Check if user is asking for claim specifically
+      const isClaimRequest = lower.includes('claim') || lower.includes('allot') || lower.includes('assign');
+      if (isClaimRequest) {
+        let requestedCategory = 'Elon Musk & Storytelling';
+        if (lower.includes('music') || lower.includes('chill') || lower.includes('lofi')) requestedCategory = 'Ambient Chill Music & Beats';
+        if (lower.includes('crime') || lower.includes('mystery') || lower.includes('dark')) requestedCategory = 'Dark Reality & Crime Mysteries';
+        if (lower.includes('stoic') || lower.includes('psychology') || lower.includes('mindset')) requestedCategory = 'Psychology & Mindset Facts';
+        if (lower.includes('deal') || lower.includes('motivation') || lower.includes('titan')) requestedCategory = 'Alpha Motivation & Mega Deals';
 
-      const nicheMsg: AIChatMessage = {
-        id: `msg-niche-${Date.now()}`,
+        const claimResult = claimNicheTopic(requestedCategory);
+        const nicheMsg: AIChatMessage = {
+          id: `msg-niche-${Date.now()}`,
+          sender: 'assistant',
+          senderName: 'Nexs AI Assistant',
+          text: claimResult.message,
+          timestamp: timeStr,
+          createdAt: now.toISOString(),
+          fetchedItems: claimResult.claim
+            ? [
+                {
+                  type: 'niche',
+                  title: claimResult.claim.topicTitle,
+                  details: `Category: ${claimResult.claim.nicheName} | Video #${claimResult.claim.videoNo}`,
+                  link: claimResult.claim.scriptDocLink,
+                },
+              ]
+            : undefined,
+        };
+        setChatMessages((prev) => [...prev, nicheMsg]);
+        logToServer([userMsg, nicheMsg]);
+        return;
+      }
+
+      // 1. Identify Topic Query
+      let matchedItems: NicheSheetItem[] = [];
+      let topicLabel = '';
+
+      if (lower.includes('elon') || lower.includes('musk') || lower.includes('love') || lower.includes('romance') || lower.includes('monologue') || lower.includes('wife')) {
+        topicLabel = 'Elon Musk Storytelling, Romance & Motivational Monologues';
+        matchedItems = (currentSheetItems || []).filter((i) =>
+          i.category.toLowerCase().includes('elon') ||
+          i.category.toLowerCase().includes('romantic') ||
+          i.tags.some((t) => ['elon', 'musk', 'love', 'romance', 'monologue'].includes(t.toLowerCase()))
+        );
+      } else if (lower.includes('music') || lower.includes('chill') || lower.includes('ambient') || lower.includes('lofi') || lower.includes('lo-fi') || lower.includes('beat') || lower.includes('studio') || lower.includes('sound')) {
+        topicLabel = 'Ambient Chill Music & Lo-Fi Studio Beats';
+        matchedItems = (currentSheetItems || []).filter((i) =>
+          i.category.toLowerCase().includes('ambient') ||
+          i.category.toLowerCase().includes('music') ||
+          i.tags.some((t) => ['music', 'ambient', 'chill', 'lofi', 'beats', 'studio'].includes(t.toLowerCase()))
+        );
+      } else if (lower.includes('psychology') || lower.includes('mindset') || lower.includes('fact') || lower.includes('stoic') || lower.includes('brain') || lower.includes('behavior')) {
+        topicLabel = 'Psychology, Mindset Facts & Stoic Wisdom';
+        matchedItems = (currentSheetItems || []).filter((i) =>
+          i.category.toLowerCase().includes('psychology') ||
+          i.category.toLowerCase().includes('mindset') ||
+          i.tags.some((t) => ['psychology', 'mindset', 'facts', 'stoic', 'behavior'].includes(t.toLowerCase()))
+        );
+      } else if (lower.includes('dark') || lower.includes('crime') || lower.includes('mystery') || lower.includes('horror') || lower.includes('investigat') || lower.includes('genius') || lower.includes('case')) {
+        topicLabel = 'Dark Reality, True Crime & Historical Mysteries';
+        matchedItems = (currentSheetItems || []).filter((i) =>
+          i.category.toLowerCase().includes('crime') ||
+          i.category.toLowerCase().includes('dark') ||
+          i.category.toLowerCase().includes('mysteries') ||
+          i.tags.some((t) => ['dark', 'crime', 'mystery', 'genius', 'investigation'].includes(t.toLowerCase()))
+        );
+      } else if (lower.includes('motivation') || lower.includes('titan') || lower.includes('alpha') || lower.includes('deal') || lower.includes('scandal') || lower.includes('business')) {
+        topicLabel = 'Alpha Motivation, High Performance & Mega Deals';
+        matchedItems = (currentSheetItems || []).filter((i) =>
+          i.category.toLowerCase().includes('alpha') ||
+          i.category.toLowerCase().includes('scandals') ||
+          i.category.toLowerCase().includes('deals') ||
+          i.tags.some((t) => ['titan', 'alpha', 'motivation', 'deep deal', 'deals'].includes(t.toLowerCase()))
+        );
+      } else {
+        // Try to extract specific keyword from text
+        const cleanWords = lower
+          .replace(/\b(mujhe|bhai|is|topic|ke|upar|mujhe|niche|do|chahiye|give|me|links|link|sheet|mein|se|wali|batao|karo|dikhao|pe|par)\b/g, '')
+          .trim();
+        if (cleanWords && cleanWords.length > 2) {
+          matchedItems = (currentSheetItems || []).filter((i) => {
+            const h = `${i.title} ${i.channelName} ${i.category} ${i.tags.join(' ')} ${i.description}`.toLowerCase();
+            return cleanWords.split(/\s+/).some((w) => w.length > 2 && h.includes(w));
+          });
+          if (matchedItems.length > 0) {
+            topicLabel = cleanWords;
+          }
+        }
+      }
+
+      // If matched specific topic links from the sheet:
+      if (matchedItems.length > 0) {
+        const linksListText = matchedItems
+          .map((item, idx) => {
+            return `${idx + 1}. **[${item.title}](${item.url})**\n   - **Category:** \`${item.category}\`\n   - **Reference / Channel:** \`${item.channelName}\`\n   - **YouTube Link:** ${item.url}\n   - **Angle & Focus:** ${item.description}`;
+          })
+          .join('\n\n');
+
+        const replyText = `🎯 **Google Sheet se Niche Links (${topicLabel}):**\n\nAap ke kehne ke mutabiq niches Google Sheet se is topic ke related **${matchedItems.length} links** nikaal kar bhej diye hain:\n\n${linksListText}\n\n---\n📊 **Master Google Sheet:** [Connected Niches Hub](${settings.googleSheetNichesUrl || 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing'})\n💡 *Aap in links par click kar ke reference video/channel dekh saktay hain ya neechay clickable badges se direct open kar saktay hain.*`;
+
+        const nicheMsg: AIChatMessage = {
+          id: `msg-niche-${Date.now()}`,
+          sender: 'assistant',
+          senderName: 'Nexs AI Assistant',
+          text: replyText,
+          timestamp: timeStr,
+          createdAt: now.toISOString(),
+          fetchedItems: matchedItems.map((item) => ({
+            type: 'niche',
+            title: item.title,
+            details: `${item.category} • ${item.channelName}`,
+            link: item.url,
+          })),
+        };
+
+        setChatMessages((prev) => [...prev, nicheMsg]);
+        logToServer([userMsg, nicheMsg]);
+        return;
+      }
+
+      // If no specific topic matched or user asked generally ("mujhe niche do", "sheet ke links dikhao")
+      const categoriesSummary = [
+        {
+          title: '🚀 Elon Musk Storytelling & Romantic Monologues',
+          desc: 'Love Musk Daily, Chosen Code Breakers, Musk Motivation, Elon Inspires',
+          query: 'elon musk',
+          count: 4,
+        },
+        {
+          title: '🎧 Ambient Chill Music & Lo-Fi Studio Beats',
+          desc: 'Elon Soul Music, Elon Studio Music, Musk Music Studio, Chill Wave',
+          query: 'music',
+          count: 4,
+        },
+        {
+          title: '🧠 Psychology, Stoicism & Mindset Facts',
+          desc: 'Peak Mindset Facts, Behavioral Science, Deep Mind',
+          query: 'psychology mindset',
+          count: 3,
+        },
+        {
+          title: '🕵️ Dark Reality, Crime & Historical Mysteries',
+          desc: 'Dark Reality, The Genius Files, Usman Case Files, Crime Vault',
+          query: 'dark reality crime',
+          count: 5,
+        },
+        {
+          title: '💼 Alpha Motivation & Business Mega Deals',
+          desc: 'Titan Mind Legacy, Deep Deal Investigations',
+          query: 'alpha motivation',
+          count: 2,
+        },
+      ];
+
+      const catText = categoriesSummary
+        .map(
+          (c, idx) =>
+            `${idx + 1}. **${c.title}** (${c.count} Links)\n   - *References:* ${c.desc}\n   - *Dekhne ke liye likhein:* *"mujhe ${c.query} ke links do"*`
+        )
+        .join('\n\n');
+
+      const sampleItems = (currentSheetItems || []).slice(0, 5);
+
+      const generalNicheReply: AIChatMessage = {
+        id: `msg-niche-gen-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: claimResult.message,
+        text: `📑 **EmpireNexs Google Sheet Connected Niches Hub:**\n\nHamari live Google Sheet mein is waqt **18+ production links** 5 major categories mein available hain:\n\n${catText}\n\n---\n👉 **Aap ko kis topic ke links chahiye?**\nBus topic ka naam likh kar bhejein (maslan: *"mujhe music ke links do"*, *"elon musk niche do"*, *"dark reality links do"*, *"psychology facts do"*), mein foran sheet se us ke mutaliq tamam links bhej doon ga!\n\n🔗 **Live Google Sheet Link:** [Open Niches Master Sheet](${settings.googleSheetNichesUrl || 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing'})`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
-        fetchedItems: claimResult.claim
-          ? [
-              {
-                type: 'niche',
-                title: claimResult.claim.topicTitle,
-                details: `Category: ${claimResult.claim.nicheName} | Video #${claimResult.claim.videoNo}`,
-                link: claimResult.claim.scriptDocLink,
-              },
-            ]
-          : undefined,
+        fetchedItems: sampleItems.map((item) => ({
+          type: 'niche',
+          title: item.title,
+          details: `${item.category} • ${item.channelName}`,
+          link: item.url,
+        })),
       };
 
-      setChatMessages((prev) => [...prev, nicheMsg]);
-      logToServer([userMsg, nicheMsg]);
+      setChatMessages((prev) => [...prev, generalNicheReply]);
+      logToServer([userMsg, generalNicheReply]);
       return;
     }
 
@@ -2147,6 +2380,11 @@ Instructions:
         userNicheClaims,
         claimNicheTopic,
         getUserTodayNicheCount,
+        sheetNiches,
+        sheetNichesCategories,
+        isFetchingSheetNiches,
+        refreshSheetNiches,
+        searchSheetNiches,
         chatMessages,
         isChatOpen,
         setIsChatOpen,

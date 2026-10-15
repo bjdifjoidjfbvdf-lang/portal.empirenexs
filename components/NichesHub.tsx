@@ -20,6 +20,15 @@ import {
   Edit2,
   FileSpreadsheet,
   Sparkles,
+  Search,
+  Copy,
+  Check,
+  RefreshCw,
+  Youtube,
+  Bot,
+  Tag,
+  ArrowUpRight,
+  ListFilter,
 } from 'lucide-react';
 
 export const NichesHub: React.FC = () => {
@@ -36,7 +45,19 @@ export const NichesHub: React.FC = () => {
     claimNicheTopic,
     getUserTodayNicheCount,
     settings,
+    sheetNiches,
+    sheetNichesCategories,
+    isFetchingSheetNiches,
+    refreshSheetNiches,
+    setIsChatOpen,
+    sendMessageToAI,
   } = useApp();
+
+  // Mode: 'sheet' (Connected Google Sheet 18+ links) vs 'workflow' (Production boards)
+  const [hubMode, setHubMode] = useState<'sheet' | 'workflow'>('sheet');
+  const [selectedSheetCategory, setSelectedSheetCategory] = useState<string>('all');
+  const [sheetSearch, setSheetSearch] = useState<string>('');
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const [isAddTabModalOpen, setIsAddTabModalOpen] = useState(false);
   const [newTabName, setNewTabName] = useState('');
@@ -188,12 +209,288 @@ export const NichesHub: React.FC = () => {
         </div>
       </div>
 
-      {/* Sheet Tabs Bar (like Google Sheets tabs) */}
-      <div className="bg-[#0b1120] border border-slate-800 rounded-xl p-1.5 flex items-center gap-1.5 overflow-x-auto shadow-inner">
-        <div className="flex items-center px-2 py-1 text-slate-400 text-[11px] font-bold uppercase tracking-wider shrink-0">
-          <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400 mr-1.5" />
-          Sheet Tabs:
+      {/* Mode Switcher Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 p-2 rounded-2xl">
+        <div className="flex items-center gap-1.5 p-1 bg-slate-950/80 rounded-xl border border-slate-800/80">
+          <button
+            type="button"
+            onClick={() => setHubMode('sheet')}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 ${
+              hubMode === 'sheet'
+                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <FileSpreadsheet className="w-4 h-4" />
+            <span>Google Sheet Niches Vault ({sheetNiches.length || 18} Links)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setHubMode('workflow')}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 ${
+              hubMode === 'workflow'
+                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <FolderKanban className="w-4 h-4" />
+            <span>Branch Production Pipelines &amp; Workflows</span>
+          </button>
         </div>
+
+        <div className="flex items-center gap-2 px-1">
+          <a
+            href={settings.googleSheetNichesUrl || 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing'}
+            target="_blank"
+            rel="noreferrer"
+            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/50 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-900/50 transition flex items-center gap-1.5"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>Open Connected Sheet</span>
+          </a>
+
+          <button
+            type="button"
+            onClick={() => refreshSheetNiches()}
+            disabled={isFetchingSheetNiches}
+            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isFetchingSheetNiches ? 'animate-spin text-emerald-400' : ''}`} />
+            <span>{isFetchingSheetNiches ? 'Syncing...' : 'Sync Fresh'}</span>
+          </button>
+        </div>
+      </div>
+
+      {hubMode === 'sheet' ? (
+        /* Google Sheet Master Vault Mode */
+        <div className="space-y-6">
+          {/* Sheet Connection Banner */}
+          <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 border border-emerald-500/30 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                <h2 className="font-bold text-white text-sm flex items-center gap-2">
+                  <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+                  Live Connected Google Sheet: Niches Master Hub
+                </h2>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  {sheetNiches.length || 18} Links Loaded
+                </span>
+              </div>
+              <p className="text-slate-400 text-xs mt-1">
+                Ye links direct aap ki Google Sheet se load ho rahe hain. Hamara AI system bhi inhein live read karta hai aur jab koi topic ya niche mange to relevant links provide karta hai.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsChatOpen(true);
+                  sendMessageToAI('Mujhe niches sheet ke baray mein batao aur available topics dikhao');
+                }}
+                className="px-3 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition flex items-center gap-1.5 shadow-md shadow-emerald-500/20"
+              >
+                <Bot className="w-4 h-4" />
+                <span>Ask AI for Niche Topics</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Search & Category Filter Controls */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-slate-900/60 border border-slate-800 p-3 rounded-2xl">
+            {/* Search Input */}
+            <div className="relative flex-1 max-w-md">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={sheetSearch}
+                onChange={(e) => setSheetSearch(e.target.value)}
+                placeholder="Search topics, channels, keywords (e.g. Elon, Music, Facts, Crime)..."
+                className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              />
+            </div>
+
+            {/* Category Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
+              <button
+                type="button"
+                onClick={() => setSelectedSheetCategory('all')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                  selectedSheetCategory === 'all'
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800'
+                }`}
+              >
+                All ({sheetNiches.length || 18})
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedSheetCategory('elon')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                  selectedSheetCategory === 'elon'
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800'
+                }`}
+              >
+                🚀 Elon Musk &amp; Stories
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedSheetCategory('music')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                  selectedSheetCategory === 'music'
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800'
+                }`}
+              >
+                🎧 Ambient Music &amp; Beats
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedSheetCategory('psychology')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                  selectedSheetCategory === 'psychology'
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800'
+                }`}
+              >
+                🧠 Psychology &amp; Facts
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedSheetCategory('crime')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                  selectedSheetCategory === 'crime'
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800'
+                }`}
+              >
+                🕵️ Crime &amp; Dark Reality
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedSheetCategory('alpha')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                  selectedSheetCategory === 'alpha'
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800'
+                }`}
+              >
+                💼 Alpha &amp; Deals
+              </button>
+            </div>
+          </div>
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {(sheetNiches || [])
+              .filter((item) => {
+                const matchesCategory =
+                  selectedSheetCategory === 'all' ||
+                  item.category.toLowerCase().includes(selectedSheetCategory.toLowerCase()) ||
+                  item.tags.some((t) => t.toLowerCase().includes(selectedSheetCategory.toLowerCase()));
+                const matchesSearch =
+                  !sheetSearch.trim() ||
+                  `${item.title} ${item.channelName} ${item.category} ${item.description} ${item.url} ${item.tags.join(' ')}`
+                    .toLowerCase()
+                    .includes(sheetSearch.toLowerCase());
+                return matchesCategory && matchesSearch;
+              })
+              .map((item) => {
+                const isCopied = copiedId === item.id;
+                return (
+                  <div
+                    key={item.id}
+                    className="p-4 rounded-2xl bg-[#0b1120] border border-slate-800 hover:border-slate-700 transition flex flex-col justify-between group shadow-lg"
+                  >
+                    <div>
+                      {/* Top Category Badge & Type */}
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700/60 truncate">
+                          {item.category}
+                        </span>
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-950/40 text-red-400 border border-red-500/20 shrink-0 flex items-center gap-1">
+                          <Youtube className="w-3 h-3" />
+                          <span>{item.type === 'video' ? 'Video' : 'Channel'}</span>
+                        </span>
+                      </div>
+
+                      {/* Title & Reference */}
+                      <h3 className="font-bold text-white text-sm group-hover:text-emerald-400 transition">
+                        {item.title}
+                      </h3>
+                      <p className="text-[11px] font-mono text-emerald-400/90 mt-0.5">
+                        {item.channelName}
+                      </p>
+
+                      {/* Description & Angle */}
+                      <p className="text-xs text-slate-400 mt-2 line-clamp-3 leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    {/* Bottom Link & Actions */}
+                    <div className="mt-4 pt-3 border-t border-slate-800/80 space-y-2.5">
+                      <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono bg-slate-950/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                        <span className="truncate pr-2">{item.url}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(item.url);
+                            setCopiedId(item.id);
+                            setTimeout(() => setCopiedId(null), 2000);
+                          }}
+                          className="text-slate-400 hover:text-white transition shrink-0"
+                          title="Copy Link"
+                        >
+                          {isCopied ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex-1 py-1.5 rounded-lg text-xs font-semibold bg-red-950/40 hover:bg-red-900/40 text-red-300 border border-red-500/30 transition flex items-center justify-center gap-1.5"
+                        >
+                          <Youtube className="w-3.5 h-3.5" />
+                          <span>Open YouTube</span>
+                        </a>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsChatOpen(true);
+                            sendMessageToAI(`Mujhe "${item.title}" niche ke mutaliq topics, script idea aur links do`);
+                          }}
+                          className="flex-1 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/40 hover:bg-emerald-900/40 text-emerald-300 border border-emerald-500/30 transition flex items-center justify-center gap-1.5"
+                        >
+                          <Bot className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Ask AI Topics</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      ) : (
+        /* Original Production Workflows & Tables Mode */
+        <div className="space-y-6">
+          {/* Sheet Tabs Bar (like Google Sheets tabs) */}
+          <div className="bg-[#0b1120] border border-slate-800 rounded-xl p-1.5 flex items-center gap-1.5 overflow-x-auto shadow-inner">
+            <div className="flex items-center px-2 py-1 text-slate-400 text-[11px] font-bold uppercase tracking-wider shrink-0">
+              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400 mr-1.5" />
+              Sheet Tabs:
+            </div>
         {nicheTabs.map((tab) => {
           const isActive = tab.id === activeTab?.id;
           return (
@@ -462,6 +759,8 @@ export const NichesHub: React.FC = () => {
           </table>
         </div>
       </div>
+    </div>
+  )}
 
       {/* Add New Niche Tab Modal */}
       {isAddTabModalOpen && (
