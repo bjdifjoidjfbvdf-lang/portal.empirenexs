@@ -122,6 +122,9 @@ export interface AIChatMessage {
   senderName: string;
   text: string;
   timestamp: string;
+  userId?: string;
+  userEmail?: string;
+  createdAt?: string;
   actionTaken?: string;
   fetchedItems?: {
     type: 'channel' | 'niche' | 'doc' | 'credential';
@@ -129,6 +132,20 @@ export interface AIChatMessage {
     details?: string;
     link?: string;
   }[];
+}
+
+export interface ChatLogEntry {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  userRole?: string;
+  branchId?: string;
+  sender: 'user' | 'assistant' | 'system';
+  text: string;
+  timestamp: string;
+  createdAt: string;
+  month: string; // e.g. "2026-10"
 }
 
 export interface OTPOrderRecord {

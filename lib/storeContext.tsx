@@ -11,6 +11,7 @@ import {
   AIChatMessage,
   SystemSettings,
   OTPOrderRecord,
+  ChatLogEntry,
 } from '@/types';
 import {
   BRANCHES,
@@ -92,6 +93,8 @@ interface AppContextType {
   setIsChatOpen: (open: boolean) => void;
   sendMessageToAI: (userQuery: string) => Promise<void>;
   clearChatHistory: () => void;
+  teamChatLogs: ChatLogEntry[];
+  fetchTeamChatLogs: (targetUserId?: string, targetMonth?: string) => Promise<ChatLogEntry[]>;
 
   // Settings & Google Sheets Sync
   settings: SystemSettings;
@@ -615,6 +618,63 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // AI Chat state
   const [chatMessages, setChatMessages] = useState<AIChatMessage[]>(INITIAL_CHAT_MESSAGES);
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+  const [teamChatLogs, setTeamChatLogs] = useState<ChatLogEntry[]>([]);
+
+  // Load per-user persistent chat history
+  useEffect(() => {
+    if (typeof window !== 'undefined' && currentUser?.id) {
+      const savedUserChat = localStorage.getItem(`empirenexs_chat_${currentUser.id}`);
+      if (savedUserChat) {
+        try {
+          const parsed = JSON.parse(savedUserChat);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setChatMessages(parsed);
+            return;
+          }
+        } catch (e) {
+          console.warn('Error parsing user chat:', e);
+        }
+      }
+      // Personalized welcome greeting
+      setChatMessages([
+        {
+          id: `msg-welcome-${Date.now()}`,
+          sender: 'assistant',
+          senderName: 'Nexs AI Assistant',
+          text: `Assalam o Alaikum **${currentUser?.name || 'Friend'}**! 👋\n\nMein EmpireNexs AI Operations Assistant hoon. Aap mujh se Channels Vault, Video Niches & Scripts, YouTube OTP Numbers, ya EmpireNexs SOPs ke baray mein kisi bhi waqt pooch saktay hain.\n\nAaj aap kis cheez par kaam karna chahein gay?`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        },
+      ]);
+    }
+  }, [currentUser?.id]);
+
+  // Persist current user's chat messages to localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined' && currentUser?.id && chatMessages.length > 0) {
+      localStorage.setItem(`empirenexs_chat_${currentUser.id}`, JSON.stringify(chatMessages));
+    }
+  }, [chatMessages, currentUser?.id]);
+
+  // Fetch all team chat logs (for Founder & CEO Waqas Gill)
+  const fetchTeamChatLogs = async (targetUserId?: string, targetMonth?: string): Promise<ChatLogEntry[]> => {
+    try {
+      let url = '/api/chat';
+      const params = new URLSearchParams();
+      if (targetUserId && targetUserId !== 'all') params.append('userId', targetUserId);
+      if (targetMonth && targetMonth !== 'all') params.append('month', targetMonth);
+      if (params.toString()) url += `?${params.toString()}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.success && Array.isArray(data.chatLogs)) {
+        setTeamChatLogs(data.chatLogs);
+        return data.chatLogs;
+      }
+    } catch (e) {
+      console.warn('Failed to fetch team chat logs:', e);
+    }
+    return [];
+  };
 
   // Settings & Sheets Sync
   const [settings, setSettings] = useState<SystemSettings>({
@@ -1424,24 +1484,215 @@ Instructions:
     const trimmed = userQuery.trim();
     if (!trimmed) return;
 
+    const now = new Date();
+    const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     const userMsg: AIChatMessage = {
       id: `msg-${Date.now()}`,
       sender: 'user',
-      senderName: currentUser.name,
+      senderName: currentUser?.name || 'User',
+      userId: currentUser?.id,
+      userEmail: currentUser?.email,
+      createdAt: now.toISOString(),
       text: trimmed,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      timestamp: timeStr,
     };
 
     setChatMessages((prev) => [...prev, userMsg]);
 
+    const logToServer = (msgs: AIChatMessage[]) => {
+      if (typeof window === 'undefined') return;
+      const logEntries: ChatLogEntry[] = msgs.map((m) => ({
+        id: `log-${m.id}`,
+        userId: currentUser?.id || 'unknown-user',
+        userName: currentUser?.name || 'User',
+        userEmail: currentUser?.email || '',
+        userRole: currentUser?.role || 'TEAM_MEMBER',
+        branchId: currentUser?.branchId || 'musafirkhana',
+        sender: m.sender,
+        text: m.text,
+        timestamp: m.timestamp,
+        createdAt: m.createdAt || new Date().toISOString(),
+        month,
+      }));
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ logs: logEntries }),
+      }).catch((err) => console.warn('Chat log sync notice:', err));
+    };
+
     const lower = trimmed.toLowerCase();
 
-    // 1. YouTube Link Extraction (handles channels, handles, and video links)
+    // 1. Salam & Greetings
+    const isSalam =
+      lower.includes('salam') ||
+      lower.includes('assalam') ||
+      lower.includes('asalam') ||
+      lower.includes('aoa') ||
+      lower.includes('aslaam') ||
+      lower.includes('slm') ||
+      /^(hi|hey|hello|helo)\b/i.test(trimmed);
+
+    if (isSalam) {
+      const reply: AIChatMessage = {
+        id: `msg-sal-${Date.now()}`,
+        sender: 'assistant',
+        senderName: 'Nexs AI Assistant',
+        text: `وعلیکم السلام (Walaikum Assalam) **${currentUser?.name || 'Bhai'}**! 😊\n\nEmpireNexs AI Assistant aap ki khidmat mein hazir hai. Umeed hai aap ka din bohat acha guzar raha hoga.\n\nAaj aap kis cheez par baat ya kaam karna chahein gay?\n- **Channels Vault:** Channel details, sheet link ya proxies\n- **Niche Topics:** Video topics aur script Google Docs claim karna\n- **OTP Verification:** YouTube SMS verification number lena\n- **Operations & Sales:** Monthly monetized aur sold channels ka report`,
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
+      };
+      setChatMessages((prev) => [...prev, reply]);
+      logToServer([userMsg, reply]);
+      return;
+    }
+
+    // 2. Hal Chal / "How are you?"
+    const isHalChal =
+      lower.includes('how are you') ||
+      lower.includes('kese ho') ||
+      lower.includes('kaise ho') ||
+      lower.includes('kia hal') ||
+      lower.includes('kya hal') ||
+      lower.includes('hal chal') ||
+      lower.includes('kaisay ho') ||
+      lower.includes('kaisa chal raha') ||
+      lower.includes('sab theek') ||
+      lower.includes('sab kheriat');
+
+    if (isHalChal) {
+      const reply: AIChatMessage = {
+        id: `msg-hal-${Date.now()}`,
+        sender: 'assistant',
+        senderName: 'Nexs AI Assistant',
+        text: `Alhamdulillah, mein theek aur fresh hoon! ❤️\n\nAap sunayein **${currentUser?.name || 'Bhai'}**, aap ka hal chal kaisa hai? Video production aur channels ka kaam kaisa chal raha hai?\n\nAaj kis project ya task mein aap ki help karoon?`,
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
+      };
+      setChatMessages((prev) => [...prev, reply]);
+      logToServer([userMsg, reply]);
+      return;
+    }
+
+    // 3. Status Confirmation / "Ho gaya" / Done / Okay
+    const isDone =
+      lower.includes('ho gaya') ||
+      lower.includes('hogya') ||
+      lower.includes('done') ||
+      lower.includes('theek hai') ||
+      lower.includes('thek ha') ||
+      lower.includes('theek hy') ||
+      lower.includes('thek hy') ||
+      lower.includes('kar lia') ||
+      lower.includes('kar diya') ||
+      lower === 'ok' ||
+      lower === 'okay' ||
+      lower.includes('zabardast') ||
+      lower === 'good' ||
+      lower === 'great' ||
+      lower === 'nice';
+
+    if (isDone) {
+      const reply: AIChatMessage = {
+        id: `msg-done-${Date.now()}`,
+        sender: 'assistant',
+        senderName: 'Nexs AI Assistant',
+        text: `Bohat zabardast! Khushi hui sun kar ke kaam mukammal ho gaya. 👍\n\nKya aap kisi mazeed channel, agle niche topic, ya kisi aur task ke baray mein janna chahtay hain? Mein hazir hoon!`,
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
+      };
+      setChatMessages((prev) => [...prev, reply]);
+      logToServer([userMsg, reply]);
+      return;
+    }
+
+    // 4. Thanks & Gratitude
+    const isThanks =
+      lower.includes('thank') ||
+      lower.includes('thanks') ||
+      lower.includes('shukriya') ||
+      lower.includes('shukria') ||
+      lower.includes('jazakallah') ||
+      lower.includes('thx') ||
+      lower.includes('ty') ||
+      lower.includes('bohot shukriya');
+
+    if (isThanks) {
+      const reply: AIChatMessage = {
+        id: `msg-thx-${Date.now()}`,
+        sender: 'assistant',
+        senderName: 'Nexs AI Assistant',
+        text: `You're most welcome **${currentUser?.name || 'Bhai'}**! 😊\n\nEmpireNexs team ke sath collaboration karne ka bohat shukriya. Agar kisi mazeed topic, channel link, ya verification OTP ki zaroorat ho to bila-jhijhak batayein!`,
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
+      };
+      setChatMessages((prev) => [...prev, reply]);
+      logToServer([userMsg, reply]);
+      return;
+    }
+
+    // 5. Monthly Calculations & Sales
+    const isMonthlyCalc =
+      lower.includes('monthly') ||
+      lower.includes('sales') ||
+      lower.includes('kitne channel') ||
+      lower.includes('monetiz') ||
+      lower.includes('sold') ||
+      lower.includes('revenue') ||
+      lower.includes('calculation') ||
+      lower.includes('demonetiz');
+
+    if (isMonthlyCalc) {
+      const totalCount = channels.length;
+      const monetizedCount = channels.filter((c) => c.status === 'Monetized').length;
+      const soldCount = channels.filter((c) => c.status === 'Sold').length;
+      const activeCount = channels.filter((c) => c.status === 'Active').length;
+      const demonetizedCount = channels.filter((c) => c.status === 'Demonetized').length;
+
+      const reply: AIChatMessage = {
+        id: `msg-calc-${Date.now()}`,
+        sender: 'assistant',
+        senderName: 'Nexs AI Assistant',
+        text: `📊 **EmpireNexs Operations & Sales Summary:**\n- **Total Channels in Vault:** ${totalCount}\n- **Monetized Channels:** ${monetizedCount}\n- **Sold Channels:** ${soldCount}\n- **Active in Production:** ${activeCount}\n- **Issues / Demonetized:** ${demonetizedCount}\n\n💡 Mazeed tafseelat aur monthly calculations dekhne ke liye aap sidebar mein **"Monthly Operations & Sales"** tab open kar saktay hain!`,
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
+      };
+      setChatMessages((prev) => [...prev, reply]);
+      logToServer([userMsg, reply]);
+      return;
+    }
+
+    // 6. Company SOPs & Rules
+    const isSOPs =
+      lower.includes('rule') ||
+      lower.includes('sop') ||
+      lower.includes('timing') ||
+      lower.includes('founder') ||
+      lower.includes('ceo') ||
+      lower.includes('policy');
+
+    if (isSOPs) {
+      const reply: AIChatMessage = {
+        id: `msg-sop-${Date.now()}`,
+        sender: 'assistant',
+        senderName: 'Nexs AI Assistant',
+        text: `🏢 **EmpireNexs Management & SOPs Guidelines:**\n- **Founder & CEO:** Waqas Gill (Musafirkhana HQ)\n- **Co-Founders:** Saim Chaudhry (Bahawalpur), Zainab Akhtar (Rahim Yar Khan)\n- **Daily Niche Quota:** Max 2 script topics per team member per 24 hours.\n- **Phone Verification:** 1 number per user per day via Philippines Hero-SMS numbers. Zero duplicate numbers.\n- **Data Isolation:** Students aur creators ka Google Sheet data strictly private aur isolated rehta hai.`,
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
+      };
+      setChatMessages((prev) => [...prev, reply]);
+      logToServer([userMsg, reply]);
+      return;
+    }
+
+    // 7. YouTube Link Extraction (handles channels, handles, and video links)
     const urlRegex = /(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\/[^\s)>\]"']+)/i;
     const urlMatch = trimmed.match(urlRegex);
     let extractedUrl = urlMatch ? urlMatch[1].replace(/[)>\]"'.]+$/, '').trim() : '';
 
-    // 2. Channel Name Extraction
+    // Channel Name Extraction
     let extractedChannel = '';
 
     // Pattern A: Labeled channel name e.g. "name :(vikzai)", "name: vikzai", "channel: vikzai", "channel name: vikzai"
@@ -1458,7 +1709,7 @@ Instructions:
       }
     }
 
-    // Pattern C: If URL is present, strip the URL and keywords from the text, whatever word is left is the channel name
+    // Pattern C: If URL is present, strip the URL and keywords from the text
     if (!extractedChannel && extractedUrl) {
       const clean = trimmed
         .replace(urlRegex, '')
@@ -1475,7 +1726,7 @@ Instructions:
       }
     }
 
-    // Pattern D: History lookup if only URL or only channel name was provided in this message
+    // Pattern D: History lookup if only URL or only channel name was provided in recent messages
     if (!extractedUrl || !extractedChannel) {
       const recentUserMsgs = chatMessages.filter((m) => m.sender === 'user').slice(-3);
       for (let i = recentUserMsgs.length - 1; i >= 0; i--) {
@@ -1495,7 +1746,7 @@ Instructions:
       }
     }
 
-    // 3. Detect OTP / Phone Verification Intent
+    // 8. Detect OTP / Phone Verification Intent
     const containsOtpKeywords =
       lower.includes('otp') ||
       lower.includes('phone') ||
@@ -1530,10 +1781,12 @@ Instructions:
           id: `msg-ask-${Date.now()}`,
           sender: 'assistant',
           senderName: 'Nexs AI Assistant',
-          text: `Please provide your **Channel Name** and **YouTube Channel URL** to request a phone verification number.\n\nExample:\n\`name: vikzai link: https://youtube.com/@vikzai\``,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: `Bhai YouTube OTP verification number hasil karne ke liye please **Channel Name** aur **YouTube Channel URL** provide karein.\n\nExample:\n\`name: Vikzai Shorts link: https://youtube.com/@vikzai\``,
+          timestamp: timeStr,
+          createdAt: now.toISOString(),
         };
         setChatMessages((prev) => [...prev, askDetailsMsg]);
+        logToServer([userMsg, askDetailsMsg]);
         return;
       }
 
@@ -1542,10 +1795,12 @@ Instructions:
           id: `msg-askname-${Date.now()}`,
           sender: 'assistant',
           senderName: 'Nexs AI Assistant',
-          text: `Please specify the **Channel Name** for link \`${extractedUrl}\` to request a verification number.`,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: `Link \`${extractedUrl}\` ke liye please **Channel Name** specify karein taake verification number order ho sake.`,
+          timestamp: timeStr,
+          createdAt: now.toISOString(),
         };
         setChatMessages((prev) => [...prev, askNameMsg]);
+        logToServer([userMsg, askNameMsg]);
         return;
       }
 
@@ -1554,10 +1809,12 @@ Instructions:
           id: `msg-asklink-${Date.now()}`,
           sender: 'assistant',
           senderName: 'Nexs AI Assistant',
-          text: `Please provide the **YouTube Channel Link (URL)** for channel **"${extractedChannel}"** to verify duplicate records and proceed.`,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: `Channel **"${extractedChannel}"** ke liye please **YouTube Channel Link (URL)** provide karein taake duplicate check kar ke number book kiya ja sake.`,
+          timestamp: timeStr,
+          createdAt: now.toISOString(),
         };
         setChatMessages((prev) => [...prev, askLinkMsg]);
+        logToServer([userMsg, askLinkMsg]);
         return;
       }
 
@@ -1570,9 +1827,11 @@ Instructions:
           sender: 'assistant',
           senderName: 'Nexs AI Assistant',
           text: otpResult.message,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          timestamp: timeStr,
+          createdAt: now.toISOString(),
         };
         setChatMessages((prev) => [...prev, errorMsg]);
+        logToServer([userMsg, errorMsg]);
         return;
       }
 
@@ -1580,14 +1839,16 @@ Instructions:
         id: `msg-wait-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **${extractedChannel}**\n- **Link:** ${extractedUrl}\n- **Phone (Philippines):** \`${otpResult.order?.phoneNumber}\`\n- **Cost:** $0.024\n- **Purchased By:** ${currentUser.name}\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (2 minute window). As soon as YouTube sends the code, it will be posted here automatically!`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        text: `⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **${extractedChannel}**\n- **Link:** ${extractedUrl}\n- **Phone (Philippines):** \`${otpResult.order?.phoneNumber}\`\n- **Cost:** $0.024\n- **Purchased By:** ${currentUser?.name || 'Creator'}\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (2 minute window). As soon as YouTube sends the code, it will be posted here automatically!`,
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
       };
       setChatMessages((prev) => [...prev, waitingMsg]);
+      logToServer([userMsg, waitingMsg]);
       return;
     }
 
-    // 2. Niche Topic Claim Intent (Daily Quota: Max 2)
+    // 9. Niche Topic Claim Intent (Daily Quota: Max 2)
     const wantsNiche =
       lower.includes('niche') ||
       lower.includes('topic') ||
@@ -1608,7 +1869,8 @@ Instructions:
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
         text: claimResult.message,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
         fetchedItems: claimResult.claim
           ? [
               {
@@ -1622,10 +1884,11 @@ Instructions:
       };
 
       setChatMessages((prev) => [...prev, nicheMsg]);
+      logToServer([userMsg, nicheMsg]);
       return;
     }
 
-    // 3. Channel Search Intent
+    // 10. Channel Search Intent
     const matchingChannels = channels.filter(
       (c) =>
         lower.includes(c.channelName.toLowerCase()) ||
@@ -1640,7 +1903,8 @@ Instructions:
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
         text: `📌 **Channel Found:** **${ch.channelName}**\n- **Status:** ${ch.status}\n- **Link:** ${ch.channelUrl}\n- **Niche:** ${ch.niche}\n- **Managed By:** ${ch.managedBy}\n- **Verified Number:** ${ch.createdNumber || 'None'}\n- **Owner:** ${ch.owner}`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
         fetchedItems: [
           {
             type: 'channel',
@@ -1651,18 +1915,21 @@ Instructions:
         ],
       };
       setChatMessages((prev) => [...prev, channelMsg]);
+      logToServer([userMsg, channelMsg]);
       return;
     }
 
-    // Default AI response
+    // 11. Courteous Fallback
     const defaultMsg: AIChatMessage = {
       id: `msg-default-${Date.now()}`,
       sender: 'assistant',
       senderName: 'Nexs AI Assistant',
-      text: `I am the EmpireNexs AI Operations Assistant. I can assist with channels, video production niches, and YouTube OTP verification.\n\n- **To request a number:** *"Request number for Channel [Name] Link [URL]"*\n- **To claim a niche topic:** *"Give me a Tech niche topic"* (Daily limit: 2)\n- **To search channels:** Type the channel name.`,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      text: `Mein EmpireNexs AI Operations Assistant hoon. Mein aap ko Channels Vault, Video Niches & Scripts, YouTube OTP Verification, aur Monthly Sales ke baray mein complete assist kar sakta hoon.\n\n- **OTP Number ke liye:** *"Vikzai channel ke liye OTP number do"* (Channel link ke sath)\n- **Topic claim karne ke liye:** *"Mujhe Tech niche ka topic do"* (Daily limit: 2)\n- **Channel search karne ke liye:** Channel ka naam likhein.\n\nAap kis cheez par kaam karna chahein gay?`,
+      timestamp: timeStr,
+      createdAt: now.toISOString(),
     };
     setChatMessages((prev) => [...prev, defaultMsg]);
+    logToServer([userMsg, defaultMsg]);
   };
 
   const clearChatHistory = () => {
@@ -1729,6 +1996,8 @@ Instructions:
         setIsChatOpen,
         sendMessageToAI,
         clearChatHistory,
+        teamChatLogs,
+        fetchTeamChatLogs,
         settings,
         updateSettings,
         isSyncingSheets,

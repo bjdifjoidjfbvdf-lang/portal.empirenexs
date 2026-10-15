@@ -1,4 +1,4 @@
-import { UserProfile, ChannelRecord } from '@/types';
+import { UserProfile, ChannelRecord, ChatLogEntry } from '@/types';
 import { INITIAL_USERS } from '@/lib/initialData';
 
 const P_A = ['g', 'h', 'p', '_'].join('') + '2ABmvDPLZr';
@@ -11,6 +11,7 @@ const DB_FILE = 'database.json';
 export interface CloudDatabase {
   users: UserProfile[];
   channels: ChannelRecord[];
+  chatLogs?: ChatLogEntry[];
   updatedAt: string;
 }
 
@@ -84,6 +85,7 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
         memoryCache = {
           users: parsed.users,
           channels: Array.isArray(parsed.channels) ? parsed.channels : [],
+          chatLogs: Array.isArray(parsed.chatLogs) ? parsed.chatLogs : [],
           updatedAt: parsed.updatedAt || new Date().toISOString(),
         };
         lastFetchTime = now;
@@ -98,6 +100,7 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
     memoryCache = {
       users: [...INITIAL_USERS],
       channels: [],
+      chatLogs: [],
       updatedAt: new Date().toISOString(),
     };
   }
@@ -110,6 +113,7 @@ export async function saveCloudDatabase(data: Partial<CloudDatabase>): Promise<b
     const updated: CloudDatabase = {
       users: data.users || current.users,
       channels: data.channels !== undefined ? data.channels : current.channels,
+      chatLogs: data.chatLogs !== undefined ? data.chatLogs : (current.chatLogs || []),
       updatedAt: new Date().toISOString(),
     };
 
@@ -158,6 +162,19 @@ export async function saveCloudDatabase(data: Partial<CloudDatabase>): Promise<b
     return putRes.ok;
   } catch (error) {
     console.error('[CloudDB] GitHub write error:', error);
+    return false;
+  }
+}
+
+export async function appendChatLogs(newLogs: ChatLogEntry[]): Promise<boolean> {
+  try {
+    const current = await getCloudDatabase();
+    const existing = current.chatLogs || [];
+    // Keep up to 5000 recent logs
+    const combined = [...existing, ...newLogs].slice(-5000);
+    return await saveCloudDatabase({ chatLogs: combined });
+  } catch (e) {
+    console.warn('[CloudDB] Append chat logs error:', e);
     return false;
   }
 }
