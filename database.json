@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": "user-waqas",
+      "name": "Waqas Gill",
+      "email": "muhammadwaqasmwg@gmail.com",
+      "role": "SUPER_ADMIN",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-10-15T18:06:36.309Z"
+}
