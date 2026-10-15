@@ -106,9 +106,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span className="font-semibold text-slate-200">
                 {currentUser.branchId === 'bahawalpur'
-                  ? 'Bahawalpur Branch (Saim Ch)'
+                  ? 'Bahawalpur Branch (Saim Chaudhry)'
                   : currentUser.branchId === 'rahim-yar-khan'
-                  ? 'Rahim Yar Khan Branch (Zainab Athar)'
+                  ? 'Rahim Yar Khan Branch (Zainab Akhtar)'
                   : 'Musafirkhana Branch (Waqas Gill)'}
               </span>
             </div>
@@ -231,35 +231,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
                 </span>
               </button>
 
-              <div className="px-2 pt-2 pb-1 border-t border-slate-800 mt-1">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                  Switch Active Perspective
-                </p>
-              </div>
-              {availableUsers.map((user) => (
-                <button
-                  key={user.id}
-                  onClick={() => setCurrentUser(user)}
-                  className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-left transition-colors text-xs ${
-                    currentUser.id === user.id
-                      ? 'bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30'
-                      : 'text-slate-300 hover:bg-slate-800'
-                  }`}
-                >
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-6 h-6 rounded-full object-cover"
-                  />
-                  <div className="flex-1 truncate">
-                    <p className="font-medium text-slate-100">{user.name}</p>
-                    <p className="text-[10px] text-slate-400 truncate">{user.designation}</p>
-                  </div>
-                  {currentUser.id === user.id && (
-                    <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  )}
-                </button>
-              ))}
+
 
               {/* Logout Option */}
               <div className="pt-2 mt-1 border-t border-slate-800">

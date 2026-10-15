@@ -26,6 +26,7 @@ interface AppContextType {
   currentUser: UserProfile;
   setCurrentUser: (user: UserProfile) => void;
   isAuthenticated: boolean;
+  isAuthLoaded: boolean;
   login: (identifier: string, pass: string) => { success: boolean; message: string };
   registerUser: (data: {
     name: string;
@@ -113,8 +114,9 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   // Users and Auth state
   const [users, setUsers] = useState<UserProfile[]>(INITIAL_USERS);
-  const [currentUser, setCurrentUser] = useState<UserProfile>(INITIAL_USERS[0]); // Waqas Gill default
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  const [currentUser, setCurrentUser] = useState<UserProfile>(INITIAL_USERS[0]); // Initial placeholder before login
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthLoaded, setIsAuthLoaded] = useState<boolean>(false);
   const [selectedBranchId, setSelectedBranchId] = useState<BranchId>('all');
 
   const availableUsers = users.filter((u) => u.status === 'ACTIVE');
@@ -135,6 +137,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       ) {
         return true;
       }
+      if (
+        (cleanId === 'saimchaudhry' || cleanId === 'saimch' || cleanId === 'saim@empirenexs.com') &&
+        (u.id === 'user-saim' || uUsername === 'saimchaudhry' || uUsername === 'saimch')
+      ) {
+        return true;
+      }
+      if (
+        (cleanId === 'zainabakhtar' || cleanId === 'zainabathar' || cleanId === 'zainab@empirenexs.com') &&
+        (u.id === 'user-zainab' || uUsername === 'zainabakhtar' || uUsername === 'zainabathar')
+      ) {
+        return true;
+      }
       return false;
     });
 
@@ -149,7 +163,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (user.status === 'PENDING') {
       return {
         success: false,
-        message: '⚠️ **Approval Pending:** Your account is awaiting review and authorization from Founder & CEO Waqas Gill. Access will be unlocked once approved.',
+        message: '⚠️ Approval Pending: Your account is awaiting review and authorization from Founder & CEO Waqas Gill. Access will be unlocked once approved.',
       };
     }
 
@@ -274,6 +288,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     };
 
     setUsers((prev) => [...prev, newUser]);
+
+    // Sync with server API
+    if (typeof window !== 'undefined') {
+      fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'register', user: newUser }),
+      }).catch((e) => console.warn('API sync notice:', e));
+    }
+
     return {
       success: true,
       message:
@@ -286,12 +310,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, status: 'ACTIVE' } : u))
     );
+    if (typeof window !== 'undefined') {
+      fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'approve', userId }),
+      }).catch((e) => console.warn('API sync notice:', e));
+    }
   };
 
   const rejectUser = (userId: string) => {
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, status: 'REJECTED' } : u))
     );
+    if (typeof window !== 'undefined') {
+      fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reject', userId }),
+      }).catch((e) => console.warn('API sync notice:', e));
+    }
   };
 
   // Direct create user by Admin
@@ -325,6 +363,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     };
 
     setUsers((prev) => [newUser, ...prev]);
+
+    if (typeof window !== 'undefined') {
+      fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'directCreate', userData }),
+      }).catch((e) => console.warn('API sync notice:', e));
+    }
+
     return { success: true, message: `Team member "${userData.name}" has been registered directly and is active immediately!` };
   };
 
@@ -572,8 +619,29 @@ Instructions:
           if (found && found.status === 'ACTIVE') {
             setCurrentUser(found);
             setIsAuthenticated(true);
+          } else {
+            setIsAuthenticated(false);
           }
+        } else {
+          setIsAuthenticated(false);
         }
+
+        // Fetch users from server API to stay in sync
+        fetch('/api/users')
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success && Array.isArray(data.users) && data.users.length > 0) {
+              setUsers((prev) => {
+                const map = new Map<string, UserProfile>();
+                data.users.forEach((u: UserProfile) => map.set(u.id, u));
+                prev.forEach((u: UserProfile) => {
+                  if (!map.has(u.id)) map.set(u.id, u);
+                });
+                return Array.from(map.values());
+              });
+            }
+          })
+          .catch(() => null);
 
         const savedTheme = (localStorage.getItem('empirenexs_theme') as 'dark' | 'light') || 'dark';
         setThemeState(savedTheme);
@@ -588,6 +656,7 @@ Instructions:
         console.error('Storage parse error:', e);
       } finally {
         setHasLoadedFromStorage(true);
+        setIsAuthLoaded(true);
       }
     }
   }, []);
@@ -1405,6 +1474,7 @@ Instructions:
         currentUser,
         setCurrentUser,
         isAuthenticated,
+        isAuthLoaded,
         login,
         registerUser,
         logout,

@@ -98,7 +98,7 @@ export const BranchesAndTeams: React.FC = () => {
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-1">
-            Founder &amp; CEO: <strong>Waqas Gill</strong> (HQ Musafirkhana) • Co-Founders: Saim Ch (Bahawalpur), Zainab Athar (Rahim Yar Khan).
+            Founder &amp; CEO: <strong>Waqas Gill</strong> (HQ Musafirkhana) • Co-Founders: <strong>Saim Chaudhry</strong> (Bahawalpur), <strong>Zainab Akhtar</strong> (Rahim Yar Khan).
           </p>
         </div>
 
@@ -113,7 +113,7 @@ export const BranchesAndTeams: React.FC = () => {
         )}
       </div>
 
-      {/* Leadership Profile Cards & Perspective Switchers */}
+      {/* Leadership Profile Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Waqas Gill */}
         <div className="p-4 rounded-2xl bg-gradient-to-b from-slate-900 to-[#0b1120] border border-emerald-500/40 shadow-xl relative overflow-hidden">
@@ -145,30 +145,24 @@ export const BranchesAndTeams: React.FC = () => {
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              const u = availableUsers.find((user) => user.username === 'waqasgill' || user.role === 'SUPER_ADMIN');
-              if (u) setCurrentUser(u);
-            }}
-            className="w-full mt-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition"
-          >
-            Switch to Waqas Gill View
-          </button>
+          <div className="w-full mt-3 py-1.5 rounded-lg text-xs font-bold text-center bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+            Executive Founder &amp; CEO
+          </div>
         </div>
 
-        {/* Saim Ch */}
+        {/* Saim Chaudhry */}
         <div className="p-4 rounded-2xl bg-gradient-to-b from-slate-900 to-[#0b1120] border border-blue-500/40 shadow-xl relative overflow-hidden">
           <div className="flex items-center gap-3">
             <img
               src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
-              alt="Saim Ch"
+              alt="Saim Chaudhry"
               className="w-12 h-12 rounded-2xl object-cover border-2 border-blue-400"
             />
             <div>
               <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">
                 Co-Founder
               </span>
-              <h2 className="text-base font-bold text-white mt-1">Saim Ch</h2>
+              <h2 className="text-base font-bold text-white mt-1">Saim Chaudhry</h2>
               <p className="text-[11px] text-slate-400 flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-blue-400" /> Bahawalpur Branch
               </p>
@@ -188,30 +182,24 @@ export const BranchesAndTeams: React.FC = () => {
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              const u = availableUsers.find((user) => user.username === 'saimch');
-              if (u) setCurrentUser(u);
-            }}
-            className="w-full mt-3 py-1.5 rounded-lg text-xs font-bold bg-blue-500 hover:bg-blue-400 text-slate-950 transition"
-          >
-            Switch to Saim Ch View
-          </button>
+          <div className="w-full mt-3 py-1.5 rounded-lg text-xs font-bold text-center bg-blue-500/10 text-blue-400 border border-blue-500/30">
+            Head of Bahawalpur Branch
+          </div>
         </div>
 
-        {/* Zainab Athar */}
+        {/* Zainab Akhtar */}
         <div className="p-4 rounded-2xl bg-gradient-to-b from-slate-900 to-[#0b1120] border border-purple-500/40 shadow-xl relative overflow-hidden">
           <div className="flex items-center gap-3">
             <img
               src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80"
-              alt="Zainab Athar"
+              alt="Zainab Akhtar"
               className="w-12 h-12 rounded-2xl object-cover border-2 border-purple-400"
             />
             <div>
               <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30">
                 Co-Founder
               </span>
-              <h2 className="text-base font-bold text-white mt-1">Zainab Athar</h2>
+              <h2 className="text-base font-bold text-white mt-1">Zainab Akhtar</h2>
               <p className="text-[11px] text-slate-400 flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-purple-400" /> Rahim Yar Khan
               </p>
@@ -231,15 +219,9 @@ export const BranchesAndTeams: React.FC = () => {
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              const u = availableUsers.find((user) => user.username === 'zainabathar');
-              if (u) setCurrentUser(u);
-            }}
-            className="w-full mt-3 py-1.5 rounded-lg text-xs font-bold bg-purple-500 hover:bg-purple-400 text-slate-950 transition"
-          >
-            Switch to Zainab Athar View
-          </button>
+          <div className="w-full mt-3 py-1.5 rounded-lg text-xs font-bold text-center bg-purple-500/10 text-purple-400 border border-purple-500/30">
+            Head of Rahim Yar Khan Branch
+          </div>
         </div>
       </div>
 

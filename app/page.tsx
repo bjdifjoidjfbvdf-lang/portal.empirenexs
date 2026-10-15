@@ -17,7 +17,18 @@ import { Sparkles, Bot } from 'lucide-react';
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const { setIsChatOpen, isAuthenticated } = useApp();
+  const { setIsChatOpen, isAuthenticated, isAuthLoaded } = useApp();
+
+  if (!isAuthLoaded) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#090d16] text-white">
+        <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-xs font-semibold text-slate-400 font-mono tracking-widest uppercase">
+          Loading EmpireNexs Portal...
+        </p>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <AuthView />;
