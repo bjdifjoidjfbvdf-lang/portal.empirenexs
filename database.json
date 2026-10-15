@@ -71,6 +71,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-15",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792092595203",
+      "name": "Khansa Saddique",
+      "username": "khansa",
+      "email": "khansasaddique061@gmail.com",
+      "password": "Khansa@123",
+      "phone": "923047161897",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Channel Operations Manager",
+      "branchId": "musafirkhana",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-15",
+      "emailVerified": true
     }
   ],
   "channels": [],
@@ -128,5 +147,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-15T19:24:25.449Z"
+  "updatedAt": "2026-10-15T19:29:55.203Z"
 }
