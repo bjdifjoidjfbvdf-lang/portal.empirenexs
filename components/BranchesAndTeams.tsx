@@ -102,7 +102,7 @@ export const BranchesAndTeams: React.FC = () => {
           </p>
         </div>
 
-        {currentUser.role === 'SUPER_ADMIN' && (
+        {currentUser?.role === 'SUPER_ADMIN' && (
           <button
             onClick={() => setIsAddUserModalOpen(true)}
             className="px-4 py-2.5 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-lg shadow-emerald-500/20 flex items-center gap-1.5 shrink-0"
@@ -251,7 +251,7 @@ export const BranchesAndTeams: React.FC = () => {
               >
                 <div className="flex items-start gap-3">
                   <img
-                    src={pending.avatar}
+                    src={pending.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
                     alt={pending.name}
                     className="w-12 h-12 rounded-xl object-cover border border-amber-400/40 shrink-0"
                   />
@@ -259,10 +259,10 @@ export const BranchesAndTeams: React.FC = () => {
                     <div className="flex items-center gap-2 flex-wrap">
                       <p className="font-bold text-white text-sm">{pending.name}</p>
                       <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                        @{pending.username}
+                        @{pending.username || 'user'}
                       </span>
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                        {pending.designation}
+                        {pending.designation || 'Creator'}
                       </span>
                       {pending.joiningType && (
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
@@ -294,7 +294,7 @@ export const BranchesAndTeams: React.FC = () => {
                       )}
                       <p className="flex items-center gap-1.5">
                         <Building className="w-3.5 h-3.5 text-slate-400" />
-                        <span>Branch: <strong className="text-white">{pending.branchId.toUpperCase()}</strong></span>
+                        <span>Branch: <strong className="text-white">{(pending.branchId || 'musafirkhana').toUpperCase()}</strong></span>
                       </p>
                     </div>
                   </div>
@@ -341,7 +341,7 @@ export const BranchesAndTeams: React.FC = () => {
               className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center gap-3 hover:border-slate-700 transition"
             >
               <img
-                src={user.avatar}
+                src={user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
                 alt={user.name}
                 className="w-11 h-11 rounded-xl object-cover shrink-0 border border-slate-700"
               />
@@ -349,11 +349,11 @@ export const BranchesAndTeams: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <p className="font-bold text-slate-100 truncate">{user.name}</p>
                   <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">
-                    {user.branchId.toUpperCase()}
+                    {(user.branchId || 'musafirkhana').toUpperCase()}
                   </span>
                 </div>
-                <p className="text-[11px] text-emerald-400 truncate">{user.designation}</p>
-                <p className="text-[10px] text-slate-400 font-mono truncate">@{user.username || user.email.split('@')[0]}</p>
+                <p className="text-[11px] text-emerald-400 truncate">{user.designation || 'Creator'}</p>
+                <p className="text-[10px] text-slate-400 font-mono truncate">@{user.username || (user.email ? user.email.split('@')[0] : 'user')}</p>
                 {user.phone && <p className="text-[9px] text-slate-500">{user.phone}</p>}
               </div>
             </div>

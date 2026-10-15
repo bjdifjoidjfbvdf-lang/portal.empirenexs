@@ -229,7 +229,7 @@ export const NichesHub: React.FC = () => {
               </span>
               <h2 className="text-base font-bold text-white">{activeTab.name}</h2>
               <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
-                Assigned: {activeTab.branchId.toUpperCase()} Branch
+                Assigned: {(activeTab.branchId || 'musafirkhana').toUpperCase()} Branch
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-1">{activeTab.description}</p>

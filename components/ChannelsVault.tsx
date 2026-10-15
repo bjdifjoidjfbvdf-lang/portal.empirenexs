@@ -47,7 +47,7 @@ export const ChannelsVault: React.FC = () => {
 
   // Personal Sheet / CSV Import Modal state
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [importSheetUrl, setImportSheetUrl] = useState(currentUser.personalGoogleSheetUrl || '');
+  const [importSheetUrl, setImportSheetUrl] = useState(currentUser?.personalGoogleSheetUrl || '');
   const [pasteRows, setPasteRows] = useState('');
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [isImporting, setIsImporting] = useState(false);
@@ -126,13 +126,13 @@ export const ChannelsVault: React.FC = () => {
                 email: parts[3]?.trim() || `${chName.toLowerCase().replace(/[^a-z0-9]/g, '')}@gmail.com`,
                 password: parts[4]?.trim() || '••••••••',
                 twoFactor: parts[5]?.trim() || 'Enabled',
-                managedBy: parts[6]?.trim() || currentUser.name,
-                managerMail: parts[7]?.trim() || currentUser.email,
+                managedBy: parts[6]?.trim() || currentUser?.name || 'Creator',
+                managerMail: parts[7]?.trim() || currentUser?.email || 'admin@empirenexs.com',
                 backupCodes: parts[8]?.trim() || 'Available',
                 createdNumber: parts[9]?.trim() || '',
                 pubId: parts[10]?.trim() || '',
-                owner: parts[11]?.trim() || currentUser.name,
-                branchId: currentUser.branchId === 'all' ? 'musafirkhana' : currentUser.branchId,
+                owner: parts[11]?.trim() || currentUser?.name || 'EmpireNexs',
+                branchId: (currentUser?.branchId === 'all' || !currentUser?.branchId) ? 'musafirkhana' : (currentUser.branchId as BranchId),
                 ip: parts[12]?.trim() || '194.26.29.112 (Static Proxy)',
                 niche: parts[13]?.trim() || 'Automation / Tech',
                 subscribers: '0',
@@ -164,13 +164,13 @@ export const ChannelsVault: React.FC = () => {
                   email: parts[3] || '',
                   password: parts[4] || '••••••••',
                   twoFactor: parts[5] || 'Enabled',
-                  managedBy: parts[6] || currentUser.name,
-                  managerMail: parts[7] || currentUser.email,
+                  managedBy: parts[6] || currentUser?.name || 'Creator',
+                  managerMail: parts[7] || currentUser?.email || 'admin@empirenexs.com',
                   backupCodes: parts[8] || '',
                   createdNumber: parts[9] || '',
                   pubId: parts[10] || '',
-                  owner: parts[11] || currentUser.name,
-                  branchId: currentUser.branchId === 'all' ? 'musafirkhana' : currentUser.branchId,
+                  owner: parts[11] || currentUser?.name || 'EmpireNexs',
+                  branchId: (currentUser?.branchId === 'all' || !currentUser?.branchId) ? 'musafirkhana' : (currentUser.branchId as BranchId),
                   ip: parts[12] || '',
                   niche: parts[13] || 'Automation',
                   subscribers: '0',
@@ -271,7 +271,7 @@ export const ChannelsVault: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => {
-              setImportSheetUrl(currentUser.personalGoogleSheetUrl || '');
+              setImportSheetUrl(currentUser?.personalGoogleSheetUrl || '');
               setIsImportModalOpen(true);
             }}
             className="px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 transition flex items-center gap-1.5 shadow-sm"
@@ -299,13 +299,13 @@ export const ChannelsVault: React.FC = () => {
                 email: '',
                 password: '',
                 twoFactor: '',
-                managedBy: currentUser.name,
-                managerMail: currentUser.email,
+                managedBy: currentUser?.name || 'Creator',
+                managerMail: currentUser?.email || 'admin@empirenexs.com',
                 backupCodes: '',
                 createdNumber: '',
                 pubId: '',
-                owner: currentUser.name,
-                branchId: currentUser.branchId === 'all' ? 'musafirkhana' : currentUser.branchId,
+                owner: currentUser?.name || 'EmpireNexs',
+                branchId: (currentUser?.branchId === 'all' || !currentUser?.branchId) ? 'musafirkhana' : (currentUser.branchId as BranchId),
                 ip: '',
                 niche: 'Tech & AI',
                 subscribers: '',
@@ -322,7 +322,7 @@ export const ChannelsVault: React.FC = () => {
       </div>
 
       {/* Role Perspective Banner */}
-      {currentUser.role === 'SUPER_ADMIN' ? (
+      {currentUser?.role === 'SUPER_ADMIN' ? (
         <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/40 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 text-emerald-300">
             <span className="font-extrabold px-2 py-0.5 rounded bg-emerald-500 text-slate-950 text-[10px]">
@@ -333,14 +333,14 @@ export const ChannelsVault: React.FC = () => {
             </span>
           </div>
         </div>
-      ) : currentUser.role === 'CO_FOUNDER' || currentUser.role === 'BRANCH_HEAD' ? (
+      ) : currentUser?.role === 'CO_FOUNDER' || currentUser?.role === 'BRANCH_HEAD' ? (
         <div className="p-3 rounded-xl bg-blue-950/30 border border-blue-500/40 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 text-blue-300">
             <span className="font-extrabold px-2 py-0.5 rounded bg-blue-500 text-slate-950 text-[10px]">
               BRANCH HEAD
             </span>
             <span>
-              <strong>Branch Workspace ({currentUser.branchId.toUpperCase()}):</strong> Showing all channels belonging to your branch ({displayedChannels.length} Channels).
+              <strong>Branch Workspace ({(currentUser?.branchId || 'HQ').toUpperCase()}):</strong> Showing all channels belonging to your branch ({displayedChannels.length} Channels).
             </span>
           </div>
         </div>
@@ -351,7 +351,7 @@ export const ChannelsVault: React.FC = () => {
               PERSONAL VAULT
             </span>
             <span>
-              <strong>Strict Privacy Isolation ({currentUser.name}):</strong> Showing only channels managed by you ({displayedChannels.length} Channels). You can view your login credentials to work on your channels. Other members cannot view your channels.
+              <strong>Strict Privacy Isolation ({currentUser?.name || 'Creator'}):</strong> Showing only channels managed by you ({displayedChannels.length} Channels). You can view your login credentials to work on your channels. Other members cannot view your channels.
             </span>
           </div>
         </div>
@@ -599,7 +599,7 @@ export const ChannelsVault: React.FC = () => {
                           >
                             <Edit className="w-3.5 h-3.5" />
                           </button>
-                          {currentUser.role === 'SUPER_ADMIN' && (
+                          {currentUser?.role === 'SUPER_ADMIN' && (
                             <button
                               onClick={() => {
                                 if (confirm(`Are you sure you want to delete ${ch.channelName}?`)) {

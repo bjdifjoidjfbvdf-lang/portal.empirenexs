@@ -31,12 +31,12 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
   // Aggregate videos across all niche tabs
   const allVideos = nicheTabs.flatMap((t) => t.videos);
   const filteredVideos =
-    currentUser.canAccessAllBranches && selectedBranchId === 'all'
+    currentUser?.canAccessAllBranches && selectedBranchId === 'all'
       ? allVideos
       : allVideos.filter(
           (v) =>
             v.branchId ===
-            (selectedBranchId !== 'all' ? selectedBranchId : currentUser.branchId)
+            (selectedBranchId !== 'all' ? selectedBranchId : (currentUser?.branchId || 'musafirkhana'))
         );
 
   const pipelineCounts = {
@@ -58,17 +58,17 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                {currentUser.role === 'SUPER_ADMIN' ? 'CEO Executive View' : 'Branch Dashboard'}
+                {currentUser?.role === 'SUPER_ADMIN' ? 'CEO Executive View' : 'Branch Dashboard'}
               </span>
               <span className="text-xs text-slate-400">• EmpireNexs Multi-Branch Network</span>
             </div>
             <h1 className="text-2xl lg:text-3xl font-black text-white tracking-tight">
-              Welcome back, {currentUser.name}
+              Welcome back, {currentUser?.name || 'User'}
             </h1>
             <p className="text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-              {currentUser.canAccessAllBranches
+              {currentUser?.canAccessAllBranches
                 ? 'Monitor unified YouTube Automation output, live Google Sheets synchronization, and secure channels vault across Musafirkhana HQ, Bahawalpur, and Rahim Yar Khan branches.'
-                : `Your branch (${currentUser.designation}) channels, video production pipeline, and synchronized Google Sheets data are ready.`}
+                : `Your branch (${currentUser?.designation || 'Operations'}) channels, video production pipeline, and synchronized Google Sheets data are ready.`}
             </p>
           </div>
 
@@ -186,7 +186,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
           {BRANCHES.map((branch) => {
             const branchChannels = channels.filter((c) => c.branchId === branch.id);
             const isCurrentUsersBranch =
-              currentUser.canAccessAllBranches || currentUser.branchId === branch.id;
+              currentUser?.canAccessAllBranches || currentUser?.branchId === branch.id;
 
             return (
               <div

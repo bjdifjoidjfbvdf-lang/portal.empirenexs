@@ -71,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
 
         {/* Middle: Active Branch Switcher (Enabled for CEO, restricted for branch heads) */}
         <div className="flex items-center gap-2">
-          {currentUser.canAccessAllBranches ? (
+          {currentUser?.canAccessAllBranches ? (
             <div className="flex items-center bg-slate-900/80 border border-slate-700/80 rounded-lg p-1 text-xs">
               <span className="text-slate-400 px-2 font-medium flex items-center gap-1.5 hidden md:flex">
                 <Building2 className="w-3.5 h-3.5 text-emerald-400" />
@@ -105,9 +105,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 border border-slate-700/60 rounded-lg text-xs">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span className="font-semibold text-slate-200">
-                {currentUser.branchId === 'bahawalpur'
+                {currentUser?.branchId === 'bahawalpur'
                   ? 'Bahawalpur Branch (Saim Chaudhry)'
-                  : currentUser.branchId === 'rahim-yar-khan'
+                  : currentUser?.branchId === 'rahim-yar-khan'
                   ? 'Rahim Yar Khan Branch (Zainab Akhtar)'
                   : 'Musafirkhana Branch (Waqas Gill)'}
               </span>
@@ -146,7 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           </button>
 
           {/* Pending Approvals Badge for Admin */}
-          {pendingUsers.length > 0 && currentUser.role === 'SUPER_ADMIN' && (
+          {pendingUsers.length > 0 && currentUser?.role === 'SUPER_ADMIN' && (
             <button
               onClick={() => setActiveTab('team')}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 transition"
@@ -170,19 +170,19 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           <div className="relative group">
             <div className="flex items-center gap-2 bg-slate-900 border border-slate-700 hover:border-slate-600 rounded-lg p-1.5 cursor-pointer text-xs">
               <img
-                src={currentUser.avatar}
-                alt={currentUser.name}
+                src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
+                alt={currentUser?.name || 'User'}
                 className="w-7 h-7 rounded-full object-cover border border-emerald-400/40"
               />
               <div className="hidden sm:block text-left">
                 <p className="font-bold text-slate-200 leading-tight flex items-center gap-1">
-                  {currentUser.name}
-                  {currentUser.role === 'SUPER_ADMIN' && (
+                  {currentUser?.name || 'User'}
+                  {currentUser?.role === 'SUPER_ADMIN' && (
                     <Shield className="w-3 h-3 text-amber-400" />
                   )}
                 </p>
                 <p className="text-[10px] text-slate-400 truncate max-w-[110px]">
-                  {currentUser.designation}
+                  {currentUser?.designation || 'Creator'}
                 </p>
               </div>
               <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
@@ -193,14 +193,14 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               {/* Profile Card Header */}
               <div className="p-2 border-b border-slate-800 mb-1 flex items-center gap-2.5">
                 <img
-                  src={currentUser.avatar}
-                  alt={currentUser.name}
+                  src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
+                  alt={currentUser?.name || 'User'}
                   className="w-9 h-9 rounded-xl object-cover border border-emerald-400/40"
                 />
                 <div className="flex-1 truncate">
-                  <p className="font-bold text-white text-xs">{currentUser.name}</p>
-                  <p className="text-[10px] text-emerald-400 font-mono truncate">@{currentUser.username || 'user'}</p>
-                  <p className="text-[10px] text-slate-400 truncate">{currentUser.email}</p>
+                  <p className="font-bold text-white text-xs">{currentUser?.name || 'User'}</p>
+                  <p className="text-[10px] text-emerald-400 font-mono truncate">@{currentUser?.username || 'user'}</p>
+                  <p className="text-[10px] text-slate-400 truncate">{currentUser?.email || ''}</p>
                 </div>
               </div>
 
@@ -227,7 +227,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
                   <span>Appearance Mode</span>
                 </div>
                 <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-800 text-slate-300">
-                  {theme.toUpperCase()}
+                  {(theme || 'dark').toUpperCase()}
                 </span>
               </button>
 

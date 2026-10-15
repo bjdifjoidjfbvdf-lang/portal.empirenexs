@@ -42,12 +42,44 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
       const text = await res.text();
       const parsed = JSON.parse(text);
       if (parsed && Array.isArray(parsed.users)) {
-        // Ensure Waqas Gill, Saim Chaudhry, Zainab Akhtar always exist
+        // Ensure Waqas Gill, Saim Chaudhry, Zainab Akhtar always exist and have complete schemas
         INITIAL_USERS.forEach((initUser) => {
-          if (!parsed.users.some((u: UserProfile) => u.id === initUser.id || u.username === initUser.username)) {
+          const index = parsed.users.findIndex(
+            (u: UserProfile) => u.id === initUser.id || (u.username && u.username === initUser.username)
+          );
+          if (index === -1) {
             parsed.users.unshift(initUser);
+          } else {
+            parsed.users[index] = {
+              ...initUser,
+              ...parsed.users[index],
+              username: parsed.users[index].username || initUser.username,
+              avatar: parsed.users[index].avatar || initUser.avatar,
+              branchId: parsed.users[index].branchId || initUser.branchId,
+              designation: parsed.users[index].designation || initUser.designation,
+              phone: parsed.users[index].phone || initUser.phone,
+              address: parsed.users[index].address || initUser.address,
+              password: parsed.users[index].password || initUser.password,
+              canAccessAllBranches:
+                parsed.users[index].canAccessAllBranches !== undefined
+                  ? parsed.users[index].canAccessAllBranches
+                  : initUser.canAccessAllBranches,
+            };
           }
         });
+
+        // Ensure every user has safe default properties to prevent any undefined crashes
+        parsed.users = parsed.users.map((u: UserProfile) => ({
+          ...u,
+          username: u.username || u.email?.split('@')[0] || 'user',
+          branchId: u.branchId || 'musafirkhana',
+          avatar:
+            u.avatar ||
+            'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+          designation: u.designation || (u.role === 'SUPER_ADMIN' ? 'Founder & CEO' : 'Team Member'),
+          role: u.role || 'TEAM_MEMBER',
+          status: u.status || 'ACTIVE',
+        }));
 
         memoryCache = {
           users: parsed.users,

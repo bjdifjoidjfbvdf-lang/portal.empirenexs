@@ -41,8 +41,8 @@ export const OTPManager: React.FC = () => {
   const [requestError, setRequestError] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  const todayCount = getUserTodayOTPCount(currentUser.id);
-  const totalCount = getUserTotalOTPCount(currentUser.id);
+  const todayCount = getUserTodayOTPCount(currentUser?.id || '');
+  const totalCount = getUserTotalOTPCount(currentUser?.id || '');
   const isLimitReached = todayCount >= settings.dailyNumberLimitPerUser;
 
   const copyToClipboard = (text: string, key: string) => {
@@ -147,7 +147,7 @@ export const OTPManager: React.FC = () => {
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-2xl font-black text-white">
-              {todayCount} / {currentUser.role === 'SUPER_ADMIN' ? '∞' : settings.dailyNumberLimitPerUser}
+              {todayCount} / {currentUser?.role === 'SUPER_ADMIN' ? '∞' : settings.dailyNumberLimitPerUser}
             </span>
             <span
               className={`text-xs font-bold ${
@@ -158,7 +158,7 @@ export const OTPManager: React.FC = () => {
             </span>
           </div>
           <p className="text-[11px] text-slate-400 mt-1">
-            {currentUser.name} (Total Purchased: {totalCount})
+            {currentUser?.name || 'Creator'} (Total Purchased: {totalCount})
           </p>
         </div>
 
@@ -211,7 +211,7 @@ export const OTPManager: React.FC = () => {
           </div>
         </div>
 
-        {currentUser.role === 'SUPER_ADMIN' && (
+        {currentUser?.role === 'SUPER_ADMIN' && (
           <div className="flex items-center gap-2 shrink-0">
             <span className="text-[10px] uppercase font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
               Founder Override Active
@@ -273,7 +273,7 @@ export const OTPManager: React.FC = () => {
                     {/* Branch */}
                     <td className="py-3 px-3 whitespace-nowrap">
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
-                        {order.branchId.toUpperCase()}
+                        {(order.branchId || 'musafirkhana').toUpperCase()}
                       </span>
                     </td>
 

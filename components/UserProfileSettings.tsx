@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '@/lib/storeContext';
 import {
   User,
@@ -37,14 +37,31 @@ export const UserProfileSettings: React.FC = () => {
   const { currentUser, updateUserProfile, changeUserPassword, theme, setTheme } = useApp();
 
   // Profile form state
-  const [name, setName] = useState(currentUser.name);
-  const [username, setUsername] = useState(currentUser.username || '');
-  const [phone, setPhone] = useState(currentUser.phone || '');
-  const [address, setAddress] = useState(currentUser.address || '');
-  const [designation, setDesignation] = useState(currentUser.designation);
-  const [avatar, setAvatar] = useState(currentUser.avatar);
-  const [personalSheetUrl, setPersonalSheetUrl] = useState(currentUser.personalGoogleSheetUrl || '');
-  const [personalSheetApiKey, setPersonalSheetApiKey] = useState(currentUser.personalGoogleSheetApiKey || '');
+  const [name, setName] = useState(currentUser?.name || 'Waqas Gill');
+  const [username, setUsername] = useState(currentUser?.username || 'waqasgill');
+  const [phone, setPhone] = useState(currentUser?.phone || '');
+  const [address, setAddress] = useState(currentUser?.address || '');
+  const [designation, setDesignation] = useState(currentUser?.designation || 'Founder & CEO');
+  const [avatar, setAvatar] = useState(
+    currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'
+  );
+  const [personalSheetUrl, setPersonalSheetUrl] = useState(currentUser?.personalGoogleSheetUrl || '');
+  const [personalSheetApiKey, setPersonalSheetApiKey] = useState(currentUser?.personalGoogleSheetApiKey || '');
+
+  useEffect(() => {
+    if (currentUser) {
+      setName(currentUser.name || 'Waqas Gill');
+      setUsername(currentUser.username || 'waqasgill');
+      setPhone(currentUser.phone || '');
+      setAddress(currentUser.address || '');
+      setDesignation(currentUser.designation || 'Founder & CEO');
+      setAvatar(
+        currentUser.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'
+      );
+      setPersonalSheetUrl(currentUser.personalGoogleSheetUrl || '');
+      setPersonalSheetApiKey(currentUser.personalGoogleSheetApiKey || '');
+    }
+  }, [currentUser]);
 
   // Password change state
   const [currentPassword, setCurrentPassword] = useState('');
@@ -164,7 +181,7 @@ export const UserProfileSettings: React.FC = () => {
             User Profile &amp; Account Settings
           </h1>
           <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-            {currentUser.role.replace('_', ' ')}
+            {(currentUser?.role || 'SUPER_ADMIN').replace('_', ' ')}
           </span>
         </div>
         <p className="text-xs text-slate-400 mt-1">
@@ -209,10 +226,10 @@ export const UserProfileSettings: React.FC = () => {
 
             <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-center gap-2 flex-wrap">
               <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                {currentUser.role}
+                {currentUser?.role || 'SUPER_ADMIN'}
               </span>
               <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-slate-800 text-slate-300">
-                {currentUser.branchId.toUpperCase()}
+                {(currentUser?.branchId || 'HQ').toUpperCase()}
               </span>
               <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3" />
@@ -382,7 +399,7 @@ export const UserProfileSettings: React.FC = () => {
                   <input
                     type="email"
                     disabled
-                    value={currentUser.email}
+                    value={currentUser?.email || ''}
                     className="w-full px-3.5 py-2.5 bg-slate-950/50 border border-slate-800 rounded-xl text-slate-400 cursor-not-allowed font-mono"
                     title="Email is verified and linked to your corporate security identity"
                   />

@@ -117,10 +117,67 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+export const sanitizeUser = (u: any): UserProfile => {
+  const email = (u?.email || '').toLowerCase().trim();
+  const username = (u?.username || '').toLowerCase().trim();
+  const id = u?.id || '';
+
+  const isWaqas =
+    id === 'user-waqas' ||
+    username === 'waqasgill' ||
+    u?.role === 'SUPER_ADMIN' ||
+    email === 'muhammadwaqasmwg@gmail.com' ||
+    email === 'waqas@empirenexs.com';
+  const isSaim =
+    id === 'user-saim' ||
+    username === 'saimchaudhry' ||
+    username === 'saimch';
+  const isZainab =
+    id === 'user-zainab' ||
+    username === 'zainabakhtar' ||
+    username === 'zainabathar';
+
+  let defaultBranch: BranchId = 'musafirkhana';
+  let defaultRole = u?.role || 'OPERATOR';
+  let defaultDesignation = u?.designation || 'Creator / Operator';
+  let defaultAvatar = u?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
+
+  if (isWaqas) {
+    defaultBranch = 'all';
+    defaultRole = 'SUPER_ADMIN';
+    defaultDesignation = 'Founder & CEO';
+    defaultAvatar = u?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
+  } else if (isSaim) {
+    defaultBranch = 'bahawalpur';
+    defaultRole = 'CO_FOUNDER';
+    defaultDesignation = 'Co-Founder / Head of Bahawalpur';
+    defaultAvatar = u?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80';
+  } else if (isZainab) {
+    defaultBranch = 'rahim-yar-khan';
+    defaultRole = 'CO_FOUNDER';
+    defaultDesignation = 'Co-Founder / Head of Rahim Yar Khan';
+    defaultAvatar = u?.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80';
+  }
+
+  return {
+    ...u,
+    id: id || `user-${Date.now()}`,
+    name: isWaqas ? 'Waqas Gill' : isZainab ? 'Zainab Akhtar' : isSaim ? 'Saim Chaudhry' : (u?.name || 'User'),
+    username: isWaqas ? 'waqasgill' : isZainab ? 'zainabakhtar' : isSaim ? 'saimchaudhry' : (username || (email ? email.split('@')[0] : 'user')),
+    email: isWaqas ? 'muhammadwaqasmwg@gmail.com' : isZainab ? 'zainab@empirenexs.com' : isSaim ? 'saim@empirenexs.com' : email,
+    role: defaultRole,
+    designation: u?.designation || defaultDesignation,
+    avatar: u?.avatar || defaultAvatar,
+    branchId: (u?.branchId || defaultBranch) as BranchId,
+    status: u?.status || 'ACTIVE',
+    canAccessAllBranches: isWaqas ? true : !!u?.canAccessAllBranches,
+  };
+};
+
 export function AppProvider({ children }: { children: React.ReactNode }) {
   // Users and Auth state
-  const [users, setUsers] = useState<UserProfile[]>(INITIAL_USERS);
-  const [currentUser, setCurrentUser] = useState<UserProfile>(INITIAL_USERS[0]); // Initial placeholder before login
+  const [users, setUsers] = useState<UserProfile[]>(INITIAL_USERS.map(sanitizeUser));
+  const [currentUser, setCurrentUser] = useState<UserProfile>(sanitizeUser(INITIAL_USERS[0])); // Initial placeholder before login
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isAuthLoaded, setIsAuthLoaded] = useState<boolean>(false);
   const [selectedBranchId, setSelectedBranchId] = useState<BranchId>('all');
@@ -142,12 +199,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       });
       const data = await res.json();
       if (res.ok && data.success && data.user) {
-        const liveUser: UserProfile = data.user;
+        const liveUser: UserProfile = sanitizeUser(data.user);
         setCurrentUser(liveUser);
         setIsAuthenticated(true);
         setUsers((prev) => {
           const map = new Map<string, UserProfile>();
-          prev.forEach((u) => map.set(u.id, u));
+          prev.forEach((u) => map.set(u.id, sanitizeUser(u)));
           map.set(liveUser.id, liveUser);
           return Array.from(map.values());
         });
@@ -207,12 +264,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       return { success: false, message: 'This registration request has been declined.' };
     }
 
-    setCurrentUser(user);
+    const sanitizedUser = sanitizeUser(user);
+    setCurrentUser(sanitizedUser);
     setIsAuthenticated(true);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('empirenexs_session_user_prod', user.id);
+      localStorage.setItem('empirenexs_session_user_prod', sanitizedUser.id);
     }
-    return { success: true, message: `Welcome, ${user.name}!` };
+    return { success: true, message: `Welcome, ${sanitizedUser.name}!` };
   };
 
   // Register with unique username and email
@@ -614,19 +672,16 @@ Instructions:
     if (typeof window !== 'undefined') {
       try {
         const savedUsers = localStorage.getItem('empirenexs_users_prod');
-        let currentUsersList = INITIAL_USERS;
+        let currentUsersList = INITIAL_USERS.map(sanitizeUser);
         if (savedUsers) {
           const parsed = JSON.parse(savedUsers);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            const updated = parsed.map((u: UserProfile) => {
-              if (u.id === 'user-waqas' || u.username === 'waqasgill' || u.role === 'SUPER_ADMIN') {
-                return { ...u, email: 'muhammadwaqasmwg@gmail.com', name: 'Waqas Gill' };
+            const updated = parsed.map(sanitizeUser);
+            INITIAL_USERS.forEach((initUser) => {
+              if (!updated.some((u) => u.id === initUser.id || u.username === initUser.username)) {
+                updated.push(sanitizeUser(initUser));
               }
-              return u;
             });
-            if (!updated.some((u: UserProfile) => u.email.toLowerCase() === 'muhammadwaqasmwg@gmail.com')) {
-              updated.unshift(INITIAL_USERS[0]);
-            }
             setUsers(updated);
             currentUsersList = updated;
           }
@@ -660,7 +715,7 @@ Instructions:
         if (savedSessionId) {
           const found = currentUsersList.find((u: UserProfile) => u.id === savedSessionId);
           if (found && found.status === 'ACTIVE') {
-            setCurrentUser(found);
+            setCurrentUser(sanitizeUser(found));
             setIsAuthenticated(true);
           } else {
             setIsAuthenticated(false);
@@ -674,19 +729,20 @@ Instructions:
           .then((res) => res.json())
           .then((data) => {
             if (data.success && Array.isArray(data.users) && data.users.length > 0) {
+              const sanitizedServerUsers = data.users.map(sanitizeUser);
               setUsers((prev) => {
                 const map = new Map<string, UserProfile>();
-                data.users.forEach((u: UserProfile) => map.set(u.id, u));
+                sanitizedServerUsers.forEach((u: UserProfile) => map.set(u.id, u));
                 prev.forEach((u: UserProfile) => {
-                  if (!map.has(u.id)) map.set(u.id, u);
+                  if (!map.has(u.id)) map.set(u.id, sanitizeUser(u));
                 });
                 return Array.from(map.values());
               });
               // Auto-activate user if approved while session open
               if (savedSessionId) {
-                const updatedSessionUser = data.users.find((u: UserProfile) => u.id === savedSessionId);
+                const updatedSessionUser = sanitizedServerUsers.find((u: UserProfile) => u.id === savedSessionId);
                 if (updatedSessionUser && updatedSessionUser.status === 'ACTIVE') {
-                  setCurrentUser(updatedSessionUser);
+                  setCurrentUser(sanitizeUser(updatedSessionUser));
                   setIsAuthenticated(true);
                 }
               }
@@ -755,8 +811,8 @@ Instructions:
 
   // When current user changes, restrict or adapt branch selection
   useEffect(() => {
-    if (!currentUser.canAccessAllBranches) {
-      setSelectedBranchId(currentUser.branchId);
+    if (!currentUser?.canAccessAllBranches) {
+      setSelectedBranchId(currentUser?.branchId || 'musafirkhana');
     } else {
       setSelectedBranchId('all');
     }
@@ -767,35 +823,35 @@ Instructions:
   // - Branch Heads (Saim Ch, Zainab Akhtar): See channels of their branch
   // - Regular Team Members (Mubashir, editors): ONLY see their OWN channels!
   const filteredChannels = channels.filter((ch) => {
-    if (currentUser.role === 'SUPER_ADMIN') {
+    if (currentUser?.role === 'SUPER_ADMIN') {
       if (selectedBranchId !== 'all' && ch.branchId !== selectedBranchId) {
         return false;
       }
       return true;
     }
 
-    if (currentUser.role === 'CO_FOUNDER' || currentUser.role === 'BRANCH_HEAD') {
-      if (ch.branchId !== currentUser.branchId) {
+    if (currentUser?.role === 'CO_FOUNDER' || currentUser?.role === 'BRANCH_HEAD') {
+      if (ch.branchId !== currentUser?.branchId) {
         return false;
       }
       return true;
     }
 
     // Regular Team Member / Student: STRICT DATA ISOLATION
-    const userNameClean = (currentUser.name || '').trim().toLowerCase();
-    const userEmailClean = (currentUser.email || '').trim().toLowerCase();
-    const usernameClean = (currentUser.username || '').trim().toLowerCase();
-    const currentUid = currentUser.id;
+    const userNameClean = (currentUser?.name || '').trim().toLowerCase();
+    const userEmailClean = (currentUser?.email || '').trim().toLowerCase();
+    const usernameClean = (currentUser?.username || '').trim().toLowerCase();
+    const currentUid = currentUser?.id;
 
     if (ch.userId && ch.userId === currentUid) {
       return true;
     }
 
     const isMyChannel =
-      ch.managedBy.toLowerCase().includes(userNameClean) ||
-      ch.owner.toLowerCase().includes(userNameClean) ||
+      (ch.managedBy || '').toLowerCase().includes(userNameClean) ||
+      (ch.owner || '').toLowerCase().includes(userNameClean) ||
       (ch.managerMail && ch.managerMail.toLowerCase() === userEmailClean) ||
-      (usernameClean && ch.managedBy.toLowerCase().includes(usernameClean));
+      (usernameClean && (ch.managedBy || '').toLowerCase().includes(usernameClean));
 
     return isMyChannel;
   });

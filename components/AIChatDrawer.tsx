@@ -113,7 +113,7 @@ export const AIChatDrawer: React.FC = () => {
           <div className="flex items-center gap-1.5 truncate">
             <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
             <span className="truncate">
-              Active User: <strong>{currentUser.name}</strong> ({currentUser.role})
+              Active User: <strong>{currentUser?.name || 'User'}</strong> ({currentUser?.role || 'SUPER_ADMIN'})
             </span>
           </div>
           <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
@@ -147,7 +147,7 @@ export const AIChatDrawer: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center justify-between gap-3 text-[10px] opacity-70 mb-1">
-                    <span className="font-bold">{isUser ? currentUser.name : 'Nexs AI'}</span>
+                    <span className="font-bold">{isUser ? (currentUser?.name || 'User') : 'Nexs AI'}</span>
                     <span>{msg.timestamp}</span>
                   </div>
 
@@ -195,8 +195,8 @@ export const AIChatDrawer: React.FC = () => {
 
                 {isUser && (
                   <img
-                    src={currentUser.avatar}
-                    alt={currentUser.name}
+                    src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
+                    alt={currentUser?.name || 'User'}
                     className="w-7 h-7 rounded-lg object-cover border border-emerald-400/40 shrink-0 mt-0.5"
                   />
                 )}
