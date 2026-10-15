@@ -154,7 +154,7 @@ export const BranchComparisonAnalytics: React.FC = () => {
       ).length;
 
       // 6. Active Team / Creators
-      const teamCount = availableUsers.filter((u) => u.branchId === b.id).length;
+      const teamCount = availableUsers.filter((u) => u.branchId === b.id && u.status === 'ACTIVE').length;
 
       return {
         ...b,

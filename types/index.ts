@@ -31,7 +31,7 @@ export interface UserProfile {
   branchId: BranchId;
   avatar: string;
   canAccessAllBranches: boolean;
-  status: 'ACTIVE' | 'PENDING' | 'REJECTED';
+  status: 'ACTIVE' | 'PENDING' | 'REJECTED' | 'RESTRICTED' | 'SUSPENDED';
   joiningType?: 'PERCENTAGE' | 'SALARY';
   joinedAt?: string;
   emailVerified?: boolean;

@@ -19,6 +19,9 @@ import {
   AtSign,
   User,
   Lock,
+  Unlock,
+  Trash2,
+  Ban,
   Briefcase,
   AlertCircle,
   BarChart3,
@@ -34,6 +37,9 @@ export const BranchesAndTeams: React.FC = () => {
     pendingUsers,
     approveUser,
     rejectUser,
+    restrictUser,
+    unrestrictUser,
+    deleteUser,
     directCreateUser,
   } = useApp();
 
@@ -372,29 +378,103 @@ export const BranchesAndTeams: React.FC = () => {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {availableUsers.map((user) => (
-            <div
-              key={user.id}
-              className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center gap-3 hover:border-slate-700 transition"
-            >
-              <img
-                src={user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
-                alt={user.name}
-                className="w-11 h-11 rounded-xl object-cover shrink-0 border border-slate-700"
-              />
-              <div className="flex-1 truncate text-xs">
-                <div className="flex items-center justify-between">
-                  <p className="font-bold text-slate-100 truncate">{user.name}</p>
-                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">
-                    {(user.branchId || 'musafirkhana').toUpperCase()}
-                  </span>
+          {availableUsers.map((user) => {
+            const isRestricted = user.status === 'RESTRICTED' || user.status === 'SUSPENDED';
+            const isFounder = user.id === 'user-waqas' || user.role === 'SUPER_ADMIN';
+
+            return (
+              <div
+                key={user.id}
+                className={`p-3.5 rounded-xl bg-slate-950 border flex flex-col justify-between gap-3 transition ${
+                  isRestricted
+                    ? 'border-red-500/50 bg-red-950/10'
+                    : 'border-slate-800/80 hover:border-slate-700'
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <img
+                    src={user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
+                    alt={user.name}
+                    className={`w-11 h-11 rounded-xl object-cover shrink-0 border ${
+                      isRestricted ? 'border-red-500' : 'border-slate-700'
+                    }`}
+                  />
+                  <div className="flex-1 truncate text-xs">
+                    <div className="flex items-center justify-between gap-1">
+                      <p className="font-bold text-slate-100 truncate">{user.name}</p>
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                        {(user.branchId || 'musafirkhana').toUpperCase()}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-emerald-400 truncate">{user.designation || 'Creator'}</p>
+                    <p className="text-[10px] text-slate-400 font-mono truncate">@{user.username || (user.email ? user.email.split('@')[0] : 'user')}</p>
+                    {user.phone && <p className="text-[9px] text-slate-500">{user.phone}</p>}
+
+                    {/* Status Badge */}
+                    <div className="mt-1.5">
+                      {isRestricted ? (
+                        <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30">
+                          <Ban className="w-3 h-3" /> Access Blocked
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          <CheckCircle className="w-3 h-3" /> Active Member
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <p className="text-[11px] text-emerald-400 truncate">{user.designation || 'Creator'}</p>
-                <p className="text-[10px] text-slate-400 font-mono truncate">@{user.username || (user.email ? user.email.split('@')[0] : 'user')}</p>
-                {user.phone && <p className="text-[9px] text-slate-500">{user.phone}</p>}
+
+                {/* CEO Security Actions: Restrict Access or Delete User */}
+                {currentUser?.role === 'SUPER_ADMIN' && !isFounder && (
+                  <div className="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    {/* Restrict / Unrestrict Button */}
+                    {isRestricted ? (
+                      <button
+                        onClick={() => {
+                          unrestrictUser(user.id);
+                          alert(`Access for ${user.name} has been restored.`);
+                        }}
+                        className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 flex items-center gap-1 transition"
+                        title="Allow user to log in and work again"
+                      >
+                        <Unlock className="w-3 h-3" />
+                        <span>Restore Access</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          if (confirm(`Aap ${user.name} ki access RESTRICT karna chahte hain?\n\nInka login foran block ho jayega aur yeh portal ya sheets access nahi kar sakein ge.`)) {
+                            restrictUser(user.id);
+                          }
+                        }}
+                        className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1 transition"
+                        title="Block user login and access"
+                      >
+                        <Lock className="w-3 h-3" />
+                        <span>Restrict Access</span>
+                      </button>
+                    )}
+
+                    {/* Delete Permanently Button */}
+                    <button
+                      onClick={() => {
+                        if (confirm(`DANGER: Kya aap ${user.name} (@${user.username}) ko permanently DELETE karna chahte hain?\n\nInka account system aur cloud se mukammal remove ho jayega aur access foran terminate ho jayegi.`)) {
+                          const res = deleteUser(user.id);
+                          alert(res.message);
+                        }
+                      }}
+                      className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-500/30 flex items-center gap-1 transition"
+                      title="Permanently remove user from EmpireNexs"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                      <span>Remove</span>
+                    </button>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
         </>

@@ -68,6 +68,14 @@ export async function POST(req: NextRequest) {
         }, { status: 403 });
       }
 
+      if (user.status === 'RESTRICTED' || user.status === 'SUSPENDED') {
+        return NextResponse.json({
+          success: false,
+          message: '🚫 Account Restricted: Aapka access Founder & CEO (Waqas Gill) ki taraf se suspend kar diya gaya hai. Security reasons ki wajah se access blocked hai.',
+          restricted: true,
+        }, { status: 403 });
+      }
+
       if (user.status === 'REJECTED') {
         return NextResponse.json({ success: false, message: 'This registration request has been declined.' }, { status: 403 });
       }
@@ -163,6 +171,51 @@ export async function POST(req: NextRequest) {
       users = users.map((u) => (u.id === userId ? { ...u, status: 'REJECTED' } : u));
       await saveCloudDatabase({ users });
       return NextResponse.json({ success: true, message: 'User registration request declined.' });
+    }
+
+    // 4b. RESTRICT / SUSPEND USER (SUPER ADMIN ONLY)
+    if (action === 'restrict') {
+      const { userId } = body;
+      const target = users.find((u) => u.id === userId);
+      if (!target) {
+        return NextResponse.json({ success: false, message: 'User not found.' }, { status: 404 });
+      }
+      if (target.id === 'user-waqas' || target.role === 'SUPER_ADMIN') {
+        return NextResponse.json({ success: false, message: 'Founder & CEO Waqas Gill account cannot be restricted.' }, { status: 400 });
+      }
+
+      users = users.map((u) => (u.id === userId ? { ...u, status: 'RESTRICTED' } : u));
+      await saveCloudDatabase({ users });
+      return NextResponse.json({ success: true, message: `Access for ${target.name} has been restricted and blocked.` });
+    }
+
+    // 4c. UNRESTRICT / REACTIVATE USER (SUPER ADMIN ONLY)
+    if (action === 'unrestrict') {
+      const { userId } = body;
+      const target = users.find((u) => u.id === userId);
+      if (!target) {
+        return NextResponse.json({ success: false, message: 'User not found.' }, { status: 404 });
+      }
+
+      users = users.map((u) => (u.id === userId ? { ...u, status: 'ACTIVE' } : u));
+      await saveCloudDatabase({ users });
+      return NextResponse.json({ success: true, message: `Access for ${target.name} has been restored and activated!` });
+    }
+
+    // 4d. DELETE / PERMANENTLY REMOVE USER (SUPER ADMIN ONLY)
+    if (action === 'delete') {
+      const { userId } = body;
+      const target = users.find((u) => u.id === userId);
+      if (!target) {
+        return NextResponse.json({ success: false, message: 'User not found.' }, { status: 404 });
+      }
+      if (target.id === 'user-waqas' || target.role === 'SUPER_ADMIN') {
+        return NextResponse.json({ success: false, message: 'Founder & CEO Waqas Gill account cannot be deleted.' }, { status: 400 });
+      }
+
+      users = users.filter((u) => u.id !== userId);
+      await saveCloudDatabase({ users });
+      return NextResponse.json({ success: true, message: `Team member ${target.name} has been permanently deleted from the system.` });
     }
 
     // 5. DIRECT CREATE USER (SUPER ADMIN)

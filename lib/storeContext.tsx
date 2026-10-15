@@ -49,6 +49,9 @@ interface AppContextType {
   pendingUsers: UserProfile[];
   approveUser: (userId: string) => void;
   rejectUser: (userId: string) => void;
+  restrictUser: (userId: string) => void;
+  unrestrictUser: (userId: string) => void;
+  deleteUser: (userId: string) => { success: boolean; message: string };
   directCreateUser: (userData: Partial<UserProfile> & { name: string; username: string; email: string; password: string }) => { success: boolean; message: string };
   selectedBranchId: BranchId;
   setSelectedBranchId: (branchId: BranchId) => void;
@@ -185,7 +188,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [isAuthLoaded, setIsAuthLoaded] = useState<boolean>(false);
   const [selectedBranchId, setSelectedBranchId] = useState<BranchId>('all');
 
-  const availableUsers = users.filter((u) => u.status === 'ACTIVE');
+  const availableUsers = users.filter((u) => u.status === 'ACTIVE' || u.status === 'RESTRICTED' || u.status === 'SUSPENDED');
   const pendingUsers = users.filter((u) => u.status === 'PENDING');
 
   // Login supporting Email OR Username with Live Cloud Verification
@@ -260,6 +263,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       return {
         success: false,
         message: '⚠️ Approval Pending: Your account is awaiting review and authorization from Founder & CEO Waqas Gill. Access will be unlocked once approved.',
+      };
+    }
+
+    if (user.status === 'RESTRICTED' || user.status === 'SUSPENDED') {
+      return {
+        success: false,
+        message: '🚫 Account Restricted: Aapka access Founder & CEO (Waqas Gill) ki taraf se suspend kar diya gaya hai. Security reasons ki wajah se access blocked hai.',
       };
     }
 
@@ -425,6 +435,64 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ action: 'reject', userId }),
       }).catch((e) => console.warn('API sync notice:', e));
     }
+  };
+
+  const restrictUser = (userId: string) => {
+    if (userId === 'user-waqas' || (currentUser?.id === userId && currentUser?.role === 'SUPER_ADMIN')) {
+      alert('Founder & CEO account cannot be restricted.');
+      return;
+    }
+    setUsers((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, status: 'RESTRICTED' } : u))
+    );
+    if (currentUser?.id === userId) {
+      logout();
+    }
+    if (typeof window !== 'undefined') {
+      fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'restrict', userId }),
+      }).catch((e) => console.warn('API sync notice:', e));
+    }
+  };
+
+  const unrestrictUser = (userId: string) => {
+    setUsers((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, status: 'ACTIVE' } : u))
+    );
+    if (typeof window !== 'undefined') {
+      fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'unrestrict', userId }),
+      }).catch((e) => console.warn('API sync notice:', e));
+    }
+  };
+
+  const deleteUser = (userId: string): { success: boolean; message: string } => {
+    const target = users.find((u) => u.id === userId);
+    if (!target) {
+      return { success: false, message: 'User not found in system.' };
+    }
+    if (target.id === 'user-waqas' || target.role === 'SUPER_ADMIN') {
+      return { success: false, message: 'Founder & CEO Waqas Gill account cannot be deleted.' };
+    }
+
+    setUsers((prev) => prev.filter((u) => u.id !== userId));
+    if (currentUser?.id === userId) {
+      logout();
+    }
+
+    if (typeof window !== 'undefined') {
+      fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', userId }),
+      }).catch((e) => console.warn('API sync notice:', e));
+    }
+
+    return { success: true, message: `Member "${target.name}" (@${target.username}) has been permanently deleted.` };
   };
 
   // Direct create user by Admin
@@ -798,12 +866,21 @@ Instructions:
                 });
                 return Array.from(map.values());
               });
-              // Auto-activate user if approved while session open
+              // Auto-activate user if approved, or auto-logout if restricted or deleted by CEO
               if (savedSessionId) {
                 const updatedSessionUser = sanitizedServerUsers.find((u: UserProfile) => u.id === savedSessionId);
-                if (updatedSessionUser && updatedSessionUser.status === 'ACTIVE') {
-                  setCurrentUser(sanitizeUser(updatedSessionUser));
-                  setIsAuthenticated(true);
+                if (updatedSessionUser) {
+                  if (updatedSessionUser.status === 'ACTIVE') {
+                    setCurrentUser(sanitizeUser(updatedSessionUser));
+                    setIsAuthenticated(true);
+                  } else if (updatedSessionUser.status === 'RESTRICTED' || updatedSessionUser.status === 'SUSPENDED') {
+                    setIsAuthenticated(false);
+                    localStorage.removeItem('empirenexs_session_user_prod');
+                  }
+                } else if (savedSessionId !== 'user-waqas') {
+                  // User deleted from system
+                  setIsAuthenticated(false);
+                  localStorage.removeItem('empirenexs_session_user_prod');
                 }
               }
             }
@@ -2043,6 +2120,9 @@ Instructions:
         pendingUsers,
         approveUser,
         rejectUser,
+        restrictUser,
+        unrestrictUser,
+        deleteUser,
         directCreateUser,
         selectedBranchId,
         setSelectedBranchId,
