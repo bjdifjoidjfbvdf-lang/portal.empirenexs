@@ -256,10 +256,10 @@ export const ChannelsVault: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl lg:text-2xl font-black text-white flex items-center gap-2">
-              <ShieldCheck className="w-6 h-6 text-emerald-400" />
+              <ShieldCheck className="w-6 h-6 text-[#c4f042]" />
               Channels Vault (Google Sheet Sync)
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#c4f042]/15 text-[#c4f042] border border-[#c4f042]/30">
               Live Schema
             </span>
           </div>
@@ -274,16 +274,16 @@ export const ChannelsVault: React.FC = () => {
               setImportSheetUrl(currentUser?.personalGoogleSheetUrl || '');
               setIsImportModalOpen(true);
             }}
-            className="px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 transition flex items-center gap-1.5 shadow-sm"
+            className="px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-[#161820] hover:bg-[#1f232e] text-slate-200 border border-[#232732] transition flex items-center gap-1.5 shadow-sm"
             title="Import or sync from your private Google Sheet / CSV"
           >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+            <FileSpreadsheet className="w-3.5 h-3.5 text-[#c4f042]" />
             <span>Sync My Google Sheet</span>
           </button>
           <button
             onClick={() => triggerGoogleSheetSync()}
             disabled={isSyncingSheets}
-            className="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5"
+            className="px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-[#161820] hover:bg-[#1f232e] text-slate-200 border border-[#232732] transition flex items-center gap-1.5"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isSyncingSheets ? 'animate-spin' : ''}`} />
             <span>{isSyncingSheets ? 'Syncing...' : 'Sync Global'}</span>
@@ -313,7 +313,7 @@ export const ChannelsVault: React.FC = () => {
               });
               setIsAddModalOpen(true);
             }}
-            className="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-md shadow-emerald-500/20 transition flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#c4f042] hover:bg-[#b4eb28] text-[#0d1505] shadow-[0_0_20px_rgba(196,240,66,0.3)] transition flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
             <span>Add Channel to Sheet</span>
@@ -323,9 +323,9 @@ export const ChannelsVault: React.FC = () => {
 
       {/* Role Perspective Banner */}
       {currentUser?.role === 'SUPER_ADMIN' ? (
-        <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/40 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2 text-emerald-300">
-            <span className="font-extrabold px-2 py-0.5 rounded bg-emerald-500 text-slate-950 text-[10px]">
+        <div className="p-3.5 rounded-2xl bg-[#161820] border border-[#232732] flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2 text-slate-300">
+            <span className="font-extrabold px-2 py-0.5 rounded bg-[#c4f042] text-[#0d1505] text-[10px]">
               SUPER ADMIN
             </span>
             <span>
@@ -334,7 +334,7 @@ export const ChannelsVault: React.FC = () => {
           </div>
         </div>
       ) : currentUser?.role === 'CO_FOUNDER' || currentUser?.role === 'BRANCH_HEAD' ? (
-        <div className="p-3 rounded-xl bg-blue-950/30 border border-blue-500/40 flex items-center justify-between text-xs">
+        <div className="p-3.5 rounded-2xl bg-[#161820] border border-[#232732] flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 text-blue-300">
             <span className="font-extrabold px-2 py-0.5 rounded bg-blue-500 text-slate-950 text-[10px]">
               BRANCH HEAD
@@ -345,7 +345,7 @@ export const ChannelsVault: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="p-3 rounded-xl bg-amber-950/30 border border-amber-500/40 flex items-center justify-between text-xs">
+        <div className="p-3.5 rounded-2xl bg-[#161820] border border-[#232732] flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 text-amber-300">
             <span className="font-extrabold px-2 py-0.5 rounded bg-amber-500 text-slate-950 text-[10px]">
               PERSONAL VAULT
@@ -358,7 +358,7 @@ export const ChannelsVault: React.FC = () => {
       )}
 
       {/* Search and Filters */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-[#161820] p-3.5 rounded-2xl border border-[#232732]">
         <div className="relative flex-1 max-w-md">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
@@ -366,18 +366,18 @@ export const ChannelsVault: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by Channel name, Email, Manager, IP, PUB ID..."
-            className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-700/80 rounded-lg text-xs text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
+            className="w-full pl-9 pr-4 py-2 bg-[#111317] border border-[#232732] rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#c4f042]"
           />
         </div>
 
         <div className="flex items-center gap-2">
           <span className="text-xs text-slate-400 flex items-center gap-1">
-            <Filter className="w-3.5 h-3.5" /> Status:
+            <Filter className="w-3.5 h-3.5 text-[#c4f042]" /> Status:
           </span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-slate-950 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+            className="bg-[#111317] border border-[#232732] rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-[#c4f042]"
           >
             <option value="all">All Statuses ({filteredChannels.length})</option>
             <option value="Active">Active</option>
@@ -392,10 +392,10 @@ export const ChannelsVault: React.FC = () => {
       </div>
 
       {/* Exact Sheet Columns Table */}
-      <div className="rounded-xl border border-slate-800 bg-[#090d16] overflow-hidden shadow-xl">
+      <div className="rounded-2xl border border-[#232732] bg-[#161820] overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+            <thead className="bg-[#111317] text-slate-400 uppercase text-[10px] tracking-wider border-b border-[#232732]">
               <tr>
                 <th className="py-3 px-4 font-bold">Name / Link</th>
                 <th className="py-3 px-3 font-bold">Status</th>

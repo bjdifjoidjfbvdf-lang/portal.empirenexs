@@ -82,10 +82,10 @@ export const OTPManager: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl lg:text-2xl font-black text-white flex items-center gap-2">
-              <Smartphone className="w-6 h-6 text-emerald-400" />
+              <Smartphone className="w-6 h-6 text-[#c4f042]" />
               Phone Numbers &amp; OTP Verification Vault
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#c4f042]/15 text-[#c4f042] border border-[#c4f042]/30">
               Automated SMS API
             </span>
           </div>
@@ -95,7 +95,7 @@ export const OTPManager: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs flex items-center gap-2">
+          <div className="px-3.5 py-2 rounded-xl bg-[#161820] border border-[#232732] text-xs flex items-center gap-2">
             <Coins className="w-4 h-4 text-amber-400" />
             <span className="text-slate-400">SMS Balance:</span>
             <span className="font-bold text-amber-300 font-mono">
@@ -108,7 +108,7 @@ export const OTPManager: React.FC = () => {
               setRequestError(null);
               setIsRequestModalOpen(true);
             }}
-            className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-md shadow-emerald-500/20 transition flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#c4f042] hover:bg-[#b4eb28] text-[#0d1505] shadow-[0_0_20px_rgba(196,240,66,0.3)] transition flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
             <span>Request OTP Number</span>
@@ -221,10 +221,10 @@ export const OTPManager: React.FC = () => {
       </div>
 
       {/* Complete OTP Allocations History Table */}
-      <div className="rounded-xl border border-slate-800 bg-[#090d16] overflow-hidden shadow-xl">
-        <div className="p-4 border-b border-slate-800 bg-slate-900/50 flex items-center justify-between">
+      <div className="rounded-2xl border border-[#232732] bg-[#161820] overflow-hidden shadow-xl">
+        <div className="p-4 border-b border-[#232732] bg-[#111317] flex items-center justify-between">
           <h2 className="text-sm font-bold text-white flex items-center gap-2">
-            <KeyRound className="w-4 h-4 text-emerald-400" />
+            <KeyRound className="w-4 h-4 text-[#c4f042]" />
             Per-User Purchase History &amp; OTP Logs
           </h2>
           <span className="text-xs text-slate-400">
@@ -234,7 +234,7 @@ export const OTPManager: React.FC = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+            <thead className="bg-[#111317] text-slate-400 uppercase text-[10px] tracking-wider border-b border-[#232732]">
               <tr>
                 <th className="py-3 px-4 font-bold">Team Member (User)</th>
                 <th className="py-3 px-3 font-bold">Branch</th>

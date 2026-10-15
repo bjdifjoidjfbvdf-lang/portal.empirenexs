@@ -45,44 +45,48 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   const activeBranch = BRANCHES.find((b) => b.id === selectedBranchId);
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0b1120]/90 backdrop-blur-md border-b border-slate-800 px-4 lg:px-8 py-3.5">
+    <header className="sticky top-0 z-40 bg-[#0d0f13]/95 backdrop-blur-md border-b border-[#1e222b] px-4 lg:px-7 py-3">
       <div className="flex items-center justify-between gap-4">
-        {/* Logo and Brand */}
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-amber-400 p-[2px] shadow-lg shadow-emerald-500/20">
-            <div className="h-full w-full bg-slate-950 rounded-[10px] flex items-center justify-center font-black text-emerald-400 text-lg">
+        {/* Left: Brand + Breadcrumbs (like demo picture) */}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2.5">
+            <div className="h-9 w-9 rounded-xl bg-[#161920] border border-[#262c38] flex items-center justify-center font-black text-[#c4f042] text-sm shadow-sm">
               EN
             </div>
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+            <div className="hidden sm:block">
+              <span className="font-extrabold text-sm tracking-tight text-white">
                 EmpireNexs
               </span>
-              <span className="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="ml-1.5 text-[9px] font-extrabold tracking-widest uppercase px-1.5 py-0.5 rounded bg-[#c4f042]/15 text-[#c4f042] border border-[#c4f042]/30">
                 HQ OS
               </span>
             </div>
-            <p className="text-xs text-slate-400 hidden sm:block">
-              YouTube Automation ERP • 3 Branches Unified
-            </p>
+          </div>
+
+          {/* Breadcrumbs matching demo image */}
+          <div className="hidden md:flex items-center gap-2 text-xs text-[#6c7486] font-medium border-l border-[#1e222b] pl-4">
+            <span className="text-[#8a92a6]">Dashboards</span>
+            <span>/</span>
+            <span className="text-white font-bold capitalize">
+              {activeTab.replace('-', ' ')}
+            </span>
           </div>
         </div>
 
         {/* Middle: Active Branch Switcher (Enabled for CEO, restricted for branch heads) */}
         <div className="flex items-center gap-2">
           {currentUser?.canAccessAllBranches ? (
-            <div className="flex items-center bg-slate-900/80 border border-slate-700/80 rounded-lg p-1 text-xs">
-              <span className="text-slate-400 px-2 font-medium flex items-center gap-1.5 hidden md:flex">
-                <Building2 className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="flex items-center bg-[#161820] border border-[#232733] rounded-xl p-1 text-xs">
+              <span className="text-[#6c7486] px-2 font-bold text-[11px] flex items-center gap-1.5 hidden md:flex">
+                <Building2 className="w-3.5 h-3.5 text-[#c4f042]" />
                 Branch:
               </span>
               <button
                 onClick={() => setSelectedBranchId('all')}
-                className={`px-2.5 py-1 rounded-md font-medium transition-all ${
+                className={`px-3 py-1.5 rounded-lg font-extrabold text-xs transition-all ${
                   selectedBranchId === 'all'
-                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                    ? 'bg-[#c4f042] text-[#0d1505] shadow-[0_0_15px_rgba(196,240,66,0.25)]'
+                    : 'text-[#8a92a6] hover:text-white hover:bg-[#1f232d]'
                 }`}
               >
                 All Branches (HQ)
@@ -91,10 +95,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
                 <button
                   key={branch.id}
                   onClick={() => setSelectedBranchId(branch.id)}
-                  className={`px-2.5 py-1 rounded-md font-medium transition-all hidden lg:block ${
+                  className={`px-3 py-1.5 rounded-lg font-bold text-xs transition-all hidden lg:block ${
                     selectedBranchId === branch.id
-                      ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                      ? 'bg-[#c4f042] text-[#0d1505] shadow-[0_0_15px_rgba(196,240,66,0.25)]'
+                      : 'text-[#8a92a6] hover:text-white hover:bg-[#1f232d]'
                   }`}
                 >
                   {branch.city}
@@ -102,9 +106,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               ))}
             </div>
           ) : (
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 border border-slate-700/60 rounded-lg text-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="font-semibold text-slate-200">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#161820] border border-[#232733] rounded-xl text-xs">
+              <span className="w-2 h-2 rounded-full bg-[#c4f042] animate-pulse"></span>
+              <span className="font-bold text-slate-200">
                 {currentUser?.branchId === 'bahawalpur'
                   ? 'Bahawalpur Branch (Saim Chaudhry)'
                   : currentUser?.branchId === 'rahim-yar-khan'
@@ -116,17 +120,17 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
         </div>
 
         {/* Right Actions: Theme Toggle + Sheets Sync + AI Assistant + User Switcher */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           {/* Quick Theme Toggle Button */}
           <button
             onClick={toggleTheme}
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            className="p-2 rounded-xl text-xs font-semibold bg-slate-900 border border-slate-700 hover:border-slate-500 text-slate-300 transition-colors shadow-sm flex items-center justify-center"
+            className="p-2 rounded-xl text-xs font-semibold bg-[#161820] border border-[#232733] hover:border-[#383e50] text-[#8a92a6] hover:text-white transition-colors flex items-center justify-center"
           >
             {theme === 'dark' ? (
               <Sun className="w-4 h-4 text-amber-400" />
             ) : (
-              <Moon className="w-4 h-4 text-slate-700" />
+              <Moon className="w-4 h-4 text-slate-400" />
             )}
           </button>
 
@@ -137,9 +141,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             }}
             disabled={isSyncingSheets}
             title="Sync with Google Sheets"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-900/60 transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#161820] border border-[#232733] hover:border-[#383e50] text-[#c4f042] transition-colors shadow-sm"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncingSheets ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isSyncingSheets ? 'animate-spin text-[#c4f042]' : ''}`} />
             <span className="hidden md:inline">
               {isSyncingSheets ? 'Syncing...' : 'Sheets Sync'}
             </span>

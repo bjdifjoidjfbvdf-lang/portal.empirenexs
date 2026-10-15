@@ -212,30 +212,31 @@ export const MonthlyCalculations: React.FC = () => {
       </div>
 
       {/* KPI Summary Metric Cards */}
+      {/* Monthly KPI Metrics Row */}
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3.5">
         {/* 1. Monetized */}
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-emerald-500/30 shadow-lg relative overflow-hidden group hover:border-emerald-500/60 transition">
+        <div className="p-4 rounded-2xl bg-[#161820] border border-[#232733] hover:border-[#323847] shadow-lg relative overflow-hidden group transition">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#8a92a6]">
               Monetized
             </span>
-            <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400">
+            <div className="p-1.5 rounded-lg bg-[#c4f042]/10 text-[#c4f042]">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
           <div className="text-2xl md:text-3xl font-black text-white">
             {stats.totalMonetized}
           </div>
-          <p className="text-[10px] text-emerald-400 font-medium mt-1 flex items-center gap-1">
+          <p className="text-[10px] text-[#22c55e] font-medium mt-1 flex items-center gap-1">
             <ArrowUpRight className="w-3 h-3" />
             <span>Monetization Pass Rate</span>
           </p>
         </div>
 
         {/* 2. Sold */}
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-blue-500/30 shadow-lg relative overflow-hidden group hover:border-blue-500/60 transition">
+        <div className="p-4 rounded-2xl bg-[#161820] border border-[#232733] hover:border-[#323847] shadow-lg relative overflow-hidden group transition">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#8a92a6]">
               Channels Sold
             </span>
             <div className="p-1.5 rounded-lg bg-blue-500/20 text-blue-400">
@@ -245,33 +246,33 @@ export const MonthlyCalculations: React.FC = () => {
           <div className="text-2xl md:text-3xl font-black text-blue-400">
             {stats.totalSold}
           </div>
-          <p className="text-[10px] text-slate-400 font-medium mt-1">
+          <p className="text-[10px] text-[#8a92a6] font-medium mt-1">
             Outflow to Clients / Buyers
           </p>
         </div>
 
         {/* 3. Sales Cash Revenue */}
-        <div className="col-span-2 lg:col-span-1 p-4 rounded-2xl bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-900 border border-emerald-500/40 shadow-lg relative overflow-hidden">
+        <div className="col-span-2 lg:col-span-1 p-4 rounded-2xl bg-gradient-to-br from-[#0c2417] via-[#161820] to-[#161820] border border-emerald-500/30 shadow-lg relative overflow-hidden">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-300">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#c4f042]">
               Sales Revenue
             </span>
-            <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400">
+            <div className="p-1.5 rounded-lg bg-[#c4f042]/10 text-[#c4f042]">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-xl md:text-2xl font-black text-emerald-400 truncate" title={`Rs ${stats.totalRevenuePKR.toLocaleString()}`}>
+          <div className="text-xl md:text-2xl font-black text-[#c4f042] truncate" title={`Rs ${stats.totalRevenuePKR.toLocaleString()}`}>
             Rs {stats.totalRevenuePKR > 1000000 ? `${(stats.totalRevenuePKR / 1000000).toFixed(2)}M` : stats.totalRevenuePKR.toLocaleString()}
           </div>
-          <p className="text-[10px] text-slate-400 font-medium mt-1">
+          <p className="text-[10px] text-[#8a92a6] font-medium mt-1">
             Realized cash inflow (PKR)
           </p>
         </div>
 
         {/* 4. In-House Working */}
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-amber-500/30 shadow-lg relative overflow-hidden group hover:border-amber-500/60 transition">
+        <div className="p-4 rounded-2xl bg-[#161820] border border-[#232733] hover:border-[#323847] shadow-lg relative overflow-hidden group transition">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#8a92a6]">
               In-House Working
             </span>
             <div className="p-1.5 rounded-lg bg-amber-500/20 text-amber-400">
@@ -281,15 +282,15 @@ export const MonthlyCalculations: React.FC = () => {
           <div className="text-2xl md:text-3xl font-black text-amber-400">
             {stats.totalInHouse}
           </div>
-          <p className="text-[10px] text-slate-400 font-medium mt-1">
+          <p className="text-[10px] text-[#8a92a6] font-medium mt-1">
             Retained for Daily Ad Revenue
           </p>
         </div>
 
         {/* 5. Demonetized / Issues */}
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-red-500/30 shadow-lg relative overflow-hidden group hover:border-red-500/60 transition">
+        <div className="p-4 rounded-2xl bg-[#161820] border border-[#232733] hover:border-[#323847] shadow-lg relative overflow-hidden group transition">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#8a92a6]">
               Issues / Flagged
             </span>
             <div className="p-1.5 rounded-lg bg-red-500/20 text-red-400">
@@ -299,15 +300,15 @@ export const MonthlyCalculations: React.FC = () => {
           <div className="text-2xl md:text-3xl font-black text-red-400">
             {stats.totalDemonetized}
           </div>
-          <p className="text-[10px] text-slate-400 font-medium mt-1">
+          <p className="text-[10px] text-[#8a92a6] font-medium mt-1">
             Demonetized / Policy strikes
           </p>
         </div>
 
         {/* 6. Health & Retention */}
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-teal-500/30 shadow-lg relative overflow-hidden group hover:border-teal-500/60 transition">
+        <div className="p-4 rounded-2xl bg-[#161820] border border-[#232733] hover:border-[#323847] shadow-lg relative overflow-hidden group transition">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#8a92a6]">
               Fleet Health
             </span>
             <div className="p-1.5 rounded-lg bg-teal-500/20 text-teal-400">
@@ -324,47 +325,47 @@ export const MonthlyCalculations: React.FC = () => {
       </div>
 
       {/* Operations Lifecycle Visual Funnel */}
-      <div className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800 shadow-xl">
+      <div className="p-5 rounded-2xl bg-[#161820] border border-[#232733] shadow-xl">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
-          <Layers className="w-4 h-4 text-emerald-400" />
+          <Layers className="w-4 h-4 text-[#c4f042]" />
           <span>Monetization &amp; Sales Conversion Pipeline ({selectedMonth === 'ALL' ? 'All Time' : selectedMonth})</span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
           {/* Step 1 */}
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-emerald-500/30 flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-[#0d0f13] border border-emerald-500/30 flex items-center justify-between">
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400">Step 1: Monetized</span>
+              <span className="text-[10px] uppercase font-bold text-[#8a92a6]">Step 1: Monetized</span>
               <p className="text-lg font-black text-white">{stats.totalMonetized} Channels</p>
-              <p className="text-[10px] text-emerald-400">Successfully Partnered</p>
+              <p className="text-[10px] text-[#22c55e]">Successfully Partnered</p>
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-600 hidden md:block" />
+            <ArrowRight className="w-4 h-4 text-[#6c7486] hidden md:block" />
           </div>
 
           {/* Step 2 */}
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-blue-500/30 flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-[#0d0f13] border border-blue-500/30 flex items-center justify-between">
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400">Step 2: Sold Out</span>
+              <span className="text-[10px] uppercase font-bold text-[#8a92a6]">Step 2: Sold Out</span>
               <p className="text-lg font-black text-blue-400">{stats.totalSold} Sold</p>
               <p className="text-[10px] text-blue-300">Rs {stats.totalRevenuePKR.toLocaleString()} Realized</p>
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-600 hidden md:block" />
+            <ArrowRight className="w-4 h-4 text-[#6c7486] hidden md:block" />
           </div>
 
           {/* Step 3 */}
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-amber-500/30 flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-[#0d0f13] border border-amber-500/30 flex items-center justify-between">
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400">Step 3: Kept In-House</span>
+              <span className="text-[10px] uppercase font-bold text-[#8a92a6]">Step 3: Kept In-House</span>
               <p className="text-lg font-black text-amber-400">{stats.totalInHouse} Working</p>
               <p className="text-[10px] text-amber-300">Continuous Daily Video Production</p>
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-600 hidden md:block" />
+            <ArrowRight className="w-4 h-4 text-[#6c7486] hidden md:block" />
           </div>
 
           {/* Step 4 */}
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-red-500/30 flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-[#0d0f13] border border-red-500/30 flex items-center justify-between">
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400">Step 4: Attrition / Issues</span>
+              <span className="text-[10px] uppercase font-bold text-[#8a92a6]">Step 4: Attrition / Issues</span>
               <p className="text-lg font-black text-red-400">{stats.totalDemonetized} Flagged</p>
               <p className="text-[10px] text-red-300">{stats.healthyCount} Net Running Clean</p>
             </div>
@@ -374,43 +375,43 @@ export const MonthlyCalculations: React.FC = () => {
 
       {/* Sub Tabs Navigation */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#161820] border border-[#232733] text-xs">
           <button
             onClick={() => setActiveSubTab('overview')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition ${
+            className={`px-3 py-1.5 rounded-xl font-bold transition ${
               activeSubTab === 'overview'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm font-bold'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-[#c4f042] text-[#0d1505] shadow-[0_0_15px_rgba(196,240,66,0.25)] font-black'
+                : 'text-[#8a92a6] hover:text-white'
             }`}
           >
             All Channels ({monthChannels.length})
           </button>
           <button
             onClick={() => setActiveSubTab('sold')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition ${
+            className={`px-3 py-1.5 rounded-xl font-bold transition ${
               activeSubTab === 'sold'
-                ? 'bg-blue-500 text-slate-950 shadow-sm font-bold'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-[#c4f042] text-[#0d1505] shadow-[0_0_15px_rgba(196,240,66,0.25)] font-black'
+                : 'text-[#8a92a6] hover:text-white'
             }`}
           >
             Sold Channels ({stats.totalSold})
           </button>
           <button
             onClick={() => setActiveSubTab('inhouse')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition ${
+            className={`px-3 py-1.5 rounded-xl font-bold transition ${
               activeSubTab === 'inhouse'
-                ? 'bg-amber-500 text-slate-950 shadow-sm font-bold'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-[#c4f042] text-[#0d1505] shadow-[0_0_15px_rgba(196,240,66,0.25)] font-black'
+                : 'text-[#8a92a6] hover:text-white'
             }`}
           >
             In-House Active ({stats.totalInHouse})
           </button>
           <button
             onClick={() => setActiveSubTab('demonetized')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition ${
+            className={`px-3 py-1.5 rounded-xl font-bold transition ${
               activeSubTab === 'demonetized'
-                ? 'bg-red-500 text-slate-950 shadow-sm font-bold'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-red-500 text-white shadow-sm font-black'
+                : 'text-[#8a92a6] hover:text-white'
             }`}
           >
             Demonetized / Issues ({stats.totalDemonetized})
@@ -419,23 +420,23 @@ export const MonthlyCalculations: React.FC = () => {
 
         {/* Quick Search */}
         <div className="relative">
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-3.5 h-3.5 text-[#6c7486] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search channels, buyers, managers..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8 pr-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 w-64"
+            className="pl-8 pr-3 py-1.5 bg-[#161820] border border-[#232733] rounded-xl text-xs text-white placeholder-[#5f6677] focus:outline-none focus:border-[#c4f042] w-64"
           />
         </div>
       </div>
 
       {/* Main Table View */}
-      <div className="bg-[#0b1120] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      <div className="bg-[#161820] border border-[#232733] rounded-2xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-900/90 border-b border-slate-800 text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+              <tr className="bg-[#1a1e27] border-b border-[#232733] text-[11px] font-bold text-[#8a92a6] uppercase tracking-wider">
                 <th className="py-3 px-4">Channel Name &amp; URL</th>
                 <th className="py-3 px-3">Status</th>
                 <th className="py-3 px-3">Lifecycle Details</th>

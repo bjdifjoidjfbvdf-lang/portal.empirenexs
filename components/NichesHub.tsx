@@ -201,10 +201,10 @@ export const NichesHub: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl lg:text-2xl font-black text-white flex items-center gap-2">
-              <FolderKanban className="w-6 h-6 text-emerald-400" />
+              <FolderKanban className="w-6 h-6 text-[#c4f042]" />
               Niches Content Production Hub
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#c4f042]/15 text-[#c4f042] border border-[#c4f042]/30">
               Single Sheet • Multi-Tabs
             </span>
           </div>
@@ -216,14 +216,14 @@ export const NichesHub: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsAddTabModalOpen(true)}
-            className="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5"
+            className="px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-[#161820] hover:bg-[#1f232e] text-slate-200 border border-[#232732] transition flex items-center gap-1.5"
           >
-            <Plus className="w-3.5 h-3.5 text-emerald-400" />
+            <Plus className="w-3.5 h-3.5 text-[#c4f042]" />
             <span>Add New Niche Tab</span>
           </button>
           <button
             onClick={openAddVideoModal}
-            className="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-md shadow-emerald-500/20 transition flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#c4f042] hover:bg-[#b4eb28] text-[#0d1505] shadow-[0_0_20px_rgba(196,240,66,0.3)] transition flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
             <span>Add Video to Tab</span>
@@ -232,14 +232,14 @@ export const NichesHub: React.FC = () => {
       </div>
 
       {/* Mode Switcher Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 p-2 rounded-2xl">
-        <div className="flex items-center gap-1.5 p-1 bg-slate-950/80 rounded-xl border border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#161820] border border-[#232732] p-2 rounded-2xl">
+        <div className="flex items-center gap-1.5 p-1 bg-[#111317] rounded-xl border border-[#232732]">
           <button
             type="button"
             onClick={() => setHubMode('sheet')}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 ${
               hubMode === 'sheet'
-                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                ? 'bg-[#c4f042] text-[#0d1505] shadow-[0_0_15px_rgba(196,240,66,0.3)]'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -252,7 +252,7 @@ export const NichesHub: React.FC = () => {
             onClick={() => setHubMode('workflow')}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 ${
               hubMode === 'workflow'
-                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                ? 'bg-[#c4f042] text-[#0d1505] shadow-[0_0_15px_rgba(196,240,66,0.3)]'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -312,7 +312,7 @@ export const NichesHub: React.FC = () => {
                   setIsChatOpen(true);
                   sendMessageToAI('Mujhe niches sheet ke baray mein batao aur available competitor topics dikhao');
                 }}
-                className="px-3 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition flex items-center gap-1.5 shadow-md shadow-emerald-500/20"
+                className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#c4f042] hover:bg-[#b4eb28] text-[#0d1505] transition flex items-center gap-1.5 shadow-[0_0_15px_rgba(196,240,66,0.25)]"
               >
                 <Bot className="w-4 h-4" />
                 <span>Ask AI for Competitors</span>
@@ -321,7 +321,7 @@ export const NichesHub: React.FC = () => {
           </div>
 
           {/* Search & Category Filter Controls */}
-          <div className="flex flex-col gap-3 bg-slate-900/60 border border-slate-800 p-3 rounded-2xl">
+          <div className="flex flex-col gap-3 bg-[#161820] border border-[#232732] p-3.5 rounded-2xl">
             {/* Search Input */}
             <div className="relative w-full max-w-md">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -330,7 +330,7 @@ export const NichesHub: React.FC = () => {
                 value={sheetSearch}
                 onChange={(e) => setSheetSearch(e.target.value)}
                 placeholder="Search Carl Jung, Trump, Elon Musk, Joker, Prayers, Space..."
-                className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full bg-[#111317] border border-[#232732] rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#c4f042]"
               />
             </div>
 
@@ -350,17 +350,17 @@ export const NichesHub: React.FC = () => {
                     key={tab.gid}
                     type="button"
                     onClick={() => setSelectedSheetCategory(tab.gid)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5 ${
                       isSelected
-                        ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm'
-                        : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800'
+                        ? 'bg-[#c4f042] text-[#0d1505] font-bold shadow-[0_0_12px_rgba(196,240,66,0.25)]'
+                        : 'bg-[#111317] text-slate-300 hover:bg-[#1f232e] border border-[#232732]'
                     }`}
                   >
                     <span>{tab.icon}</span>
                     <span>{tab.name}</span>
                     <span
                       className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                        isSelected ? 'bg-slate-950/20 text-slate-950 font-bold' : 'bg-slate-900 text-slate-400'
+                        isSelected ? 'bg-[#0d1505]/20 text-[#0d1505] font-bold' : 'bg-[#161820] text-slate-400'
                       }`}
                     >
                       {count}
@@ -396,12 +396,12 @@ export const NichesHub: React.FC = () => {
                 return (
                   <div
                     key={item.id}
-                    className="p-4 rounded-2xl bg-[#0b1120] border border-slate-800 hover:border-slate-700 transition flex flex-col justify-between group shadow-lg"
+                    className="p-4 rounded-2xl bg-[#161820] border border-[#232732] hover:border-[#384154] transition flex flex-col justify-between group shadow-lg"
                   >
                     <div>
                       {/* Top Category Badge & Type */}
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 truncate">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#c4f042]/15 text-[#c4f042] border border-[#c4f042]/30 truncate">
                           Tab: {item.tabName || item.category}
                         </span>
                         <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-950/40 text-red-400 border border-red-500/20 shrink-0 flex items-center gap-1">
@@ -411,10 +411,10 @@ export const NichesHub: React.FC = () => {
                       </div>
 
                       {/* Title & Reference */}
-                      <h3 className="font-bold text-white text-sm group-hover:text-emerald-400 transition">
+                      <h3 className="font-bold text-white text-sm group-hover:text-[#c4f042] transition">
                         {item.title}
                       </h3>
-                      <p className="text-[11px] font-mono text-emerald-400/90 mt-0.5">
+                      <p className="text-[11px] font-mono text-[#c4f042]/90 mt-0.5">
                         {item.channelName}
                       </p>
 
@@ -425,8 +425,8 @@ export const NichesHub: React.FC = () => {
                     </div>
 
                     {/* Bottom Link & Actions */}
-                    <div className="mt-4 pt-3 border-t border-slate-800/80 space-y-2.5">
-                      <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono bg-slate-950/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                    <div className="mt-4 pt-3 border-t border-[#232732] space-y-2.5">
+                      <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono bg-[#111317] px-2.5 py-1.5 rounded-xl border border-[#232732]">
                         <span className="truncate pr-2">{item.url}</span>
                         <button
                           type="button"

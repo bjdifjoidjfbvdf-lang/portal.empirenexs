@@ -116,20 +116,20 @@ export const AIChatDrawer: React.FC = () => {
   });
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-sm flex justify-end animate-in fade-in duration-200">
-      <div className="w-full max-w-xl bg-[#0b1120] border-l border-slate-800 h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-200">
+    <div className="fixed inset-0 z-50 overflow-hidden bg-black/70 backdrop-blur-sm flex justify-end animate-in fade-in duration-200">
+      <div className="w-full max-w-xl bg-[#111317] border-l border-[#232732] h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-200">
         {/* Drawer Header */}
-        <div className="p-4 border-b border-slate-800 bg-slate-900/90 flex items-center justify-between">
+        <div className="p-4 border-b border-[#232732] bg-[#161820]/95 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-[1.5px] shadow-lg shadow-emerald-500/20">
-              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                <Bot className="w-5 h-5 text-emerald-400" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#c4f042] to-emerald-400 p-[1.5px] shadow-lg shadow-[#c4f042]/20">
+              <div className="w-full h-full bg-[#0b0d11] rounded-[10px] flex items-center justify-center">
+                <Bot className="w-5 h-5 text-[#c4f042]" />
               </div>
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-sm text-white">Nexs AI Assistant</h3>
-                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#c4f042]/15 text-[#c4f042] border border-[#c4f042]/30">
                   Sheets &amp; DB Live
                 </span>
               </div>
@@ -144,14 +144,14 @@ export const AIChatDrawer: React.FC = () => {
               <button
                 onClick={clearChatHistory}
                 title="Clear my chat"
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-[#1f232e] transition"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
             )}
             <button
               onClick={() => setIsChatOpen(false)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#1f232e] transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -160,13 +160,13 @@ export const AIChatDrawer: React.FC = () => {
 
         {/* Super Admin Tab Switcher: My Chat vs Team Chat Monitor */}
         {isSuperAdmin && (
-          <div className="px-4 py-2 border-b border-slate-800 bg-slate-950/80 flex items-center gap-2">
+          <div className="px-4 py-2.5 border-b border-[#232732] bg-[#0b0d11] flex items-center gap-2">
             <button
               onClick={() => setActiveMode('my-chat')}
-              className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 ${
+              className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
                 activeMode === 'my-chat'
-                  ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  ? 'bg-[#c4f042] text-[#0d1505] shadow-[0_0_15px_rgba(196,240,66,0.3)]'
+                  : 'bg-[#161820] text-slate-400 hover:text-white border border-[#232732]'
               }`}
             >
               <Bot className="w-3.5 h-3.5" />
@@ -174,10 +174,10 @@ export const AIChatDrawer: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveMode('team-monitor')}
-              className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 ${
+              className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
                 activeMode === 'team-monitor'
-                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                  : 'bg-slate-900 text-amber-300/80 hover:text-amber-200 border border-amber-500/30'
+                  ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20'
+                  : 'bg-[#161820] text-amber-300/80 hover:text-amber-200 border border-amber-500/30'
               }`}
               title="Founder & CEO View: Monitor all team chat history with AI"
             >
@@ -191,14 +191,14 @@ export const AIChatDrawer: React.FC = () => {
         {activeMode === 'my-chat' && (
           <>
             {/* User Profile Banner */}
-            <div className="px-4 py-2 bg-emerald-950/20 border-b border-emerald-500/10 flex items-center justify-between text-[11px] text-emerald-300/90">
+            <div className="px-4 py-2 bg-[#161820] border-b border-[#232732] flex items-center justify-between text-[11px] text-slate-300">
               <div className="flex items-center gap-1.5 truncate">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <Sparkles className="w-3.5 h-3.5 text-[#c4f042] shrink-0" />
                 <span className="truncate">
-                  Active User: <strong>{currentUser?.name || 'User'}</strong> ({currentUser?.role || 'SUPER_ADMIN'})
+                  Active User: <strong className="text-white">{currentUser?.name || 'User'}</strong> ({currentUser?.role || 'SUPER_ADMIN'})
                 </span>
               </div>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#c4f042]/10 text-[#c4f042] border border-[#c4f042]/25 font-bold shrink-0">
                 Persistent Chat
               </span>
             </div>
@@ -216,7 +216,7 @@ export const AIChatDrawer: React.FC = () => {
                     }`}
                   >
                     {!isUser && (
-                      <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                      <div className="w-7 h-7 rounded-xl bg-[#161820] border border-[#232732] text-[#c4f042] flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
                         <Bot className="w-4 h-4" />
                       </div>
                     )}
@@ -224,13 +224,13 @@ export const AIChatDrawer: React.FC = () => {
                     <div
                       className={`max-w-[85%] rounded-2xl p-3.5 space-y-2 ${
                         isUser
-                          ? 'bg-emerald-600 text-slate-950 font-medium rounded-tr-none'
-                          : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none'
+                          ? 'bg-[#c4f042] text-[#0d1505] font-medium shadow-[0_0_15px_rgba(196,240,66,0.18)] rounded-tr-none'
+                          : 'bg-[#161820] border border-[#232732] text-slate-200 rounded-tl-none shadow-sm'
                       }`}
                     >
-                      <div className="flex items-center justify-between gap-3 text-[10px] opacity-70 mb-1">
+                      <div className="flex items-center justify-between gap-3 text-[10px] opacity-75 mb-1">
                         <span className="font-bold">{isUser ? (currentUser?.name || 'User') : 'Nexs AI'}</span>
-                        <span>{msg.timestamp}</span>
+                        <span className="font-mono">{msg.timestamp}</span>
                       </div>
 
                       {/* Message Text with markdown line breaks */}
@@ -242,15 +242,15 @@ export const AIChatDrawer: React.FC = () => {
 
                       {/* Rich Fetched Items Cards (Channel links or sheet rows) */}
                       {msg.fetchedItems && msg.fetchedItems.length > 0 && (
-                        <div className="mt-3 pt-2.5 border-t border-slate-800 space-y-2">
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
+                        <div className="mt-3 pt-2.5 border-t border-[#232732] space-y-2">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-[#c4f042] flex items-center gap-1">
                             <FileSpreadsheet className="w-3 h-3" />
                             Fetched From Sheet / DB:
                           </p>
                           {msg.fetchedItems.map((item, i) => (
                             <div
                               key={i}
-                              className="p-2 rounded-lg bg-slate-950/80 border border-slate-800 flex items-center justify-between gap-2"
+                              className="p-2.5 rounded-xl bg-[#111317] border border-[#232732] flex items-center justify-between gap-2"
                             >
                               <div className="truncate">
                                 <p className="font-bold text-white truncate">{item.title}</p>
@@ -263,7 +263,7 @@ export const AIChatDrawer: React.FC = () => {
                                   href={item.link}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="px-2 py-1 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-semibold text-[10px] flex items-center gap-1 shrink-0"
+                                  className="px-2 py-1 rounded-lg bg-[#c4f042]/15 hover:bg-[#c4f042]/25 text-[#c4f042] font-bold text-[10px] flex items-center gap-1 shrink-0 transition"
                                 >
                                   <span>Open</span>
                                   <ExternalLink className="w-3 h-3" />
@@ -279,7 +279,7 @@ export const AIChatDrawer: React.FC = () => {
                       <img
                         src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
                         alt={currentUser?.name || 'User'}
-                        className="w-7 h-7 rounded-lg object-cover border border-emerald-400/40 shrink-0 mt-0.5"
+                        className="w-7 h-7 rounded-xl object-cover border border-[#c4f042]/50 shrink-0 mt-0.5"
                       />
                     )}
                   </div>
@@ -289,9 +289,9 @@ export const AIChatDrawer: React.FC = () => {
             </div>
 
             {/* Quick Question Interactive Pills */}
-            <div className="p-3 border-t border-slate-800 bg-[#090d16]">
+            <div className="p-3 border-t border-[#232732] bg-[#111317]">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1">
-                <HelpCircle className="w-3 h-3 text-emerald-400" />
+                <HelpCircle className="w-3 h-3 text-[#c4f042]" />
                 Quick Suggestions:
               </p>
               <div className="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
@@ -302,7 +302,7 @@ export const AIChatDrawer: React.FC = () => {
                       setInputQuery(q);
                       sendMessageToAI(q);
                     }}
-                    className="px-2.5 py-1 rounded-lg text-[11px] whitespace-nowrap bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition"
+                    className="px-2.5 py-1 rounded-xl text-[11px] whitespace-nowrap bg-[#161820] hover:bg-[#202532] text-slate-300 hover:text-white border border-[#232732] transition"
                   >
                     {q}
                   </button>
@@ -311,18 +311,18 @@ export const AIChatDrawer: React.FC = () => {
             </div>
 
             {/* Input Form */}
-            <form onSubmit={handleSend} className="p-3 border-t border-slate-800 bg-slate-900/90 flex items-center gap-2">
+            <form onSubmit={handleSend} className="p-3 border-t border-[#232732] bg-[#161820]/95 flex items-center gap-2">
               <input
                 type="text"
                 value={inputQuery}
                 onChange={(e) => setInputQuery(e.target.value)}
                 placeholder="Salam kahein, OTP number mangain, ya niche topic poochein..."
-                className="flex-1 px-3.5 py-2.5 bg-slate-950 border border-slate-700/80 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
+                className="flex-1 px-3.5 py-2.5 bg-[#111317] border border-[#232732] rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#c4f042]"
               />
               <button
                 type="submit"
                 disabled={!inputQuery.trim() || isSending}
-                className="p-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-slate-950 font-bold transition shadow-md shadow-emerald-500/20"
+                className="p-2.5 rounded-xl bg-[#c4f042] hover:bg-[#b4eb28] disabled:opacity-40 text-[#0d1505] font-bold transition shadow-[0_0_15px_rgba(196,240,66,0.3)]"
               >
                 <Send className="w-4 h-4" />
               </button>
