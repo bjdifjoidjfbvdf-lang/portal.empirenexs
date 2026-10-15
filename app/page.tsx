@@ -13,6 +13,7 @@ import { AIChatDrawer } from '@/components/AIChatDrawer';
 import { AuthView } from '@/components/AuthView';
 import { UserProfileSettings } from '@/components/UserProfileSettings';
 import { MonthlyCalculations } from '@/components/MonthlyCalculations';
+import { BranchComparisonAnalytics } from '@/components/BranchComparisonAnalytics';
 import { useApp } from '@/lib/storeContext';
 import { Sparkles, Bot } from 'lucide-react';
 
@@ -39,6 +40,7 @@ export default function HomePage() {
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
           <div className="max-w-7xl mx-auto">
             {activeTab === 'dashboard' && <DashboardOverview onNavigate={setActiveTab} />}
+            {activeTab === 'branch-analytics' && <BranchComparisonAnalytics />}
             {activeTab === 'monthly-calc' && <MonthlyCalculations />}
             {activeTab === 'channels' && <ChannelsVault />}
             {activeTab === 'niches' && <NichesHub />}

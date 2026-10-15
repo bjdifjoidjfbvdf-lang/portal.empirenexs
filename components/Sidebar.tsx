@@ -15,6 +15,7 @@ import {
   User,
   Smartphone,
   TrendingUp,
+  BarChart3,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -32,6 +33,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       icon: LayoutDashboard,
       badge: 'Live',
     },
+    ...(currentUser?.role === 'SUPER_ADMIN'
+      ? [
+          {
+            id: 'branch-analytics',
+            label: 'Branch Graphs (CEO)',
+            icon: BarChart3,
+            badge: 'Exclusive',
+          },
+        ]
+      : []),
     {
       id: 'monthly-calc',
       label: 'Monthly Operations & Sales',

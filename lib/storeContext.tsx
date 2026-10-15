@@ -1536,11 +1536,20 @@ Instructions:
       /^(hi|hey|hello|helo)\b/i.test(trimmed);
 
     if (isSalam) {
+      const isSuperAdmin = currentUser?.role === 'SUPER_ADMIN';
+      const isBranchManager = currentUser?.role === 'CO_FOUNDER' || currentUser?.role === 'BRANCH_HEAD';
+
+      const optionsText = isSuperAdmin
+        ? `- **All-to-All Operations & Sales:** All 3 branches monthly calculations & cashflow\n- **Channels Vault:** Full company channels database & Google Sheets\n- **Branch Analytics:** Graphical comparison between Musafirkhana, Bahawalpur & Rahim Yar Khan\n- **OTP & Niches:** Verification numbers & team claims`
+        : isBranchManager
+        ? `- **Branch Operations:** Aapki branch ke channels & video performance\n- **Channels Vault:** Branch Google Sheet & channel records\n- **Niche Topics:** Daily team script topics\n- **OTP Verification:** YouTube SMS phone numbers`
+        : `- **Assigned Channels:** Aapke assigned YouTube channels ka data\n- **Niche Topics:** Script topics claim karna (daily quota)\n- **OTP Verification:** Real SIM YouTube SMS verification code lena`;
+
       const reply: AIChatMessage = {
         id: `msg-sal-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `وعلیکم السلام (Walaikum Assalam) **${currentUser?.name || 'Bhai'}**! 😊\n\nEmpireNexs AI Assistant aap ki khidmat mein hazir hai. Umeed hai aap ka din bohat acha guzar raha hoga.\n\nAaj aap kis cheez par baat ya kaam karna chahein gay?\n- **Channels Vault:** Channel details, sheet link ya proxies\n- **Niche Topics:** Video topics aur script Google Docs claim karna\n- **OTP Verification:** YouTube SMS verification number lena\n- **Operations & Sales:** Monthly monetized aur sold channels ka report`,
+        text: `وعلیکم السلام (Walaikum Assalam) **${currentUser?.name || 'Bhai'}**! 😊\n\nEmpireNexs AI Assistant aap ki khidmat mein hazir hai. Umeed hai aap ka din bohat acha guzar raha hoga.\n\nAaj aap kis cheez par baat ya kaam karna chahein gay?\n${optionsText}`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
       };
@@ -1578,6 +1587,7 @@ Instructions:
 
     // 3. Status Confirmation / "Ho gaya" / Done / Okay
     const isDone =
+      lower.includes('ho گیا') ||
       lower.includes('ho gaya') ||
       lower.includes('hogya') ||
       lower.includes('done') ||
@@ -1633,7 +1643,7 @@ Instructions:
       return;
     }
 
-    // 5. Monthly Calculations & Sales
+    // 5. Monthly Calculations & Sales (Strict Privacy Guard)
     const isMonthlyCalc =
       lower.includes('monthly') ||
       lower.includes('sales') ||
@@ -1645,17 +1655,83 @@ Instructions:
       lower.includes('demonetiz');
 
     if (isMonthlyCalc) {
+      const isSuperAdmin = currentUser?.role === 'SUPER_ADMIN';
+      const isBranchManager = currentUser?.role === 'CO_FOUNDER' || currentUser?.role === 'BRANCH_HEAD';
+
+      // 1. Normal Employees / Staff / Students: STRICTLY RESTRICTED
+      if (!isSuperAdmin && !isBranchManager) {
+        const reply: AIChatMessage = {
+          id: `msg-calc-restricted-${Date.now()}`,
+          sender: 'assistant',
+          senderName: 'Nexs AI Assistant',
+          text: `Mohtaram **${currentUser?.name || 'Team Member'}**, company ke monthly sales records, channel monetization totals aur financial revenue calculations confidential hain aur yeh sirf Executive Management (Waqas Gill & Branch Managers) ke liye hain.\n\nAap baraye meherbani apne assigned channels aur daily tasks par focus karein. Agar aapko apne kisi specific channel ke link ya verification number (OTP) mein madad chahiye to bila-jhijhak batayein!`,
+          timestamp: timeStr,
+          createdAt: now.toISOString(),
+        };
+        setChatMessages((prev) => [...prev, reply]);
+        logToServer([userMsg, reply]);
+        return;
+      }
+
+      // 2. Branch Managers: ONLY their specific branch
+      if (isBranchManager && !isSuperAdmin) {
+        const userBranch = currentUser?.branchId || 'bahawalpur';
+        const branchTitle =
+          userBranch === 'bahawalpur'
+            ? 'Team Bahawalpur'
+            : userBranch === 'rahim-yar-khan'
+            ? 'Team Rahim Yar Khan'
+            : 'Team Musafirkhana';
+        const branchChannels = channels.filter((c) => c.branchId === userBranch);
+        const bTotal = branchChannels.length;
+        const bMonetized = branchChannels.filter((c) => c.status === 'Monetized').length;
+        const bSold = branchChannels.filter((c) => c.status === 'Sold').length;
+        const bActive = branchChannels.filter((c) => c.status === 'Active').length;
+        const bDemonetized = branchChannels.filter((c) => c.status === 'Demonetized').length;
+
+        const reply: AIChatMessage = {
+          id: `msg-calc-branch-${Date.now()}`,
+          sender: 'assistant',
+          senderName: 'Nexs AI Assistant',
+          text: `🏢 **${branchTitle} Monthly Performance & Channels:**\n- **Branch Vault Channels:** ${bTotal}\n- **Currently Monetized Running:** ${bMonetized}\n- **Active In Production:** ${bActive}\n- **Sold Channels:** ${bSold}\n- **Issues / Demonetized:** ${bDemonetized}\n\n📌 *Confidentiality Notice:* Doosri branches aur global company revenue calculations sirf Founder & CEO (Waqas Gill) ke liye accessible hain.`,
+          timestamp: timeStr,
+          createdAt: now.toISOString(),
+        };
+        setChatMessages((prev) => [...prev, reply]);
+        logToServer([userMsg, reply]);
+        return;
+      }
+
+      // 3. Super Admin (Waqas Gill): ALL-TO-ALL Complete Transparency
       const totalCount = channels.length;
       const monetizedCount = channels.filter((c) => c.status === 'Monetized').length;
       const soldCount = channels.filter((c) => c.status === 'Sold').length;
       const activeCount = channels.filter((c) => c.status === 'Active').length;
       const demonetizedCount = channels.filter((c) => c.status === 'Demonetized').length;
 
+      // Branch wise breakdown
+      const mfkChannels = channels.filter((c) => c.branchId === 'musafirkhana');
+      const bwpChannels = channels.filter((c) => c.branchId === 'bahawalpur');
+      const rykChannels = channels.filter((c) => c.branchId === 'rahim-yar-khan');
+
+      const calcRev = (list: typeof channels) =>
+        list
+          .filter((c) => c.status === 'Sold')
+          .reduce((sum, c) => {
+            const p = c.salePrice || 0;
+            return sum + (c.saleCurrency === 'USD' ? p * 280 : p);
+          }, 0);
+
+      const mfkRev = calcRev(mfkChannels);
+      const bwpRev = calcRev(bwpChannels);
+      const rykRev = calcRev(rykChannels);
+      const totalRev = mfkRev + bwpRev + rykRev;
+
       const reply: AIChatMessage = {
-        id: `msg-calc-${Date.now()}`,
+        id: `msg-calc-ceo-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `📊 **EmpireNexs Operations & Sales Summary:**\n- **Total Channels in Vault:** ${totalCount}\n- **Monetized Channels:** ${monetizedCount}\n- **Sold Channels:** ${soldCount}\n- **Active in Production:** ${activeCount}\n- **Issues / Demonetized:** ${demonetizedCount}\n\n💡 Mazeed tafseelat aur monthly calculations dekhne ke liye aap sidebar mein **"Monthly Operations & Sales"** tab open kar saktay hain!`,
+        text: `📊 **CEO Executive Operations & Sales Summary (All-to-All):**\n\n**🌐 Global Network Totals:**\n- **Total Channels in Vault:** ${totalCount}\n- **Currently Monetized Running:** ${monetizedCount}\n- **Active Fleet:** ${activeCount}\n- **Sold Channels:** ${soldCount}\n- **Issues / Demonetized:** ${demonetizedCount}\n- **Total Revenue (PKR):** Rs. ${totalRev.toLocaleString()}\n\n**🏢 Branch-by-Branch Breakdown:**\n- **Musafirkhana (HQ):** ${mfkChannels.filter((c) => c.status === 'Monetized').length} Monetized | ${mfkChannels.filter((c) => c.status === 'Sold').length} Sold | Rev: Rs. ${mfkRev.toLocaleString()}\n- **Bahawalpur (Zainab Akhtar):** ${bwpChannels.filter((c) => c.status === 'Monetized').length} Monetized | ${bwpChannels.filter((c) => c.status === 'Sold').length} Sold | Rev: Rs. ${bwpRev.toLocaleString()}\n- **Rahim Yar Khan (Saim Chaudhry):** ${rykChannels.filter((c) => c.status === 'Monetized').length} Monetized | ${rykChannels.filter((c) => c.status === 'Sold').length} Sold | Rev: Rs. ${rykRev.toLocaleString()}\n\n📈 *CEO Graphical View:* Aap **"Branches & Teams"** page par naya **'📊 Branches Graphical Comparison'** tab khol kar visual comparative bars, revenue distributions aur personal directives notes bhi dekh saktay hain!`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
       };

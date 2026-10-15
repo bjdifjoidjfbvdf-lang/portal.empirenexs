@@ -21,7 +21,9 @@ import {
   Lock,
   Briefcase,
   AlertCircle,
+  BarChart3,
 } from 'lucide-react';
+import { BranchComparisonAnalytics } from './BranchComparisonAnalytics';
 
 export const BranchesAndTeams: React.FC = () => {
   const {
@@ -46,6 +48,7 @@ export const BranchesAndTeams: React.FC = () => {
   const [newUserRole, setNewUserRole] = useState<UserRole>('TEAM_MEMBER');
   const [newUserDesignation, setNewUserDesignation] = useState('Senior Video Editor');
   const [modalFeedback, setModalFeedback] = useState<string | null>(null);
+  const [activeSubTab, setActiveSubTab] = useState<'members' | 'comparison'>('members');
 
   const handleCreateDirectUser = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +105,7 @@ export const BranchesAndTeams: React.FC = () => {
           </p>
         </div>
 
-        {currentUser?.role === 'SUPER_ADMIN' && (
+        {currentUser?.role === 'SUPER_ADMIN' && activeSubTab === 'members' && (
           <button
             onClick={() => setIsAddUserModalOpen(true)}
             className="px-4 py-2.5 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-lg shadow-emerald-500/20 flex items-center gap-1.5 shrink-0"
@@ -112,6 +115,40 @@ export const BranchesAndTeams: React.FC = () => {
           </button>
         )}
       </div>
+
+      {/* CEO Exclusive Tab Switcher */}
+      {currentUser?.role === 'SUPER_ADMIN' && (
+        <div className="flex items-center gap-2 p-1 rounded-xl bg-slate-900 border border-slate-800 w-fit">
+          <button
+            onClick={() => setActiveSubTab('members')}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
+              activeSubTab === 'members'
+                ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            <span>Team Members &amp; Hierarchy</span>
+          </button>
+          <button
+            onClick={() => setActiveSubTab('comparison')}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
+              activeSubTab === 'comparison'
+                ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            <BarChart3 className="w-4 h-4" />
+            <span>📊 Branches Graphical Comparison (CEO Exclusive)</span>
+          </button>
+        </div>
+      )}
+
+      {/* View Content: Either Graphical Comparison or Team Members */}
+      {currentUser?.role === 'SUPER_ADMIN' && activeSubTab === 'comparison' ? (
+        <BranchComparisonAnalytics />
+      ) : (
+        <>
 
       {/* Leadership Profile Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -360,6 +397,8 @@ export const BranchesAndTeams: React.FC = () => {
           ))}
         </div>
       </div>
+        </>
+      )}
 
       {/* Direct Add User Modal */}
       {isAddUserModalOpen && (
