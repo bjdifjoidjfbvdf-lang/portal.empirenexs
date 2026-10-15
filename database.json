@@ -1,12 +1,66 @@
 {
   "users": [
     {
+      "id": "user-zainab",
+      "name": "Zainab Akhtar",
+      "username": "zainabakhtar",
+      "email": "zainab@empirenexs.com",
+      "password": "zainab123",
+      "phone": "+92 302 2222222",
+      "address": "Gulshan-e-Iqbal, Rahim Yar Khan",
+      "role": "CO_FOUNDER",
+      "designation": "Co-Founder / Head of Rahim Yar Khan",
+      "branchId": "rahim-yar-khan",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "ACTIVE",
+      "joinedAt": "2026-01-20",
+      "emailVerified": true
+    },
+    {
+      "id": "user-saim",
+      "name": "Saim Chaudhry",
+      "username": "saimchaudhry",
+      "email": "saim@empirenexs.com",
+      "password": "saim123",
+      "phone": "+92 301 1111111",
+      "address": "Model Town A, Bahawalpur",
+      "role": "CO_FOUNDER",
+      "designation": "Co-Founder / Head of Bahawalpur",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "ACTIVE",
+      "joinedAt": "2026-01-15",
+      "emailVerified": true
+    },
+    {
       "id": "user-waqas",
       "name": "Waqas Gill",
       "email": "muhammadwaqasmwg@gmail.com",
       "role": "SUPER_ADMIN",
       "status": "ACTIVE"
+    },
+    {
+      "id": "user-1792089014295",
+      "name": "Ali Raza",
+      "username": "aliraza",
+      "email": "aliraza.editor@gmail.com",
+      "password": "password123",
+      "phone": "+92 300 1234567",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-15",
+      "emailVerified": true
     }
   ],
-  "updatedAt": "2026-10-15T18:06:36.309Z"
+  "channels": [],
+  "updatedAt": "2026-10-15T18:30:14.295Z"
 }
