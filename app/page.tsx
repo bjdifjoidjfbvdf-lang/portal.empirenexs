@@ -14,7 +14,6 @@ import { AuthView } from '@/components/AuthView';
 import { UserProfileSettings } from '@/components/UserProfileSettings';
 import { MonthlyCalculations } from '@/components/MonthlyCalculations';
 import { BranchComparisonAnalytics } from '@/components/BranchComparisonAnalytics';
-import { RightActivityPanel } from '@/components/RightActivityPanel';
 import { useApp } from '@/lib/storeContext';
 import { Sparkles, Bot } from 'lucide-react';
 
@@ -39,7 +38,7 @@ export default function HomePage() {
 
         {/* Dynamic View Content */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-7">
-          <div className="max-w-[1550px] mx-auto">
+          <div className="max-w-7xl mx-auto">
             {activeTab === 'dashboard' && <DashboardOverview onNavigate={setActiveTab} />}
             {activeTab === 'branch-analytics' && <BranchComparisonAnalytics />}
             {activeTab === 'monthly-calc' && <MonthlyCalculations />}
@@ -51,9 +50,6 @@ export default function HomePage() {
             {activeTab === 'settings' && <SettingsView />}
           </div>
         </main>
-
-        {/* Right Activity & Contacts Panel (Matches demo screenshot!) */}
-        {activeTab === 'dashboard' && <RightActivityPanel />}
       </div>
 
       {/* Floating AI Chat Trigger Pill */}
