@@ -73,7 +73,7 @@ const KNOWN_ITEMS_METADATA: Record<string, Partial<NicheSheetItem>> = {
     tags: ['psychology', 'behavior', 'mindset', 'facts', 'stoicism', 'mental resilience'],
     description: 'Deep dives into human behavior, psychological tricks, body language, and mental discipline.',
   },
-  'ucvegdbjfjo-cty9hksje-gw': {
+  'ucvegdbj': {
     title: 'Deep Mind & Human Psychology',
     channelName: 'Deep Mind Hub',
     category: 'Psychology & Mindset Facts',
@@ -113,7 +113,7 @@ const KNOWN_ITEMS_METADATA: Record<string, Partial<NicheSheetItem>> = {
     tags: ['musk', 'music', 'studio', 'muskmusicstudio', 'elon', 'ambient', 'synthwave', 'chill', 'focus'],
     description: 'Futuristic synthwave, ambient space vibes, and deep electronic focus music.',
   },
-  'gmoasadj_zgq': {
+  'gmosadj_zgq': {
     title: 'Chosen Code Breakers - "CHOSEN ONE, ELON CRIED..."',
     channelName: 'Chosen Code Breakers',
     category: 'Elon Musk & Motivational Storytelling',
@@ -121,7 +121,7 @@ const KNOWN_ITEMS_METADATA: Record<string, Partial<NicheSheetItem>> = {
     tags: ['elon', 'musk', 'chosen one', 'motivation', 'inspiration', 'storytelling', 'spiritual', 'emotional'],
     description: 'Viral high-emotion storytelling narrative focusing on destiny, chosen ones, and Elon Musk inspiring speeches.',
   },
-  'ucyp8wzwbgtnmoys8l5zulzq': {
+  'ucyp8wzwbgtnmoys8l5zulyq': {
     title: 'Elon Inspires & Visionary Stories',
     channelName: 'Elon Inspires',
     category: 'Elon Musk & Motivational Storytelling',
