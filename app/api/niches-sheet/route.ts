@@ -3,216 +3,300 @@ import { NextRequest, NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export interface NicheSheetItem {
+interface NicheSheetItem {
   id: string;
   rowNumber: number;
   url: string;
   title: string;
   channelName: string;
   category: string;
+  tabName: string;
+  tabGid: string;
   type: 'channel' | 'video';
   tags: string[];
   description: string;
+  directTabUrl: string;
 }
 
-// Enriched catalog for the 18 core links in Waqas Gill's Google Sheet
-const KNOWN_ITEMS_METADATA: Record<string, Partial<NicheSheetItem>> = {
-  'dark-reality': {
-    title: 'Dark Reality',
-    channelName: '@Dark-Reality3',
-    category: 'Crime & Dark Documentaries',
-    type: 'channel',
-    tags: ['dark', 'reality', 'dark reality', 'crime', 'mystery', 'true crime', 'investigation', 'horror', 'documentary'],
-    description: 'Dark psychological deep dives, true crime mysteries, and investigative documentary videos.',
-  },
-  'v.musman': {
-    title: 'Usman Case Files & Documentaries',
-    channelName: '@v.musman1971',
-    category: 'Crime & Dark Documentaries',
-    type: 'channel',
-    tags: ['usman', 'documentary', 'cases', 'real life', 'storytelling', 'investigation'],
-    description: 'Real life case studies, biographical breakdowns, and engaging narrative documentaries.',
-  },
-  'ucmom0unzupzmonwbw-kh9ew': {
-    title: 'Crime & Mystery Investigation Vault',
-    channelName: 'Mystery Vault',
-    category: 'Crime & Dark Documentaries',
-    type: 'channel',
-    tags: ['crime', 'investigation', 'mystery', 'vault', 'case study', 'cold cases'],
-    description: 'Unsolved mysteries, cold case investigations, and criminal psychology dossiers.',
-  },
-  'j9yxayj6lg8': {
-    title: 'Crime Case Study Deep-Dive Video',
-    channelName: 'Documentary Video',
-    category: 'Crime & Dark Documentaries',
-    type: 'video',
-    tags: ['crime', 'mystery', 'case study', 'video', 'investigation'],
-    description: 'Detailed video case study covering mystery breakdowns and dark narrative storytelling.',
-  },
-  'thegenieusfiles': {
-    title: 'The Genius Files',
-    channelName: '@TheGenieusFiles',
-    category: 'Historical Mysteries & Geniuses',
-    type: 'channel',
-    tags: ['genius', 'the genius files', 'files', 'history', 'mysteries', 'science', 'conspiracies', 'secret'],
-    description: 'Exploration of history\'s greatest geniuses, classified files, secret inventions, and forgotten truths.',
-  },
-  'peakmindsetfacts': {
-    title: 'Peak Mindset Facts',
-    channelName: '@peakmindsetfacts',
-    category: 'Psychology & Mindset Facts',
-    type: 'channel',
-    tags: ['mindset', 'facts', 'peak mindset', 'psychology', 'brain', 'habits', 'stoic', 'human behavior', 'life lessons', 'growth'],
-    description: 'Psychology facts, mindset shifts for high achievers, habit psychology, and mental toughness insights.',
-  },
-  'ucgbltk6lhsupxl0wssyiqwq': {
-    title: 'Behavioral Psychology Insights',
-    channelName: 'Behavioral Science',
-    category: 'Psychology & Mindset Facts',
-    type: 'channel',
-    tags: ['psychology', 'behavior', 'mindset', 'facts', 'stoicism', 'mental resilience'],
-    description: 'Deep dives into human behavior, psychological tricks, body language, and mental discipline.',
-  },
-  'ucvegdj': {
-    title: 'Deep Mind & Human Psychology',
-    channelName: 'Deep Mind Hub',
-    category: 'Psychology & Mindset Facts',
-    type: 'channel',
-    tags: ['psychology', 'deep mind', 'mindset', 'stoic', 'habits', 'facts'],
-    description: 'High-retention psychological facts, subconscious mind secrets, and stoic mental frameworks.',
-  },
-  'ucx-k9ccc1hwm131s0ag3vgw': {
-    title: 'Elon Soul Music',
-    channelName: 'Elon Soul Music',
-    category: 'Ambient Music & Chill Beats',
-    type: 'channel',
-    tags: ['elon', 'soul', 'music', 'elon soul music', 'chill', 'lofi', 'ambient', 'beats', 'study', 'relax', 'sleep'],
-    description: 'Soulful ambient chill music, lo-fi beats for deep focus, coding, studying, and relaxation.',
-  },
-  'ucur1xiorjtd8ja9om19eryq': {
-    title: 'Chill Wave & Focus Sounds',
-    channelName: 'Chill Wave Studio',
-    category: 'Ambient Music & Chill Beats',
-    type: 'channel',
-    tags: ['music', 'chill', 'ambient', 'focus', 'lofi', 'beats', 'relaxing', 'sounds'],
-    description: 'Atmospheric chill wave soundtracks and ambient soundscapes designed for high focus and calm.',
-  },
-  'ucylko05ip4mpdky5eyz9qcg': {
-    title: 'Elon Studio Music',
-    channelName: 'Elon Studio Music',
-    category: 'Ambient Music & Chill Beats',
-    type: 'channel',
-    tags: ['elon', 'studio', 'music', 'elon studio music', 'ambient', 'lofi', 'chill', 'background music', 'relaxation'],
-    description: 'Modern studio beats, melodic ambient tracks, and chill study soundtracks.',
-  },
-  'ucpxjg7tzmzdgokr76s-kygq': {
-    title: 'Musk Music Studio',
-    channelName: 'Muskmusicstudio',
-    category: 'Ambient Music & Chill Beats',
-    type: 'channel',
-    tags: ['musk', 'music', 'studio', 'muskmusicstudio', 'elon', 'ambient', 'synthwave', 'chill', 'focus'],
-    description: 'Futuristic synthwave, ambient space vibes, and deep electronic focus music.',
-  },
-  'gmosadj_zgq': {
-    title: 'Chosen Code Breakers - "CHOSEN ONE, ELON CRIED..."',
-    channelName: 'Chosen Code Breakers',
-    category: 'Elon Musk & Motivational Storytelling',
-    type: 'video',
-    tags: ['elon', 'musk', 'chosen one', 'motivation', 'inspiration', 'storytelling', 'spiritual', 'emotional'],
-    description: 'Viral high-emotion storytelling narrative focusing on destiny, chosen ones, and Elon Musk inspiring speeches.',
-  },
-  'ucyp8wzwbgtnmoys8l5zulyq': {
-    title: 'Elon Inspires & Visionary Stories',
-    channelName: 'Elon Inspires',
-    category: 'Elon Musk & Motivational Storytelling',
-    type: 'channel',
-    tags: ['elon', 'musk', 'visionary', 'inspiration', 'motivation', 'billionaire', 'storytelling', 'future'],
-    description: 'Visionary stories and inspirational breakdowns of billionaire thinking, risk-taking, and innovation.',
-  },
-  'jcc8ky_a9v8': {
-    title: 'Musk Motivation - "I Hid This From You... And It Was Destroying Us"',
-    channelName: 'Musk Motivation',
-    category: 'Elon Musk & Motivational Storytelling',
-    type: 'video',
-    tags: ['musk', 'motivation', 'elon', 'emotional', 'narrative', 'storytelling', 'confession', 'lesson'],
-    description: 'Intense motivational monologue and dramatic storytelling dissecting trials, mistakes, and ultimate triumphs.',
-  },
-  'deepdeal': {
-    title: 'Deep Deal Investigations',
-    channelName: '@DeepDeal-f5m',
-    category: 'Business Scandals & Mega Deals',
-    type: 'channel',
-    tags: ['deep deal', 'deepdeal', 'business', 'money', 'scandals', 'deals', 'corporate', 'investigation', 'documentary'],
-    description: 'Investigative breakdowns of corporate scandals, secret billionaire agreements, and high-stakes financial deals.',
-  },
-  'titanmindlegacy': {
-    title: 'Titan Mind Legacy',
-    channelName: '@TitanMindLegacy',
-    category: 'Alpha Mindset & High Performance',
-    type: 'channel',
-    tags: ['titan', 'titan mind', 'mind', 'legacy', 'alpha', 'motivation', 'discipline', 'stoic', 'success', 'masculine'],
-    description: 'High-intensity alpha motivation, unwavering discipline, warrior mindset, and peak performance habits.',
-  },
-  'lovemuskdaily': {
-    title: 'Love Musk Daily',
-    channelName: '@LoveMuskDaily',
-    category: 'Romantic Monologues & Soulmate Stories',
-    type: 'channel',
-    tags: ['love', 'musk', 'love musk daily', 'romance', 'future wife', 'monologue', 'soulmate', 'relationship', 'destiny', 'heartfelt'],
-    description: 'Cinematic long-form romantic confessions, destiny monologues, and soulful relationship storytelling.',
-  },
-};
+interface SheetTabMeta {
+  name: string;
+  gid: string;
+  slug: string;
+  count: number;
+}
 
-const DEFAULT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing';
+const SHEET_TABS_CONFIG: { name: string; gid: string; slug: string }[] = [
+  { name: 'Elon Musk', gid: '0', slug: 'elon-musk' },
+  { name: 'Carl Jung', gid: '331544996', slug: 'carl-jung' },
+  { name: 'Urdu Stories', gid: '1817895956', slug: 'urdu-stories' },
+  { name: 'Russian Stories', gid: '1282848236', slug: 'russian-stories' },
+  { name: 'Joker', gid: '96686562', slug: 'joker' },
+  { name: 'Space', gid: '1403038898', slug: 'space' },
+  { name: 'motivational', gid: '1214444991', slug: 'motivational' },
+  { name: 'Face Cloning', gid: '1487514818', slug: 'face-cloning' },
+  { name: 'Prayers', gid: '2027798229', slug: 'prayers' },
+  { name: 'youngi cho', gid: '1218222988', slug: 'youngi-cho' },
+  { name: 'Story', gid: '268093005', slug: 'story' },
+  { name: 'Trump', gid: '428722131', slug: 'trump' },
+  { name: 'food', gid: '271645373', slug: 'food' },
+  { name: 'judge', gid: '2043461382', slug: 'judge' },
+  { name: 'news', gid: '2103532665', slug: 'news' },
+  { name: 'Others', gid: '2053988009', slug: 'others' },
+  { name: 'princes', gid: '1670299079', slug: 'princes' },
+  { name: 'History', gid: '1026726497', slug: 'history' },
+];
 
-// Helper to deduce info from arbitrary YouTube URL
-function deduceItemInfo(url: string, rowIdx: number): NicheSheetItem {
-  const cleanUrl = url.trim().replace(/^"|"$/g, '').trim();
-  const lowerUrl = cleanUrl.toLowerCase();
+const DEFAULT_SHEET_BASE = 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs';
 
-  // Match against known keys
-  for (const [key, meta] of Object.entries(KNOWN_ITEMS_METADATA)) {
-    if (lowerUrl.includes(key)) {
-      return {
-        id: `niche-${rowIdx}-${key}`,
-        rowNumber: rowIdx,
-        url: cleanUrl,
-        title: meta.title || 'YouTube Channel',
-        channelName: meta.channelName || 'YouTube Creator',
-        category: meta.category || 'General Niche',
-        type: meta.type || (cleanUrl.includes('/watch?v=') ? 'video' : 'channel'),
-        tags: meta.tags || [],
-        description: meta.description || '',
-      };
-    }
+// Full pre-indexed catalog from all tabs
+const PRE_INDEXED_TAB_ITEMS: { tabName: string; gid: string; links: string[] }[] = [
+  {
+    tabName: 'Elon Musk',
+    gid: '0',
+    links: [
+      'https://www.youtube.com/@Dark-Reality3/videos',
+      'https://www.youtube.com/@v.musman1971',
+      'https://www.youtube.com/channel/UCmoM0uNzupZMonwBW-Kh9ew',
+      'https://www.youtube.com/watch?v=J9YXAyJ6lG8',
+      'https://www.youtube.com/@TheGenieusFiles',
+      'https://www.youtube.com/@peakmindsetfacts',
+      'https://www.youtube.com/channel/UCGBltk6lhsuPXL0wssYiqwQ',
+      'https://www.youtube.com/channel/UCVEGdJBJfo-ctY9hKsjE-Gw',
+      'https://www.youtube.com/channel/UCx-k9Ccc1HWM131S0ag3vGw',
+      'https://www.youtube.com/channel/UCUr1xioRjTd8jA9Om19eRYQ',
+      'https://www.youtube.com/channel/UCylKO05iP4MPdKy5eYZ9qCg',
+      'https://www.youtube.com/channel/UCPXjG7TZmzDgoKR76S-KYGQ',
+      'https://www.youtube.com/watch?v=GmoSAdJ_ZGQ&pp=ugUEEgJlbg%3D%3D',
+      'https://www.youtube.com/channel/UCYp8WzwbgTNmOys8L5zULyQ',
+      'https://www.youtube.com/watch?v=jcC8Ky_a9v8',
+      'https://www.youtube.com/@DeepDeal-f5m',
+      'https://www.youtube.com/@TitanMindLegacy',
+      'https://www.youtube.com/@LoveMuskDaily',
+    ],
+  },
+  {
+    tabName: 'Carl Jung',
+    gid: '331544996',
+    links: ['https://www.youtube.com/@CarlJungExplained-b9o'],
+  },
+  {
+    tabName: 'Urdu Stories',
+    gid: '1817895956',
+    links: [],
+  },
+  {
+    tabName: 'Russian Stories',
+    gid: '1282848236',
+    links: ['https://www.youtube.com/@Mindset2025-z4k'],
+  },
+  {
+    tabName: 'Joker',
+    gid: '96686562',
+    links: [
+      'https://www.youtube.com/@HiddenDominion-l6w',
+      'https://www.youtube.com/@JokerSpeaks-p9k',
+      'https://www.youtube.com/@SaneMadness-s2k',
+      'https://www.youtube.com/@VeiledMind-q7z',
+      'https://www.youtube.com/@PurePoison12k',
+    ],
+  },
+  {
+    tabName: 'Space',
+    gid: '1403038898',
+    links: [
+      'https://www.youtube.com/channel/UCnJULEGLWAddf-BjrY2aYjQ',
+      'https://www.youtube.com/channel/UCANhj_HEb31MUufwmV6CLPw',
+      'https://www.youtube.com/watch?v=dUBhV5oZ8Ig',
+      'https://www.youtube.com/@Awesome-SpaceX',
+      'https://www.youtube.com/@quantumnexus_yt',
+      'https://www.youtube.com/@QuantumAwakening-1',
+      'https://www.youtube.com/watch?v=pmgIWlFm_AM',
+    ],
+  },
+  {
+    tabName: 'motivational',
+    gid: '1214444991',
+    links: ['https://www.youtube.com/channel/UCXsIQW-yw6tmRIzma2fSxMA'],
+  },
+  {
+    tabName: 'Face Cloning',
+    gid: '1487514818',
+    links: ['https://www.youtube.com/@theGentlePathForward/videos'],
+  },
+  {
+    tabName: 'Prayers',
+    gid: '2027798229',
+    links: [
+      'https://www.youtube.com/watch?v=2leETWvw5_w',
+      'https://www.youtube.com/@Sacred-Light-Within',
+      'https://www.youtube.com/@JapGod-q1c',
+      'https://www.youtube.com/@MichaelPropheticWord',
+      'https://www.youtube.com/@MadnessWithin-r3z',
+      'https://www.youtube.com/channel/UCmZ8tW0ZBJhO0sHAOu965bg',
+      'https://www.youtube.com/channel/UCDOLPA2JisOAUpnANV-Ipkw',
+      'https://www.youtube.com/channel/UCxDNPHzuiI3igLkawuhn5wA',
+      'https://www.youtube.com/@DivineSacredVoice',
+      'https://www.youtube.com/@ArchangelMichaelSays333',
+      'https://www.youtube.com/@Devine_Touch',
+      'https://www.youtube.com/@ChosenMindset-q9o',
+      'https://www.youtube.com/@WORDOFGRACE3.1M',
+      'https://www.youtube.com/@ChosenMiracles365',
+      'https://www.youtube.com/@Whispers-from-the-Pleiades',
+      'https://www.youtube.com/@CosmicTransmission1',
+      'https://www.youtube.com/@AngelSays1111',
+      'https://www.youtube.com/@ThedivinePathj',
+      'https://www.youtube.com/@RadiantFaith-d7i',
+      'https://www.youtube.com/@GodsLightGuide',
+      'https://www.youtube.com/@HeavenHoldsHope',
+      'https://www.youtube.com/@ChosenSigns-999',
+      'https://www.youtube.com/@HeavenlyGlory9999',
+      'https://www.youtube.com/@The-Quantum-Grimoire',
+      'https://www.youtube.com/@messagefromtheangels',
+    ],
+  },
+  {
+    tabName: 'youngi cho',
+    gid: '1218222988',
+    links: ['https://www.youtube.com/@YonngiChoTeachings-j2c'],
+  },
+  {
+    tabName: 'Story',
+    gid: '268093005',
+    links: ['https://youtube.com/@clarknationhoops-n3z?si=eA51jDVGoPvmc94v'],
+  },
+  {
+    tabName: 'Trump',
+    gid: '428722131',
+    links: [
+      'https://www.youtube.com/@AHMindForge',
+      'https://www.youtube.com/@MindDecoded-u8n',
+      'https://www.youtube.com/channel/UCGmBUdt6IDaOsHG1mWxnkwA',
+      'https://www.youtube.com/@TheInfluenceCode-z3c/videos',
+    ],
+  },
+  {
+    tabName: 'food',
+    gid: '271645373',
+    links: ['https://www.youtube.com/@foodshockofficial'],
+  },
+  {
+    tabName: 'judge',
+    gid: '2043461382',
+    links: [],
+  },
+  {
+    tabName: 'news',
+    gid: '2103532665',
+    links: ['https://www.youtube.com/@DiscoverywithGideon'],
+  },
+  {
+    tabName: 'Others',
+    gid: '2053988009',
+    links: [
+      'https://www.youtube.com/@Theeternaltruths-j8d',
+      'https://www.youtube.com/@Fr.BenedictSpiritualPath',
+      'https://www.youtube.com/watch?v=Uqh_pJDA7Xg',
+      'https://www.youtube.com/@InnerThrone-t1g/videos',
+      'https://www.youtube.com/@JokerSpeaks-p9k',
+      'https://www.youtube.com/@PadrePioWisdom-6868/videos',
+      'https://www.youtube.com/@TuckerWes',
+    ],
+  },
+  {
+    tabName: 'princes',
+    gid: '1670299079',
+    links: ['https://www.youtube.com/@Mindset2025-z4k'],
+  },
+  {
+    tabName: 'History',
+    gid: '1026726497',
+    links: ['https://www.youtube.com/@JamesHurt-g2u'],
+  },
+];
+
+// Helper to deduce clean title and details for any link
+function buildItem(rawUrl: string, tabName: string, tabGid: string, idx: number): NicheSheetItem {
+  const url = rawUrl.trim().replace(/^"|"$/g, '').trim();
+  const lowerUrl = url.toLowerCase();
+  const isVideo = lowerUrl.includes('/watch?v=');
+
+  // Channel handle match
+  let handle = '';
+  const handleMatch = url.match(/@([a-zA-Z0-9_\-\.]+)/);
+  if (handleMatch) {
+    handle = `@${handleMatch[1].replace(/\/videos$/, '')}`;
   }
 
-  // Fallback for any newly added URL in the sheet
-  let handle = '';
-  const handleM = cleanUrl.match(/@([a-zA-Z0-9_\-\.]+)/);
-  if (handleM) handle = `@${handleM[1]}`;
+  // Create friendly readable title
+  let title = handle ? handle.replace('@', '').replace(/[-_]/g, ' ') : isVideo ? `Video #${idx}` : `Channel #${idx}`;
 
-  const isVideo = cleanUrl.includes('/watch?v=');
-  const cat = lowerUrl.includes('music')
-    ? 'Ambient Music & Chill Beats'
-    : lowerUrl.includes('dark') || lowerUrl.includes('crime')
-    ? 'Crime & Dark Documentaries'
-    : lowerUrl.includes('musk') || lowerUrl.includes('elon')
-    ? 'Elon Musk & Motivational Storytelling'
-    : lowerUrl.includes('facts') || lowerUrl.includes('mindset')
-    ? 'Psychology & Mindset Facts'
-    : 'YouTube Production Niche';
+  // Custom known clean titles
+  if (handle.includes('CarlJungExplained')) title = 'Carl Jung Explained';
+  else if (handle.includes('AHMindForge')) title = 'AH Mind Forge (Trump Mindset)';
+  else if (handle.includes('MindDecoded')) title = 'Mind Decoded (Trump Analysis)';
+  else if (handle.includes('TheInfluenceCode')) title = 'The Influence Code';
+  else if (handle.includes('HiddenDominion')) title = 'Hidden Dominion (Joker Dark Mind)';
+  else if (handle.includes('JokerSpeaks')) title = 'Joker Speaks (Dark Psychology)';
+  else if (handle.includes('SaneMadness')) title = 'Sane Madness (Joker Mindset)';
+  else if (handle.includes('VeiledMind')) title = 'Veiled Mind';
+  else if (handle.includes('PurePoison')) title = 'Pure Poison (Villain Motivation)';
+  else if (handle.includes('LoveMuskDaily')) title = 'Love Musk Daily';
+  else if (handle.includes('Dark-Reality3')) title = 'Dark Reality';
+  else if (handle.includes('TheGenieusFiles')) title = 'The Genius Files';
+  else if (handle.includes('peakmindsetfacts')) title = 'Peak Mindset Facts';
+  else if (handle.includes('foodshockofficial')) title = 'Food Shock Official';
+  else if (handle.includes('DiscoverywithGideon')) title = 'Discovery with Gideon';
+  else if (handle.includes('Sacred-Light-Within')) title = 'Sacred Light Within';
+  else if (handle.includes('YonngiChoTeachings')) title = 'David Yonggi Cho Teachings';
+  else if (handle.includes('Awesome-SpaceX')) title = 'Awesome SpaceX';
+  else if (handle.includes('quantumnexus')) title = 'Quantum Nexus Space';
+  else if (handle.includes('QuantumAwakening')) title = 'Quantum Awakening';
+  else if (handle.includes('JamesHurt')) title = 'James Hurt History';
+  else if (handle.includes('theGentlePathForward')) title = 'The Gentle Path Forward (Face Cloning)';
+  else if (handle.includes('clarknationhoops')) title = 'Clark Nation Hoops (Storytelling)';
+
+  const directTabUrl = `${DEFAULT_SHEET_BASE}/edit#gid=${tabGid}`;
+
+  const tags = [
+    tabName.toLowerCase(),
+    title.toLowerCase(),
+    handle.toLowerCase(),
+    isVideo ? 'video' : 'channel',
+    'competitor',
+  ].filter(Boolean);
+
+  let description = `Competitor resource in "${tabName}" niche from Google Sheets tab #${tabGid}.`;
+  if (tabName.toLowerCase().includes('carl jung')) {
+    description = 'Carl Jung psychology, shadow self, archetypes, and subconscious mind competitor channel.';
+  } else if (tabName.toLowerCase().includes('trump')) {
+    description = 'Donald Trump mindset, speeches, persuasion psychology, and influence breakdowns.';
+  } else if (tabName.toLowerCase().includes('joker')) {
+    description = 'Joker philosophy, anti-hero dark psychology, societal critique, and viral reels.';
+  } else if (tabName.toLowerCase().includes('prayers')) {
+    description = 'Spiritual prayers, blessings, angelic messages, and biblical/faith monologues.';
+  } else if (tabName.toLowerCase().includes('space')) {
+    description = 'Space exploration, astrophysics, SpaceX, cosmos mysteries, and quantum science.';
+  } else if (tabName.toLowerCase().includes('elon')) {
+    description = 'Elon Musk visionary stories, romantic monologues, ambient lo-fi music, and tech.';
+  } else if (tabName.toLowerCase().includes('food')) {
+    description = 'Shocking food facts, industry secrets, and culinary documentary storytelling.';
+  } else if (tabName.toLowerCase().includes('news')) {
+    description = 'World events investigations, geopolitics, and informative news documentaries.';
+  }
 
   return {
-    id: `niche-${rowIdx}-${Date.now()}`,
-    rowNumber: rowIdx,
-    url: cleanUrl,
-    title: handle ? `${handle} Channel` : isVideo ? `Production Video #${rowIdx}` : `YouTube Channel #${rowIdx}`,
-    channelName: handle || `Channel #${rowIdx}`,
-    category: cat,
+    id: `item-${tabGid}-${idx}`,
+    rowNumber: idx,
+    url,
+    title,
+    channelName: handle || title,
+    category: tabName,
+    tabName,
+    tabGid,
     type: isVideo ? 'video' : 'channel',
-    tags: [handle.replace('@', ''), cat.toLowerCase()].filter(Boolean),
-    description: `YouTube reference resource imported from Google Sheets (Row ${rowIdx}).`,
+    tags,
+    description,
+    directTabUrl,
   };
 }
 
@@ -220,91 +304,84 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const query = (searchParams.get('query') || '').toLowerCase().trim();
   const categoryFilter = (searchParams.get('category') || '').toLowerCase().trim();
+  const tabFilter = (searchParams.get('tab') || '').toLowerCase().trim();
 
-  try {
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/gviz/tq?tqx=out:csv';
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 7000);
+  // 1. Try to live fetch from Google Sheets CSV (or fallback to pre-indexed catalog)
+  const allItems: NicheSheetItem[] = [];
 
-    const res = await fetch(csvUrl, {
-      signal: controller.signal,
-      cache: 'no-store',
-    });
-    clearTimeout(timeout);
+  for (const tab of PRE_INDEXED_TAB_ITEMS) {
+    let links = tab.links;
 
-    let rawUrls: string[] = [];
-
-    if (res.ok) {
-      const csvText = await res.text();
-      const lines = csvText.split('\n');
-      for (const line of lines) {
-        const trimmed = line.trim().replace(/^"|"$/g, '').trim();
-        if (trimmed && (trimmed.startsWith('http://') || trimmed.startsWith('https://'))) {
-          rawUrls.push(trimmed);
+    // For specific requested tabs, we can also query Google Sheets live
+    if (tabFilter && tab.tabName.toLowerCase().includes(tabFilter)) {
+      try {
+        const liveCsvUrl = `https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/gviz/tq?tqx=out:csv&gid=${tab.gid}`;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 4000);
+        const res = await fetch(liveCsvUrl, { signal: controller.signal, cache: 'no-store' });
+        clearTimeout(timeout);
+        if (res.ok) {
+          const csv = await res.text();
+          const parsed = csv
+            .split('\n')
+            .map((l) => {
+              const m = l.match(/(https?:\/\/[^\s",]+)/i);
+              return m ? m[1] : null;
+            })
+            .filter(Boolean) as string[];
+          if (parsed.length > 0) links = parsed;
         }
-      }
+      } catch (e) {}
     }
 
-    // Fallback if sheet network fails
-    if (rawUrls.length === 0) {
-      rawUrls = [
-        "https://www.youtube.com/@Dark-Reality3/videos",
-        "https://www.youtube.com/@v.musman1971",
-        "https://www.youtube.com/channel/UCmoM0uNzupZMonwBW-Kh9ew",
-        "https://www.youtube.com/watch?v=J9YXAyJ6lG8",
-        "https://www.youtube.com/@TheGenieusFiles",
-        "https://www.youtube.com/@peakmindsetfacts",
-        "https://www.youtube.com/channel/UCGBltk6lhsuPXL0wssYiqwQ",
-        "https://www.youtube.com/channel/UCVEGdJBJfo-ctY9hKsjE-Gw",
-        "https://www.youtube.com/channel/UCx-k9Ccc1HWM131S0ag3vGw",
-        "https://www.youtube.com/channel/UCUr1xioRjTd8jA9Om19eRYQ",
-        "https://www.youtube.com/channel/UCylKO05iP4MPdKy5eYZ9qCg",
-        "https://www.youtube.com/channel/UCPXjG7TZmzDgoKR76S-KYGQ",
-        "https://www.youtube.com/watch?v=GmoSAdJ_ZGQ&pp=ugUEEgJlbg%3D%3D",
-        "https://www.youtube.com/channel/UCYp8WzwbgTNmOys8L5zULyQ",
-        "https://www.youtube.com/watch?v=jcC8Ky_a9v8",
-        "https://www.youtube.com/@DeepDeal-f5m",
-        "https://www.youtube.com/@TitanMindLegacy",
-        "https://www.youtube.com/@LoveMuskDaily"
-      ];
-    }
-
-    const items: NicheSheetItem[] = rawUrls.map((url, idx) => deduceItemInfo(url, idx + 1));
-
-    // Calculate categories summary
-    const categoriesMap: Record<string, number> = {};
-    for (const it of items) {
-      categoriesMap[it.category] = (categoriesMap[it.category] || 0) + 1;
-    }
-    const categories = Object.entries(categoriesMap).map(([name, count]) => ({ name, count }));
-
-    // Filter items if query or category provided
-    let filtered = items;
-    if (categoryFilter) {
-      filtered = filtered.filter((i) => i.category.toLowerCase().includes(categoryFilter));
-    }
-    if (query) {
-      filtered = filtered.filter((i) => {
-        const textToSearch = `${i.title} ${i.channelName} ${i.category} ${i.description} ${i.url} ${i.tags.join(' ')}`.toLowerCase();
-        return textToSearch.includes(query);
-      });
-    }
-
-    return NextResponse.json({
-      success: true,
-      sheetUrl: DEFAULT_SHEET_URL,
-      totalCount: items.length,
-      categories,
-      items,
-      filteredItems: filtered,
+    links.forEach((l, idx) => {
+      allItems.push(buildItem(l, tab.tabName, tab.gid, idx + 1));
     });
-  } catch (error: any) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: error.message || 'Failed to fetch niches from Google Sheet',
-      },
-      { status: 500 }
+  }
+
+  // Build tabs metadata with counts
+  const tabsMeta: SheetTabMeta[] = SHEET_TABS_CONFIG.map((cfg) => {
+    const count = allItems.filter((i) => i.tabGid === cfg.gid).length;
+    return {
+      name: cfg.name,
+      gid: cfg.gid,
+      slug: cfg.slug,
+      count,
+    };
+  });
+
+  // Filter items
+  let filtered = allItems;
+
+  if (tabFilter) {
+    filtered = filtered.filter(
+      (i) => i.tabName.toLowerCase().includes(tabFilter) || i.tabGid === tabFilter
     );
   }
+
+  if (categoryFilter && categoryFilter !== 'all') {
+    filtered = filtered.filter(
+      (i) =>
+        i.category.toLowerCase().includes(categoryFilter) ||
+        i.tabName.toLowerCase().includes(categoryFilter)
+    );
+  }
+
+  if (query) {
+    filtered = filtered.filter((i) => {
+      const searchTarget = `${i.title} ${i.channelName} ${i.category} ${i.tabName} ${i.description} ${i.url} ${i.tags.join(' ')}`.toLowerCase();
+      return searchTarget.includes(query);
+    });
+  }
+
+  return NextResponse.json({
+    success: true,
+    sheetUrl: DEFAULT_SHEET_BASE + '/edit?usp=sharing',
+    totalLinks: allItems.length,
+    totalTabs: tabsMeta.length,
+    tabs: tabsMeta,
+    categories: tabsMeta.map((t) => ({ name: t.name, count: t.count })),
+    items: allItems,
+    filteredItems: filtered,
+  });
 }

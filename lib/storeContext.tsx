@@ -2053,8 +2053,38 @@ Instructions:
       return;
     }
 
-    // 9. Niche Topic & Google Sheet Links Intent
+    // 9. Niche Topic, Competitor Channels & Multi-Tab Google Sheet Intent
     const wantsNiche =
+      lower.includes('competitor') ||
+      lower.includes('compititor') ||
+      lower.includes('competitors') ||
+      lower.includes('compititors') ||
+      lower.includes('carl jung') ||
+      lower.includes('carl') ||
+      lower.includes('jung') ||
+      lower.includes('trump') ||
+      lower.includes('trum') ||
+      lower.includes('elon') ||
+      lower.includes('musk') ||
+      lower.includes('joker') ||
+      lower.includes('prayer') ||
+      lower.includes('prayers') ||
+      lower.includes('space') ||
+      lower.includes('face cloning') ||
+      lower.includes('cloning') ||
+      lower.includes('youngi') ||
+      lower.includes('cho') ||
+      lower.includes('yonggi') ||
+      lower.includes('russian stories') ||
+      lower.includes('russian') ||
+      lower.includes('urdu stories') ||
+      lower.includes('urdu') ||
+      lower.includes('story') ||
+      lower.includes('food') ||
+      lower.includes('judge') ||
+      lower.includes('princes') ||
+      lower.includes('history') ||
+      lower.includes('motivational') ||
       lower.includes('niche') ||
       lower.includes('topic') ||
       lower.includes('sheet') ||
@@ -2064,8 +2094,7 @@ Instructions:
       lower.includes('links do') ||
       lower.includes('links') ||
       lower.includes('channel do') ||
-      lower.includes('elon') ||
-      lower.includes('musk') ||
+      lower.includes('channels do') ||
       lower.includes('ambient') ||
       lower.includes('lofi') ||
       lower.includes('lo-fi') ||
@@ -2078,15 +2107,40 @@ Instructions:
       lower.includes('titan mind');
 
     if (wantsNiche) {
-      // Ensure we have sheet items
+      // 18 Registered Tabs Config from Connected Google Sheet
+      const ALL_SHEET_TABS = [
+        { name: 'Elon Musk', gid: '0', icon: '🚀', queryTerms: ['elon', 'musk', 'elon musk'] },
+        { name: 'Carl Jung', gid: '331544996', icon: '🧠', queryTerms: ['carl jung', 'carl', 'jung'] },
+        { name: 'Urdu Stories', gid: '1817895956', icon: '🇵🇰', queryTerms: ['urdu stories', 'urdu story', 'urdu'] },
+        { name: 'Russian Stories', gid: '1282848236', icon: '🇷🇺', queryTerms: ['russian stories', 'russian story', 'russian'] },
+        { name: 'Joker', gid: '96686562', icon: '🃏', queryTerms: ['joker', 'batman', 'dominion', 'poison'] },
+        { name: 'Space', gid: '1403038898', icon: '🌌', queryTerms: ['space', 'spacex', 'astrophysics', 'quantum', 'cosmos'] },
+        { name: 'motivational', gid: '1214444991', icon: '💡', queryTerms: ['motivational', 'motivation', 'discipline'] },
+        { name: 'Face Cloning', gid: '1487514818', icon: '🤖', queryTerms: ['face cloning', 'cloning', 'deepfake', 'gentle path'] },
+        { name: 'Prayers', gid: '2027798229', icon: '📿', queryTerms: ['prayer', 'prayers', 'dua', 'worship', 'spiritual', 'sacred', 'faith'] },
+        { name: 'youngi cho', gid: '1218222988', icon: '✝️', queryTerms: ['youngi cho', 'youngi', 'cho', 'yonggi', 'teachings'] },
+        { name: 'Story', gid: '268093005', icon: '📖', queryTerms: ['story', 'hoops', 'basketball', 'clark', 'clarknation'] },
+        { name: 'Trump', gid: '428722131', icon: '🏛️', queryTerms: ['trump', 'trum', 'donald trump', 'tate'] },
+        { name: 'food', gid: '271645373', icon: '🍲', queryTerms: ['food', 'food shock', 'culinary', 'recipe'] },
+        { name: 'judge', gid: '2043461382', icon: '⚖️', queryTerms: ['judge', 'court', 'courtroom', 'law'] },
+        { name: 'news', gid: '2103532665', icon: '📰', queryTerms: ['news', 'gideon', 'geopolitics', 'world'] },
+        { name: 'Others', gid: '2053988009', icon: '✨', queryTerms: ['others', 'truth', 'spiritual truth', 'eternal truth', 'benedict'] },
+        { name: 'princes', gid: '1670299079', icon: '👑', queryTerms: ['princes', 'princess', 'royal', 'prince'] },
+        { name: 'History', gid: '1026726497', icon: '📜', queryTerms: ['history', 'historical', 'ancient', 'james hurt'] },
+      ];
+
+      // Ensure full catalog of sheet items is loaded
       let currentSheetItems = sheetNiches;
-      if (!currentSheetItems || currentSheetItems.length === 0) {
+      if (!currentSheetItems || currentSheetItems.length < 50) {
         try {
           const res = await fetch('/api/niches-sheet');
           const data = await res.json();
-          if (data.success && Array.isArray(data.items)) {
+          if (data.success && Array.isArray(data.items) && data.items.length > 0) {
             currentSheetItems = data.items;
             setSheetNiches(data.items);
+            if (Array.isArray(data.categories)) {
+              setSheetNichesCategories(data.categories);
+            }
           }
         } catch (e) {}
       }
@@ -2124,18 +2178,77 @@ Instructions:
         return;
       }
 
-      // 1. Identify Topic Query
+      // 1. Check if user is asking for any of the 18 specific Google Sheet Tabs
+      const matchedTab = ALL_SHEET_TABS.find((tab) =>
+        tab.queryTerms.some((term) => {
+          const cleanTerm = term.toLowerCase();
+          const regex = new RegExp(`(^|\\s|[.,!?_\\-])${cleanTerm}($|\\s|[.,!?_\\-])`, 'i');
+          return regex.test(lower) || lower.includes(cleanTerm);
+        })
+      );
+
+      if (matchedTab) {
+        const tabItems = (currentSheetItems || []).filter((i) => {
+          return (
+            i.tabGid === matchedTab.gid ||
+            (i.tabName && i.tabName.toLowerCase() === matchedTab.name.toLowerCase()) ||
+            (i.category && i.category.toLowerCase() === matchedTab.name.toLowerCase())
+          );
+        });
+
+        const directTabUrl = `https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit#gid=${matchedTab.gid}`;
+
+        if (tabItems.length > 0) {
+          const linksListText = tabItems
+            .map((item, idx) => {
+              return `${idx + 1}. **[${item.title}](${item.url})**\n   - **Channel / Handle:** \`${item.channelName}\`\n   - **YouTube Link:** ${item.url}\n   - **Content Overview:** ${item.description}`;
+            })
+            .join('\n\n');
+
+          const replyText = `🎯 **Google Sheet Competitor Links: [${matchedTab.icon} ${matchedTab.name}]**\n\nAap ke kehne ke mutabiq Google Sheet ke **"${matchedTab.name}"** tab (#gid=${matchedTab.gid}) se **${tabItems.length} competitor channels** nikaal kar bhej diye hain:\n\n${linksListText}\n\n---\n🔗 **Direct Tab Link:** [Open "${matchedTab.name}" Tab in Google Sheet](${directTabUrl})\n📊 **Master Connected Sheet:** [Google Sheets Niches Hub](${settings.googleSheetNichesUrl || 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing'})\n💡 *Aap in links par click kar ke competitor channels analyze kar saktay hain ya neechay clickable badges se direct open kar saktay hain.*`;
+
+          const nicheMsg: AIChatMessage = {
+            id: `msg-niche-${Date.now()}`,
+            sender: 'assistant',
+            senderName: 'Nexs AI Assistant',
+            text: replyText,
+            timestamp: timeStr,
+            createdAt: now.toISOString(),
+            fetchedItems: tabItems.map((item) => ({
+              type: 'niche',
+              title: item.title,
+              details: `Tab: ${matchedTab.name} • ${item.channelName}`,
+              link: item.url,
+            })),
+          };
+
+          setChatMessages((prev) => [...prev, nicheMsg]);
+          logToServer([userMsg, nicheMsg]);
+          return;
+        } else {
+          // Tab exists in sheet, but has 0 links yet (e.g. Urdu Stories, judge)
+          const replyText = `📋 **Google Sheet Tab: [${matchedTab.icon} ${matchedTab.name}]**\n\nGoogle Sheet ke **"${matchedTab.name}"** tab (#gid=${matchedTab.gid}) mein filhal koi competitor link add nahi kiya gaya (0 links).\n\nAap is tab ko direct Google Sheet mein open kar ke YouTube links paste kar saktay hain, system automatically unhein sync kar le ga:\n\n🔗 **Open Tab in Sheet:** [Open "${matchedTab.name}" Tab (#gid=${matchedTab.gid})](${directTabUrl})\n\n💡 *Aap Carl Jung (1 link), Trump (4 links), Elon Musk (18 links), Joker (5 links), ya Prayers (27 links) ke competitor links bhi pooch saktay hain.*`;
+
+          const nicheMsg: AIChatMessage = {
+            id: `msg-niche-${Date.now()}`,
+            sender: 'assistant',
+            senderName: 'Nexs AI Assistant',
+            text: replyText,
+            timestamp: timeStr,
+            createdAt: now.toISOString(),
+          };
+
+          setChatMessages((prev) => [...prev, nicheMsg]);
+          logToServer([userMsg, nicheMsg]);
+          return;
+        }
+      }
+
+      // 2. Secondary General Keyword Match across items (e.g. music, lofi, dark reality, etc.)
       let matchedItems: NicheSheetItem[] = [];
       let topicLabel = '';
 
-      if (lower.includes('elon') || lower.includes('musk') || lower.includes('love') || lower.includes('romance') || lower.includes('monologue') || lower.includes('wife')) {
-        topicLabel = 'Elon Musk Storytelling, Romance & Motivational Monologues';
-        matchedItems = (currentSheetItems || []).filter((i) =>
-          i.category.toLowerCase().includes('elon') ||
-          i.category.toLowerCase().includes('romantic') ||
-          i.tags.some((t) => ['elon', 'musk', 'love', 'romance', 'monologue'].includes(t.toLowerCase()))
-        );
-      } else if (lower.includes('music') || lower.includes('chill') || lower.includes('ambient') || lower.includes('lofi') || lower.includes('lo-fi') || lower.includes('beat') || lower.includes('studio') || lower.includes('sound')) {
+      if (lower.includes('music') || lower.includes('chill') || lower.includes('ambient') || lower.includes('lofi') || lower.includes('lo-fi') || lower.includes('beat') || lower.includes('studio') || lower.includes('sound')) {
         topicLabel = 'Ambient Chill Music & Lo-Fi Studio Beats';
         matchedItems = (currentSheetItems || []).filter((i) =>
           i.category.toLowerCase().includes('ambient') ||
@@ -2166,13 +2279,12 @@ Instructions:
           i.tags.some((t) => ['titan', 'alpha', 'motivation', 'deep deal', 'deals'].includes(t.toLowerCase()))
         );
       } else {
-        // Try to extract specific keyword from text
         const cleanWords = lower
-          .replace(/\b(mujhe|bhai|is|topic|ke|upar|mujhe|niche|do|chahiye|give|me|links|link|sheet|mein|se|wali|batao|karo|dikhao|pe|par)\b/g, '')
+          .replace(/\b(mujhe|mujha|bhai|is|topic|ke|upar|niche|do|chahiye|give|me|links|link|sheet|mein|se|wali|batao|karo|dikhao|pe|par|compititor|competitor|competitors|compititors|channels|channel)\b/g, '')
           .trim();
         if (cleanWords && cleanWords.length > 2) {
           matchedItems = (currentSheetItems || []).filter((i) => {
-            const h = `${i.title} ${i.channelName} ${i.category} ${i.tags.join(' ')} ${i.description}`.toLowerCase();
+            const h = `${i.title} ${i.channelName} ${i.category} ${i.tabName || ''} ${i.tags.join(' ')} ${i.description}`.toLowerCase();
             return cleanWords.split(/\s+/).some((w) => w.length > 2 && h.includes(w));
           });
           if (matchedItems.length > 0) {
@@ -2181,15 +2293,14 @@ Instructions:
         }
       }
 
-      // If matched specific topic links from the sheet:
       if (matchedItems.length > 0) {
         const linksListText = matchedItems
           .map((item, idx) => {
-            return `${idx + 1}. **[${item.title}](${item.url})**\n   - **Category:** \`${item.category}\`\n   - **Reference / Channel:** \`${item.channelName}\`\n   - **YouTube Link:** ${item.url}\n   - **Angle & Focus:** ${item.description}`;
+            return `${idx + 1}. **[${item.title}](${item.url})**\n   - **Tab:** \`${item.tabName || item.category}\`\n   - **Channel / Handle:** \`${item.channelName}\`\n   - **YouTube Link:** ${item.url}\n   - **Content Overview:** ${item.description}`;
           })
           .join('\n\n');
 
-        const replyText = `🎯 **Google Sheet se Niche Links (${topicLabel}):**\n\nAap ke kehne ke mutabiq niches Google Sheet se is topic ke related **${matchedItems.length} links** nikaal kar bhej diye hain:\n\n${linksListText}\n\n---\n📊 **Master Google Sheet:** [Connected Niches Hub](${settings.googleSheetNichesUrl || 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing'})\n💡 *Aap in links par click kar ke reference video/channel dekh saktay hain ya neechay clickable badges se direct open kar saktay hain.*`;
+        const replyText = `🎯 **Google Sheet Competitor Links: (${topicLabel}):**\n\nAap ke kehne ke mutabiq niches Google Sheet se is topic ke related **${matchedItems.length} links** nikaal kar bhej diye hain:\n\n${linksListText}\n\n---\n📊 **Master Google Sheet:** [Connected Niches Hub](${settings.googleSheetNichesUrl || 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing'})\n💡 *Aap in links par click kar ke reference video/channel dekh saktay hain ya neechay clickable badges se direct open kar saktay hain.*`;
 
         const nicheMsg: AIChatMessage = {
           id: `msg-niche-${Date.now()}`,
@@ -2201,7 +2312,7 @@ Instructions:
           fetchedItems: matchedItems.map((item) => ({
             type: 'niche',
             title: item.title,
-            details: `${item.category} • ${item.channelName}`,
+            details: `${item.tabName || item.category} • ${item.channelName}`,
             link: item.url,
           })),
         };
@@ -2211,60 +2322,28 @@ Instructions:
         return;
       }
 
-      // If no specific topic matched or user asked generally ("mujhe niche do", "sheet ke links dikhao")
-      const categoriesSummary = [
-        {
-          title: '🚀 Elon Musk Storytelling & Romantic Monologues',
-          desc: 'Love Musk Daily, Chosen Code Breakers, Musk Motivation, Elon Inspires',
-          query: 'elon musk',
-          count: 4,
-        },
-        {
-          title: '🎧 Ambient Chill Music & Lo-Fi Studio Beats',
-          desc: 'Elon Soul Music, Elon Studio Music, Musk Music Studio, Chill Wave',
-          query: 'music',
-          count: 4,
-        },
-        {
-          title: '🧠 Psychology, Stoicism & Mindset Facts',
-          desc: 'Peak Mindset Facts, Behavioral Science, Deep Mind',
-          query: 'psychology mindset',
-          count: 3,
-        },
-        {
-          title: '🕵️ Dark Reality, Crime & Historical Mysteries',
-          desc: 'Dark Reality, The Genius Files, Usman Case Files, Crime Vault',
-          query: 'dark reality crime',
-          count: 5,
-        },
-        {
-          title: '💼 Alpha Motivation & Business Mega Deals',
-          desc: 'Titan Mind Legacy, Deep Deal Investigations',
-          query: 'alpha motivation',
-          count: 2,
-        },
-      ];
+      // 3. Fallback: Show all 18 Google Sheet Tabs Overview with Link Counts & Direct Tabs
+      const tabsOverviewText = ALL_SHEET_TABS.map((t, idx) => {
+        const tabCount = (currentSheetItems || []).filter(
+          (i) => i.tabGid === t.gid || (i.tabName && i.tabName.toLowerCase() === t.name.toLowerCase())
+        ).length;
+        const tabLink = `https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit#gid=${t.gid}`;
+        return `${idx + 1}. ${t.icon} **${t.name}** (${tabCount} Links) — *[Open Tab](${tabLink})*`;
+      }).join('\n');
 
-      const catText = categoriesSummary
-        .map(
-          (c, idx) =>
-            `${idx + 1}. **${c.title}** (${c.count} Links)\n   - *References:* ${c.desc}\n   - *Dekhne ke liye likhein:* *"mujhe ${c.query} ke links do"*`
-        )
-        .join('\n\n');
-
-      const sampleItems = (currentSheetItems || []).slice(0, 5);
+      const sampleItems = (currentSheetItems || []).slice(0, 6);
 
       const generalNicheReply: AIChatMessage = {
         id: `msg-niche-gen-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `📑 **EmpireNexs Google Sheet Connected Niches Hub:**\n\nHamari live Google Sheet mein is waqt **18+ production links** 5 major categories mein available hain:\n\n${catText}\n\n---\n👉 **Aap ko kis topic ke links chahiye?**\nBus topic ka naam likh kar bhejein (maslan: *"mujhe music ke links do"*, *"elon musk niche do"*, *"dark reality links do"*, *"psychology facts do"*), mein foran sheet se us ke mutaliq tamam links bhej doon ga!\n\n🔗 **Live Google Sheet Link:** [Open Niches Master Sheet](${settings.googleSheetNichesUrl || 'https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing'})`,
+        text: `📑 **EmpireNexs Google Sheet Connected Niches Hub (18 Tabs • ${(currentSheetItems || []).length} Total Competitor Links):**\n\nHamari single master Google Sheet mein tamam 18 category tabs bind hain:\n\n${tabsOverviewText}\n\n---\n👉 **Aap ko kis topic ke competitor links chahiye?**\nBus topic ka naam likhein, maslan:\n- *"mujha carl jung par compititor do"*\n- *"trump competitor channels do"*\n- *"elon musk competitor links"*\n- *"joker niche channels"*\n- *"prayers links do"*\n- *"space topics"*\n\nBot foran us tab ke tamam YouTube competitor links utha kar deliver kar de ga!`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
         fetchedItems: sampleItems.map((item) => ({
           type: 'niche',
           title: item.title,
-          details: `${item.category} • ${item.channelName}`,
+          details: `Tab: ${item.tabName || item.category} • ${item.channelName}`,
           link: item.url,
         })),
       };

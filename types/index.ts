@@ -187,7 +187,10 @@ export interface NicheSheetItem {
   title: string;
   channelName: string;
   category: string;
+  tabName?: string;
+  tabGid?: string;
   type: 'channel' | 'video';
   tags: string[];
   description: string;
+  directTabUrl?: string;
 }
