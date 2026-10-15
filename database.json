@@ -37,9 +37,19 @@
     {
       "id": "user-waqas",
       "name": "Waqas Gill",
+      "username": "waqasgill",
       "email": "muhammadwaqasmwg@gmail.com",
+      "password": "admin123",
+      "phone": "+92 300 0000000",
+      "address": "EmpireNexs HQ, Musafirkhana",
       "role": "SUPER_ADMIN",
-      "status": "ACTIVE"
+      "designation": "Founder & CEO",
+      "branchId": "all",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": true,
+      "status": "ACTIVE",
+      "joinedAt": "2026-01-10",
+      "emailVerified": true
     },
     {
       "id": "user-1792089014295",
@@ -62,5 +72,33 @@
     }
   ],
   "channels": [],
-  "updatedAt": "2026-10-15T18:31:05.626Z"
+  "chatLogs": [
+    {
+      "id": "log-msg-1792091880812",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "Assalam o Alaikum! Kaise hain?",
+      "timestamp": "12:18 PM",
+      "createdAt": "2026-10-15T19:18:00.812Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-sal-1792091880813",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "وعلیکم السلام (Walaikum Assalam) **Waqas Gill**! 😊\n\nEmpireNexs AI Assistant aap ki khidmat mein hazir hai. Umeed hai aap ka din bohat acha guzar raha hoga.\n\nAaj aap kis cheez par baat ya kaam karna chahein gay?\n- **Channels Vault:** Channel details, sheet link ya proxies\n- **Niche Topics:** Video topics aur script Google Docs claim karna\n- **OTP Verification:** YouTube SMS verification number lena\n- **Operations & Sales:** Monthly monetized aur sold channels ka report",
+      "timestamp": "12:18 PM",
+      "createdAt": "2026-10-15T19:18:00.812Z",
+      "month": "2026-10"
+    }
+  ],
+  "updatedAt": "2026-10-15T19:18:01.873Z"
 }
