@@ -178,7 +178,33 @@
       "timestamp": "12:51 PM",
       "createdAt": "2026-10-15T19:51:49.264Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792098369557",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "give me joker niche topic",
+      "timestamp": "02:06 PM",
+      "createdAt": "2026-10-15T21:06:09.555Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-niche-1792098369559",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "🎯 **Google Sheet Competitor Links: [🃏 Joker]**\n\nAap ke kehne ke mutabiq Google Sheet ke **\"Joker\"** tab (#gid=96686562) se **5 competitor channels** nikaal kar bhej diye hain:\n\n1. **[Hidden Dominion (Joker Dark Mind)](https://www.youtube.com/@HiddenDominion-l6w)**\n   - **Channel / Handle:** `@HiddenDominion-l6w`\n   - **YouTube Link:** https://www.youtube.com/@HiddenDominion-l6w\n   - **Content Overview:** Joker philosophy, anti-hero dark psychology, societal critique, and viral reels.\n\n2. **[Joker Speaks (Dark Psychology)](https://www.youtube.com/@JokerSpeaks-p9k)**\n   - **Channel / Handle:** `@JokerSpeaks-p9k`\n   - **YouTube Link:** https://www.youtube.com/@JokerSpeaks-p9k\n   - **Content Overview:** Joker philosophy, anti-hero dark psychology, societal critique, and viral reels.\n\n3. **[Sane Madness (Joker Mindset)](https://www.youtube.com/@SaneMadness-s2k)**\n   - **Channel / Handle:** `@SaneMadness-s2k`\n   - **YouTube Link:** https://www.youtube.com/@SaneMadness-s2k\n   - **Content Overview:** Joker philosophy, anti-hero dark psychology, societal critique, and viral reels.\n\n4. **[Veiled Mind](https://www.youtube.com/@VeiledMind-q7z)**\n   - **Channel / Handle:** `@VeiledMind-q7z`\n   - **YouTube Link:** https://www.youtube.com/@VeiledMind-q7z\n   - **Content Overview:** Joker philosophy, anti-hero dark psychology, societal critique, and viral reels.\n\n5. **[Pure Poison (Villain Motivation)](https://www.youtube.com/@PurePoison12k)**\n   - **Channel / Handle:** `@PurePoison12k`\n   - **YouTube Link:** https://www.youtube.com/@PurePoison12k\n   - **Content Overview:** Joker philosophy, anti-hero dark psychology, societal critique, and viral reels.\n\n---\n🔗 **Direct Tab Link:** [Open \"Joker\" Tab in Google Sheet](https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit#gid=96686562)\n📊 **Master Connected Sheet:** [Google Sheets Niches Hub](https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing)\n💡 *Aap in links par click kar ke competitor channels analyze kar saktay hain ya neechay clickable badges se direct open kar saktay hain.*",
+      "timestamp": "02:06 PM",
+      "createdAt": "2026-10-15T21:06:09.555Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-15T20:10:44.751Z"
+  "updatedAt": "2026-10-15T21:06:10.905Z"
 }
