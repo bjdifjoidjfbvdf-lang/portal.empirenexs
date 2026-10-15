@@ -73,7 +73,7 @@ const KNOWN_ITEMS_METADATA: Record<string, Partial<NicheSheetItem>> = {
     tags: ['psychology', 'behavior', 'mindset', 'facts', 'stoicism', 'mental resilience'],
     description: 'Deep dives into human behavior, psychological tricks, body language, and mental discipline.',
   },
-  'ucvegdbj': {
+  'ucvegdj': {
     title: 'Deep Mind & Human Psychology',
     channelName: 'Deep Mind Hub',
     category: 'Psychology & Mindset Facts',
