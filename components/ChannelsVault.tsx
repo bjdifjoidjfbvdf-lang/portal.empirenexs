@@ -31,6 +31,7 @@ export const ChannelsVault: React.FC = () => {
     addChannel,
     updateChannel,
     deleteChannel,
+    bulkImportChannels,
     triggerGoogleSheetSync,
     isSyncingSheets,
   } = useApp();
@@ -43,6 +44,13 @@ export const ChannelsVault: React.FC = () => {
   // Modal state for adding channel
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingChannel, setEditingChannel] = useState<ChannelRecord | null>(null);
+
+  // Personal Sheet / CSV Import Modal state
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [importSheetUrl, setImportSheetUrl] = useState(currentUser.personalGoogleSheetUrl || '');
+  const [pasteRows, setPasteRows] = useState('');
+  const [importStatus, setImportStatus] = useState<string | null>(null);
+  const [isImporting, setIsImporting] = useState(false);
 
   // New channel form state
   const [formData, setFormData] = useState({
@@ -93,6 +101,106 @@ export const ChannelsVault: React.FC = () => {
     const matchesStatus = statusFilter === 'all' || ch.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  const handleImportSheet = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsImporting(true);
+    setImportStatus(null);
+    try {
+      const imported: Omit<ChannelRecord, 'id' | 'updatedAt'>[] = [];
+
+      // 1. Process Pasted Table / CSV lines
+      if (pasteRows.trim()) {
+        const lines = pasteRows.trim().split('\n');
+        for (const line of lines) {
+          const parts = line.includes('\t') ? line.split('\t') : line.split(',');
+          if (parts.length >= 2) {
+            const chName = parts[0]?.trim();
+            const chUrl = parts[1]?.trim();
+            if (chName && chUrl && (chUrl.includes('youtube.com') || chUrl.includes('youtu.be') || chUrl.startsWith('http'))) {
+              imported.push({
+                nameAndLink: `${chName} - ${chUrl}`,
+                channelName: chName,
+                channelUrl: chUrl,
+                status: (parts[2]?.trim() as any) || 'Active',
+                email: parts[3]?.trim() || `${chName.toLowerCase().replace(/[^a-z0-9]/g, '')}@gmail.com`,
+                password: parts[4]?.trim() || '••••••••',
+                twoFactor: parts[5]?.trim() || 'Enabled',
+                managedBy: parts[6]?.trim() || currentUser.name,
+                managerMail: parts[7]?.trim() || currentUser.email,
+                backupCodes: parts[8]?.trim() || 'Available',
+                createdNumber: parts[9]?.trim() || '',
+                pubId: parts[10]?.trim() || '',
+                owner: parts[11]?.trim() || currentUser.name,
+                branchId: currentUser.branchId === 'all' ? 'musafirkhana' : currentUser.branchId,
+                ip: parts[12]?.trim() || '194.26.29.112 (Static Proxy)',
+                niche: parts[13]?.trim() || 'Automation / Tech',
+                subscribers: '0',
+                personalSheetUrl: importSheetUrl.trim(),
+                notes: `Imported via private sheet on ${new Date().toLocaleDateString()}`,
+              });
+            }
+          }
+        }
+      } else if (importSheetUrl.trim()) {
+        // 2. Fetch CSV directly from Google Sheet published/export URL
+        let fetchUrl = importSheetUrl.trim();
+        if (fetchUrl.includes('/edit')) {
+          fetchUrl = fetchUrl.replace(/\/edit.*$/, '/export?format=csv');
+        }
+        try {
+          const res = await fetch(fetchUrl);
+          if (res.ok) {
+            const text = await res.text();
+            const lines = text.trim().split('\n');
+            for (let i = 1; i < lines.length; i++) {
+              const parts = lines[i].split(',').map((p) => p.replace(/^"|"$/g, '').trim());
+              if (parts.length >= 2 && parts[0]) {
+                imported.push({
+                  nameAndLink: `${parts[0]} - ${parts[1] || ''}`,
+                  channelName: parts[0],
+                  channelUrl: parts[1] || `https://youtube.com/@${parts[0].toLowerCase().replace(/[^a-z0-9]/g, '')}`,
+                  status: (parts[2] as any) || 'Active',
+                  email: parts[3] || '',
+                  password: parts[4] || '••••••••',
+                  twoFactor: parts[5] || 'Enabled',
+                  managedBy: parts[6] || currentUser.name,
+                  managerMail: parts[7] || currentUser.email,
+                  backupCodes: parts[8] || '',
+                  createdNumber: parts[9] || '',
+                  pubId: parts[10] || '',
+                  owner: parts[11] || currentUser.name,
+                  branchId: currentUser.branchId === 'all' ? 'musafirkhana' : currentUser.branchId,
+                  ip: parts[12] || '',
+                  niche: parts[13] || 'Automation',
+                  subscribers: '0',
+                  personalSheetUrl: importSheetUrl.trim(),
+                });
+              }
+            }
+          }
+        } catch (fetchErr) {
+          console.warn('Direct CSV fetch notice:', fetchErr);
+        }
+      }
+
+      if (imported.length > 0) {
+        const count = await bulkImportChannels(imported);
+        setImportStatus(`✅ Successfully imported and saved ${count} channels to your private cloud vault!`);
+        setTimeout(() => {
+          setIsImportModalOpen(false);
+          setImportStatus(null);
+          setPasteRows('');
+        }, 1500);
+      } else {
+        setImportStatus('⚠️ No channel rows detected. Please paste your sheet rows containing Channel Name and YouTube URL.');
+      }
+    } catch (err: any) {
+      setImportStatus(`❌ Import failed: ${err?.message || 'Please check your sheet data.'}`);
+    } finally {
+      setIsImporting(false);
+    }
+  };
 
   const handleSaveChannel = (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,12 +270,23 @@ export const ChannelsVault: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <button
+            onClick={() => {
+              setImportSheetUrl(currentUser.personalGoogleSheetUrl || '');
+              setIsImportModalOpen(true);
+            }}
+            className="px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 transition flex items-center gap-1.5 shadow-sm"
+            title="Import or sync from your private Google Sheet / CSV"
+          >
+            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Sync My Google Sheet</span>
+          </button>
+          <button
             onClick={() => triggerGoogleSheetSync()}
             disabled={isSyncingSheets}
             className="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isSyncingSheets ? 'animate-spin' : ''}`} />
-            <span>{isSyncingSheets ? 'Syncing...' : 'Sync Sheet'}</span>
+            <span>{isSyncingSheets ? 'Syncing...' : 'Sync Global'}</span>
           </button>
           <button
             onClick={() => {
@@ -180,8 +299,8 @@ export const ChannelsVault: React.FC = () => {
                 email: '',
                 password: '',
                 twoFactor: '',
-                managedBy: '',
-                managerMail: '',
+                managedBy: currentUser.name,
+                managerMail: currentUser.email,
                 backupCodes: '',
                 createdNumber: '',
                 pubId: '',
@@ -263,6 +382,8 @@ export const ChannelsVault: React.FC = () => {
             <option value="all">All Statuses ({filteredChannels.length})</option>
             <option value="Active">Active</option>
             <option value="Monetized">Monetized</option>
+            <option value="Sold">Sold</option>
+            <option value="Demonetized">Demonetized</option>
             <option value="In Review">In Review</option>
             <option value="Warmup">Warmup</option>
             <option value="Suspended">Suspended</option>
@@ -556,6 +677,8 @@ export const ChannelsVault: React.FC = () => {
                   >
                     <option value="Active">Active</option>
                     <option value="Monetized">Monetized</option>
+                    <option value="Sold">Sold</option>
+                    <option value="Demonetized">Demonetized</option>
                     <option value="In Review">In Review</option>
                     <option value="Warmup">Warmup</option>
                     <option value="Suspended">Suspended</option>
@@ -573,7 +696,7 @@ export const ChannelsVault: React.FC = () => {
                   >
                     <option value="musafirkhana">Musafirkhana (Waqas Gill)</option>
                     <option value="bahawalpur">Bahawalpur (Saim Ch)</option>
-                    <option value="rahim-yar-khan">Rahim Yar Khan (Zainab Athar)</option>
+                    <option value="rahim-yar-khan">Rahim Yar Khan (Zainab Akhtar)</option>
                   </select>
                 </div>
 
@@ -671,7 +794,7 @@ export const ChannelsVault: React.FC = () => {
                     type="text"
                     value={formData.owner}
                     onChange={(e) => setFormData({ ...formData, owner: e.target.value })}
-                    placeholder="e.g. Waqas Gill / Saim Ch / Zainab Athar"
+                    placeholder="e.g. Waqas Gill / Saim Ch / Zainab Akhtar"
                     className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
@@ -701,6 +824,106 @@ export const ChannelsVault: React.FC = () => {
                   className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold"
                 >
                   {editingChannel ? 'Update Channel' : 'Save to Sheet'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {/* Personal Google Sheet Import / Sync Modal */}
+      {isImportModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#0b1120] border border-emerald-500/40 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl animate-in zoom-in-95">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+              <div className="flex items-center gap-2">
+                <FileSpreadsheet className="w-5 h-5 text-emerald-400" />
+                <h2 className="text-base font-bold text-white">
+                  Sync &amp; Import from Google Sheet
+                </h2>
+              </div>
+              <button
+                onClick={() => setIsImportModalOpen(false)}
+                className="text-slate-400 hover:text-white text-sm"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+              Import channels directly into your <strong>Private Workspace</strong>. Every imported channel is automatically tagged to your account and stored in the persistent cloud database.
+            </p>
+
+            {importStatus && (
+              <div className="mb-4 p-3 rounded-xl text-xs bg-slate-900 border border-slate-700 text-slate-200">
+                {importStatus}
+              </div>
+            )}
+
+            <form onSubmit={handleImportSheet} className="space-y-4 text-xs">
+              <div>
+                <label className="block font-semibold text-slate-300 mb-1">
+                  Option 1: Google Sheet URL (CSV / Published / Share Link)
+                </label>
+                <input
+                  type="url"
+                  value={importSheetUrl}
+                  onChange={(e) => setImportSheetUrl(e.target.value)}
+                  placeholder="https://docs.google.com/spreadsheets/d/your-id/export?format=csv"
+                  className="w-full px-3 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono text-[11px] focus:outline-none focus:border-emerald-500"
+                />
+                <p className="text-[10px] text-slate-500 mt-1">
+                  Direct published Google Sheet link or CSV export URL.
+                </p>
+              </div>
+
+              <div className="relative flex py-1 items-center">
+                <div className="flex-grow border-t border-slate-800"></div>
+                <span className="flex-shrink mx-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider">
+                  OR COPY-PASTE ROWS
+                </span>
+                <div className="flex-grow border-t border-slate-800"></div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-300 mb-1">
+                  Option 2: Paste Rows from Google Sheets (Tab or Comma Separated)
+                </label>
+                <textarea
+                  rows={5}
+                  value={pasteRows}
+                  onChange={(e) => setPasteRows(e.target.value)}
+                  placeholder={`Apex Tech Documentaries\thttps://youtube.com/@apextech\tActive\tapex@gmail.com\tpassword123\nLuxury Empire\thttps://youtube.com/@luxuryempire\tActive\tluxury@gmail.com\tpassword123`}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono text-[11px] focus:outline-none focus:border-emerald-500 placeholder-slate-600"
+                />
+                <p className="text-[10px] text-slate-500 mt-1">
+                  Format: Channel Name &amp; YouTube Link required. Columns can be tab or comma separated.
+                </p>
+              </div>
+
+              <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsImportModalOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isImporting}
+                  className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20"
+                >
+                  {isImporting ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Syncing Cloud...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>Import &amp; Save to Cloud</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>

@@ -82,22 +82,25 @@ export const AuthView: React.FC = () => {
   };
 
   // Handle Login Submit
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFeedback(null);
     setIsLoading(true);
 
-    setTimeout(() => {
-      const res = login(loginIdentifier, loginPass);
+    try {
+      const res = await login(loginIdentifier, loginPass);
       setIsLoading(false);
       if (!res.success) {
         setFeedback({ type: 'error', message: res.message });
       }
-    }, 400);
+    } catch (err: any) {
+      setIsLoading(false);
+      setFeedback({ type: 'error', message: err?.message || 'Login failed. Please try again.' });
+    }
   };
 
   // Handle Application Submit
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFeedback(null);
 
@@ -118,8 +121,8 @@ export const AuthView: React.FC = () => {
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      const res = registerUser({
+    try {
+      const res = await registerUser({
         name: regName.trim(),
         username: regUsername.trim(),
         email: regEmail.trim(),
@@ -138,7 +141,7 @@ export const AuthView: React.FC = () => {
         if (res.requiresApproval) {
           setFeedback({
             type: 'pending',
-            message: '🎉 Application Received! Your application has been submitted to Founder & CEO Waqas Gill. Your portal login will be activated upon approval.',
+            message: res.message || '🎉 Application Received! Your application has been submitted to Founder & CEO Waqas Gill. Your portal login will be activated upon approval.',
           });
         } else {
           setFeedback({ type: 'success', message: res.message });
@@ -146,7 +149,10 @@ export const AuthView: React.FC = () => {
       } else {
         setFeedback({ type: 'error', message: res.message });
       }
-    }, 500);
+    } catch (err: any) {
+      setIsLoading(false);
+      setFeedback({ type: 'error', message: err?.message || 'Submission failed. Please try again.' });
+    }
   };
 
   return (

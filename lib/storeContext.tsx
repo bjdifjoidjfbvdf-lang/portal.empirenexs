@@ -27,7 +27,7 @@ interface AppContextType {
   setCurrentUser: (user: UserProfile) => void;
   isAuthenticated: boolean;
   isAuthLoaded: boolean;
-  login: (identifier: string, pass: string) => { success: boolean; message: string };
+  login: (identifier: string, pass: string) => Promise<{ success: boolean; message: string }>;
   registerUser: (data: {
     name: string;
     username: string;
@@ -39,7 +39,8 @@ interface AppContextType {
     designation: string;
     avatar?: string;
     joiningType?: 'PERCENTAGE' | 'SALARY';
-  }) => { success: boolean; message: string; requiresApproval: boolean };
+    personalGoogleSheetUrl?: string;
+  }) => Promise<{ success: boolean; message: string; requiresApproval: boolean }>;
   logout: () => void;
   sendEmailOTP: (email: string, purpose?: 'SIGNUP' | 'FORGOT_PASSWORD') => Promise<{ success: boolean; message: string; otp?: string }>;
   verifyEmailOTP: (email: string, otp: string, purpose?: 'SIGNUP' | 'FORGOT_PASSWORD') => Promise<{ success: boolean; message: string }>;
@@ -67,6 +68,10 @@ interface AppContextType {
   updateChannel: (id: string, channel: Partial<ChannelRecord>) => void;
   deleteChannel: (id: string) => void;
   filteredChannels: ChannelRecord[];
+  markChannelMonetized: (id: string, monetizedAt?: string) => Promise<void>;
+  markChannelSold: (id: string, salePrice: number, soldTo: string, soldAt?: string, saleCurrency?: 'PKR' | 'USD') => Promise<void>;
+  markChannelDemonetized: (id: string, issueReason: string, demonetizedAt?: string) => Promise<void>;
+  bulkImportChannels: (newChannels: Omit<ChannelRecord, 'id' | 'updatedAt'>[]) => Promise<number>;
 
   // Niches Multi-Tab Hub & Daily Quota
   nicheTabs: NicheTab[];
@@ -123,11 +128,41 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const availableUsers = users.filter((u) => u.status === 'ACTIVE');
   const pendingUsers = users.filter((u) => u.status === 'PENDING');
 
-  // Login supporting Email OR Username
-  const login = (identifier: string, pass: string): { success: boolean; message: string } => {
+  // Login supporting Email OR Username with Live Cloud Verification
+  const login = async (identifier: string, pass: string): Promise<{ success: boolean; message: string }> => {
     const cleanId = (identifier || '').trim().toLowerCase();
     const cleanPass = pass || '';
 
+    // 1. Live Cloud DB Auth via API
+    try {
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'login', identifier: cleanId, password: cleanPass }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success && data.user) {
+        const liveUser: UserProfile = data.user;
+        setCurrentUser(liveUser);
+        setIsAuthenticated(true);
+        setUsers((prev) => {
+          const map = new Map<string, UserProfile>();
+          prev.forEach((u) => map.set(u.id, u));
+          map.set(liveUser.id, liveUser);
+          return Array.from(map.values());
+        });
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('empirenexs_session_user_prod', liveUser.id);
+        }
+        return { success: true, message: data.message || `Welcome, ${liveUser.name}!` };
+      } else if (data.message) {
+        return { success: false, message: data.message };
+      }
+    } catch (e) {
+      console.warn('[StoreContext] Cloud auth fallback:', e);
+    }
+
+    // 2. Local Fallback if server is unreachable
     const user = users.find((u) => {
       const uEmail = u.email.toLowerCase().trim();
       const uUsername = (u.username || '').toLowerCase().trim();
@@ -181,7 +216,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Register with unique username and email
-  const registerUser = (data: {
+  const registerUser = async (data: {
     name: string;
     username: string;
     email: string;
@@ -192,7 +227,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     designation: string;
     avatar?: string;
     joiningType?: 'PERCENTAGE' | 'SALARY';
-  }): { success: boolean; message: string; requiresApproval: boolean } => {
+    personalGoogleSheetUrl?: string;
+  }): Promise<{ success: boolean; message: string; requiresApproval: boolean }> => {
     const cleanEmail = data.email.toLowerCase().trim();
     const cleanUsername = data.username.toLowerCase().trim();
 
@@ -238,33 +274,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setIsAuthenticated(true);
       if (typeof window !== 'undefined') {
         localStorage.setItem('empirenexs_session_user_prod', waqasUser.id);
+        fetch('/api/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'register', user: waqasUser }),
+        }).catch(() => null);
       }
 
       return {
         success: true,
         message: 'Welcome, Founder & CEO Waqas Gill! Your Super Admin master account is verified and immediately active.',
-        requiresApproval: false,
-      };
-    }
-
-    // Check duplicate email
-    const existingEmail = users.find((u) => u.email.toLowerCase().trim() === cleanEmail);
-    if (existingEmail) {
-      return {
-        success: false,
-        message: 'This Gmail address is already registered in the system.',
-        requiresApproval: false,
-      };
-    }
-
-    // Check duplicate username
-    const existingUsername = users.find(
-      (u) => u.username && u.username.toLowerCase().trim() === cleanUsername
-    );
-    if (existingUsername) {
-      return {
-        success: false,
-        message: `The username "${data.username}" is already taken. Please choose another unique username.`,
         requiresApproval: false,
       };
     }
@@ -286,27 +305,39 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       canAccessAllBranches: false,
       status: 'PENDING',
       joiningType: data.joiningType || 'PERCENTAGE',
+      personalGoogleSheetUrl: data.personalGoogleSheetUrl || '',
       joinedAt: new Date().toISOString().split('T')[0],
       emailVerified: true,
     };
 
     setUsers((prev) => [...prev, newUser]);
 
-    // Sync with server API
-    if (typeof window !== 'undefined') {
-      fetch('/api/users', {
+    try {
+      const res = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'register', user: newUser }),
-      }).catch((e) => console.warn('API sync notice:', e));
+      });
+      const resData = await res.json();
+      if (!res.ok || !resData.success) {
+        return {
+          success: false,
+          message: resData.message || 'Registration failed.',
+          requiresApproval: false,
+        };
+      }
+      return {
+        success: true,
+        message: resData.message || 'Registration submitted! For company security, your account will be unlocked once approved by Founder & CEO Waqas Gill.',
+        requiresApproval: true,
+      };
+    } catch (e: any) {
+      return {
+        success: true,
+        message: 'Your Gmail address has been verified and registration submitted! For company security, your account will be unlocked once approved by Founder & CEO Waqas Gill.',
+        requiresApproval: true,
+      };
     }
-
-    return {
-      success: true,
-      message:
-        'Your Gmail address has been verified and registration submitted! For company security, your account will be unlocked once approved by Founder & CEO Waqas Gill.',
-      requiresApproval: true,
-    };
   };
 
   const approveUser = (userId: string) => {
@@ -485,6 +516,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     setCurrentUser(updatedUser);
     setUsers((prev) => prev.map((u) => (u.id === currentUser.id ? updatedUser : u)));
+
+    if (typeof window !== 'undefined') {
+      fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'updateProfile', userId: currentUser.id, updates }),
+      }).catch((e) => console.warn('Profile sync notice:', e));
+    }
+
     return { success: true, message: 'Profile updated successfully!' };
   };
 
@@ -528,7 +568,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 Branches: 
 1. Musafirkhana (Founder & CEO: Waqas Gill)
 2. Bahawalpur (Co-Founder: Saim Ch)
-3. Rahim Yar Khan (Co-Founder: Zainab Athar)
+3. Rahim Yar Khan (Co-Founder: Zainab Akhtar)
 Instructions:
 - Provide fast, accurate, professional guidance.
 - When someone asks for a channel link or details, search the Channels Vault and deliver the exact link and status.
@@ -642,6 +682,24 @@ Instructions:
                 });
                 return Array.from(map.values());
               });
+              // Auto-activate user if approved while session open
+              if (savedSessionId) {
+                const updatedSessionUser = data.users.find((u: UserProfile) => u.id === savedSessionId);
+                if (updatedSessionUser && updatedSessionUser.status === 'ACTIVE') {
+                  setCurrentUser(updatedSessionUser);
+                  setIsAuthenticated(true);
+                }
+              }
+            }
+          })
+          .catch(() => null);
+
+        // Fetch channels from server API to stay in sync
+        fetch('/api/channels')
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success && Array.isArray(data.channels)) {
+              setChannels(data.channels);
             }
           })
           .catch(() => null);
@@ -706,7 +764,7 @@ Instructions:
 
   // STRICT DATA ISOLATION:
   // - Waqas Gill (Founder & CEO): Sees ALL channels across ALL branches & managers
-  // - Branch Heads (Saim Ch, Zainab Athar): See channels of their branch
+  // - Branch Heads (Saim Ch, Zainab Akhtar): See channels of their branch
   // - Regular Team Members (Mubashir, editors): ONLY see their OWN channels!
   const filteredChannels = channels.filter((ch) => {
     if (currentUser.role === 'SUPER_ADMIN') {
@@ -723,10 +781,15 @@ Instructions:
       return true;
     }
 
-    // Regular Team Member: Strict data isolation
-    const userNameClean = currentUser.name.trim().toLowerCase();
-    const userEmailClean = currentUser.email.trim().toLowerCase();
+    // Regular Team Member / Student: STRICT DATA ISOLATION
+    const userNameClean = (currentUser.name || '').trim().toLowerCase();
+    const userEmailClean = (currentUser.email || '').trim().toLowerCase();
     const usernameClean = (currentUser.username || '').trim().toLowerCase();
+    const currentUid = currentUser.id;
+
+    if (ch.userId && ch.userId === currentUid) {
+      return true;
+    }
 
     const isMyChannel =
       ch.managedBy.toLowerCase().includes(userNameClean) ||
@@ -748,15 +811,24 @@ Instructions:
     return true;
   });
 
-  // Channel management functions
+  // Channel management functions with Cloud Persistence
   const addChannel = (newCh: Omit<ChannelRecord, 'id' | 'updatedAt'>) => {
     const id = `ch-${Date.now()}`;
     const channel: ChannelRecord = {
       ...newCh,
       id,
+      userId: currentUser.id,
       updatedAt: new Date().toISOString().split('T')[0],
     };
     setChannels((prev) => [channel, ...prev]);
+
+    if (typeof window !== 'undefined') {
+      fetch('/api/channels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'add', channel }),
+      }).catch((e) => console.warn('Channel add sync error:', e));
+    }
   };
 
   const updateChannel = (id: string, updates: Partial<ChannelRecord>) => {
@@ -767,10 +839,90 @@ Instructions:
           : ch
       )
     );
+
+    if (typeof window !== 'undefined') {
+      fetch('/api/channels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'update', id, updates }),
+      }).catch((e) => console.warn('Channel update sync error:', e));
+    }
   };
 
   const deleteChannel = (id: string) => {
     setChannels((prev) => prev.filter((ch) => ch.id !== id));
+
+    if (typeof window !== 'undefined') {
+      fetch('/api/channels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', id }),
+      }).catch((e) => console.warn('Channel delete sync error:', e));
+    }
+  };
+
+  // Monetization & Lifecycle Management
+  const markChannelMonetized = async (id: string, monetizedAt?: string) => {
+    const mDate = monetizedAt || new Date().toISOString().split('T')[0];
+    updateChannel(id, {
+      status: 'Monetized',
+      monetizedAt: mDate,
+    });
+  };
+
+  const markChannelSold = async (
+    id: string,
+    salePrice: number,
+    soldTo: string,
+    soldAt?: string,
+    saleCurrency: 'PKR' | 'USD' = 'PKR'
+  ) => {
+    const sDate = soldAt || new Date().toISOString().split('T')[0];
+    updateChannel(id, {
+      status: 'Sold',
+      salePrice,
+      soldTo,
+      soldAt: sDate,
+      saleCurrency,
+    });
+  };
+
+  const markChannelDemonetized = async (id: string, issueReason: string, demonetizedAt?: string) => {
+    const dDate = demonetizedAt || new Date().toISOString().split('T')[0];
+    updateChannel(id, {
+      status: 'Demonetized',
+      issueReason,
+      demonetizedAt: dDate,
+    });
+  };
+
+  const bulkImportChannels = async (newChannels: Omit<ChannelRecord, 'id' | 'updatedAt'>[]): Promise<number> => {
+    const prepared: ChannelRecord[] = newChannels.map((ch, idx) => ({
+      ...ch,
+      id: `ch-${Date.now()}-${idx}`,
+      userId: currentUser.id,
+      branchId: currentUser.role === 'SUPER_ADMIN' ? (ch.branchId || 'musafirkhana') : currentUser.branchId,
+      managedBy: ch.managedBy || currentUser.name,
+      managerMail: ch.managerMail || currentUser.email,
+      owner: ch.owner || currentUser.name,
+      updatedAt: new Date().toISOString().split('T')[0],
+    }));
+
+    setChannels((prev) => [...prepared, ...prev]);
+
+    if (typeof window !== 'undefined') {
+      fetch('/api/channels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'bulkSync',
+          newChannels: prepared,
+          userId: currentUser.role === 'SUPER_ADMIN' ? undefined : currentUser.id,
+        }),
+      }).catch((e) => console.warn('Bulk channel sync error:', e));
+    }
+
+    return prepared.length;
   };
 
   // Niches management functions
@@ -1501,6 +1653,10 @@ Instructions:
         updateChannel,
         deleteChannel,
         filteredChannels,
+        markChannelMonetized,
+        markChannelSold,
+        markChannelDemonetized,
+        bulkImportChannels,
         nicheTabs,
         activeTabId,
         setActiveTabId,

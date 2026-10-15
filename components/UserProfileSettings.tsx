@@ -21,6 +21,7 @@ import {
   AlertCircle,
   Sparkles,
   RefreshCw,
+  FileSpreadsheet,
 } from 'lucide-react';
 
 const PRESET_AVATARS = [
@@ -42,6 +43,8 @@ export const UserProfileSettings: React.FC = () => {
   const [address, setAddress] = useState(currentUser.address || '');
   const [designation, setDesignation] = useState(currentUser.designation);
   const [avatar, setAvatar] = useState(currentUser.avatar);
+  const [personalSheetUrl, setPersonalSheetUrl] = useState(currentUser.personalGoogleSheetUrl || '');
+  const [personalSheetApiKey, setPersonalSheetApiKey] = useState(currentUser.personalGoogleSheetApiKey || '');
 
   // Password change state
   const [currentPassword, setCurrentPassword] = useState('');
@@ -109,6 +112,8 @@ export const UserProfileSettings: React.FC = () => {
       address: address.trim(),
       designation: designation.trim(),
       avatar,
+      personalGoogleSheetUrl: personalSheetUrl.trim(),
+      personalGoogleSheetApiKey: personalSheetApiKey.trim(),
     });
 
     if (res.success) {
@@ -424,6 +429,46 @@ export const UserProfileSettings: React.FC = () => {
                     placeholder="Founder & CEO"
                     className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition"
                   />
+                </div>
+
+                {/* Personal Google Sheet & Data Isolation Settings */}
+                <div className="sm:col-span-2 pt-4 border-t border-slate-800/80">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+                    <label className="text-slate-200 font-bold">Personal Google Sheet (Your Private Isolation Sheet)</label>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-mono">
+                      Strict Multi-User Isolation
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 mb-3 leading-relaxed">
+                    Students &amp; creators maintain their own dedicated Google Sheets. The channels you import or sync here belong strictly to your private workspace. Other creators cannot see your channels, passwords, or backup codes.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-slate-400 text-[10px] uppercase font-bold mb-1">
+                        Personal Google Sheet Link (CSV / Share Link)
+                      </label>
+                      <input
+                        type="url"
+                        value={personalSheetUrl}
+                        onChange={(e) => setPersonalSheetUrl(e.target.value)}
+                        placeholder="https://docs.google.com/spreadsheets/d/your-sheet-id/export?format=csv"
+                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-emerald-500 font-mono text-[11px] transition"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-slate-400 text-[10px] uppercase font-bold mb-1">
+                        Personal API Key / Webhook (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={personalSheetApiKey}
+                        onChange={(e) => setPersonalSheetApiKey(e.target.value)}
+                        placeholder="Optional Google Apps Script API token"
+                        className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-emerald-500 font-mono text-[11px] transition"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 

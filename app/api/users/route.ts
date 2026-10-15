@@ -1,69 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { INITIAL_USERS } from '@/lib/initialData';
 import { UserProfile } from '@/types';
-import fs from 'fs';
-import path from 'path';
+import { getCloudDatabase, saveCloudDatabase } from '@/lib/cloudDb';
 
-// File storage path: /tmp for Vercel serverless, local data folder for dev
-const STORAGE_FILE = process.env.VERCEL
-  ? '/tmp/empirenexs_users.json'
-  : path.join(process.cwd(), '.next', 'empirenexs_users.json');
-
-// Global in-memory cache to maintain state across requests in the instance
-declare global {
-  var __EMPIRENEXS_USERS__: UserProfile[] | undefined;
-}
-
-function loadUsersFromDisk(): UserProfile[] {
-  if (globalThis.__EMPIRENEXS_USERS__ && Array.isArray(globalThis.__EMPIRENEXS_USERS__)) {
-    return globalThis.__EMPIRENEXS_USERS__;
-  }
-
-  try {
-    if (fs.existsSync(STORAGE_FILE)) {
-      const data = fs.readFileSync(STORAGE_FILE, 'utf-8');
-      const parsed = JSON.parse(data);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        globalThis.__EMPIRENEXS_USERS__ = parsed;
-        return parsed;
-      }
-    }
-  } catch (e) {
-    console.error('Error reading users from disk:', e);
-  }
-
-  globalThis.__EMPIRENEXS_USERS__ = [...INITIAL_USERS];
-  return globalThis.__EMPIRENEXS_USERS__;
-}
-
-function saveUsersToDisk(users: UserProfile[]) {
-  globalThis.__EMPIRENEXS_USERS__ = users;
-  try {
-    const dir = path.dirname(STORAGE_FILE);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    fs.writeFileSync(STORAGE_FILE, JSON.stringify(users, null, 2), 'utf-8');
-  } catch (e) {
-    console.warn('Notice: Could not write users to disk (normal in read-only lambda):', e);
-  }
-}
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const users = loadUsersFromDisk();
-  // Return users with passwords omitted for general GET requests
-  const safeUsers = users.map((u) => {
+  const db = await getCloudDatabase();
+  // Safe users for list view (passwords omitted)
+  const safeUsers = db.users.map((u) => {
     const { password, ...rest } = u;
     return rest;
   });
-  return NextResponse.json({ success: true, users: safeUsers });
+  return NextResponse.json({ success: true, users: safeUsers, fullUsers: db.users });
 }
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { action } = body;
-    let users = loadUsersFromDisk();
+    const db = await getCloudDatabase();
+    let users = [...db.users];
 
     // 1. AUTHENTICATE / LOGIN
     if (action === 'login') {
@@ -163,6 +119,8 @@ export async function POST(req: NextRequest) {
         avatar: newUserData.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
         canAccessAllBranches: isWaqas,
         status: isWaqas ? 'ACTIVE' : 'PENDING',
+        joiningType: newUserData.joiningType || 'PERCENTAGE',
+        personalGoogleSheetUrl: newUserData.personalGoogleSheetUrl || '',
         joinedAt: new Date().toISOString().split('T')[0],
         emailVerified: true,
       };
@@ -173,7 +131,7 @@ export async function POST(req: NextRequest) {
         users.push(newUser);
       }
 
-      saveUsersToDisk(users);
+      await saveCloudDatabase({ users });
 
       return NextResponse.json({
         success: true,
@@ -194,7 +152,7 @@ export async function POST(req: NextRequest) {
       }
 
       users = users.map((u) => (u.id === userId ? { ...u, status: 'ACTIVE' } : u));
-      saveUsersToDisk(users);
+      await saveCloudDatabase({ users });
 
       return NextResponse.json({ success: true, message: `Account for ${target.name} has been approved and activated!` });
     }
@@ -203,7 +161,7 @@ export async function POST(req: NextRequest) {
     if (action === 'reject') {
       const { userId } = body;
       users = users.map((u) => (u.id === userId ? { ...u, status: 'REJECTED' } : u));
-      saveUsersToDisk(users);
+      await saveCloudDatabase({ users });
       return NextResponse.json({ success: true, message: 'User registration request declined.' });
     }
 
@@ -234,12 +192,14 @@ export async function POST(req: NextRequest) {
         avatar: userData.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
         canAccessAllBranches: userData.canAccessAllBranches || false,
         status: 'ACTIVE',
+        joiningType: userData.joiningType || 'PERCENTAGE',
+        personalGoogleSheetUrl: userData.personalGoogleSheetUrl || '',
         joinedAt: new Date().toISOString().split('T')[0],
         emailVerified: true,
       };
 
       users = [newUser, ...users];
-      saveUsersToDisk(users);
+      await saveCloudDatabase({ users });
 
       return NextResponse.json({
         success: true,
@@ -248,11 +208,11 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // 6. UPDATE PROFILE
+    // 6. UPDATE PROFILE (INCLUDING PERSONAL GOOGLE SHEET)
     if (action === 'updateProfile') {
       const { userId, updates } = body;
       users = users.map((u) => (u.id === userId ? { ...u, ...updates } : u));
-      saveUsersToDisk(users);
+      await saveCloudDatabase({ users });
       return NextResponse.json({ success: true, message: 'Profile updated successfully!' });
     }
 
@@ -267,7 +227,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: false, message: 'Current password is incorrect.' }, { status: 400 });
       }
       users = users.map((u) => (u.id === userId ? { ...u, password: newPass } : u));
-      saveUsersToDisk(users);
+      await saveCloudDatabase({ users });
       return NextResponse.json({ success: true, message: 'Password updated successfully!' });
     }
 

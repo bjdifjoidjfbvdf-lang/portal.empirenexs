@@ -14,6 +14,7 @@ import {
   Sparkles,
   User,
   Smartphone,
+  TrendingUp,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -30,6 +31,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       label: 'Dashboard Overview',
       icon: LayoutDashboard,
       badge: 'Live',
+    },
+    {
+      id: 'monthly-calc',
+      label: 'Monthly Operations & Sales',
+      icon: TrendingUp,
+      badge: 'Calculations',
     },
     {
       id: 'channels',

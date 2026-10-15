@@ -35,6 +35,8 @@ export interface UserProfile {
   joiningType?: 'PERCENTAGE' | 'SALARY';
   joinedAt?: string;
   emailVerified?: boolean;
+  personalGoogleSheetUrl?: string;
+  personalGoogleSheetApiKey?: string;
 }
 
 export interface ChannelRecord {
@@ -42,7 +44,7 @@ export interface ChannelRecord {
   nameAndLink: string;
   channelName: string;
   channelUrl: string;
-  status: 'Active' | 'Monetized' | 'In Review' | 'Suspended' | 'Warmup';
+  status: 'Active' | 'Monetized' | 'In Review' | 'Suspended' | 'Warmup' | 'Sold' | 'Demonetized';
   email: string;
   password: string;
   twoFactor: string;
@@ -58,6 +60,15 @@ export interface ChannelRecord {
   subscribers?: string;
   notes?: string;
   updatedAt: string;
+  userId?: string;
+  monetizedAt?: string;
+  soldAt?: string;
+  salePrice?: number;
+  saleCurrency?: 'PKR' | 'USD';
+  soldTo?: string;
+  demonetizedAt?: string;
+  issueReason?: string;
+  personalSheetUrl?: string;
 }
 
 export interface NicheVideoItem {

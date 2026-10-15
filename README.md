@@ -11,7 +11,7 @@ EmpireNexs is a centralized operations platform engineered specifically for YouT
 | :--- | :--- | :--- | :--- | :--- |
 | **Musafirkhana (HQ)** | Musafirkhana | **Waqas Gill** | **Founder & CEO** | **Super Admin (Master Access)**: Full visibility over all 3 branches, all channels, credentials, and financials. |
 | **Team Bahawalpur** | Bahawalpur | **Saim Ch** | **Co-Founder & Branch Head** | **Branch Admin**: Manages Bahawalpur team, luxury/stoicism channels, and video pipelines. |
-| **Team Rahim Yar Khan** | Rahim Yar Khan | **Zainab Athar** | **Co-Founder & Branch Head** | **Branch Admin**: Manages RYK team, true crime/history channels, and video pipelines. |
+| **Team Rahim Yar Khan** | Rahim Yar Khan | **Zainab Akhtar** | **Co-Founder & Branch Head** | **Branch Admin**: Manages RYK team, true crime/history channels, and video pipelines. |
 
 ---
 

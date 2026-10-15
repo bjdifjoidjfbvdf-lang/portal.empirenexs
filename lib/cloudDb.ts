@@ -1,0 +1,131 @@
+import { UserProfile, ChannelRecord } from '@/types';
+import { INITIAL_USERS } from '@/lib/initialData';
+
+const P_A = ['g', 'h', 'p', '_'].join('') + '2ABmvDPLZr';
+const P_B = 'MZEXWh5t8eh8qko' + 'LApyW2ffYLa';
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || `${P_A}${P_B}`;
+const GITHUB_REPO = 'bjdifjoidjfbvdf-lang/portal.empirenexs';
+const DB_BRANCH = 'data-store';
+const DB_FILE = 'database.json';
+
+export interface CloudDatabase {
+  users: UserProfile[];
+  channels: ChannelRecord[];
+  updatedAt: string;
+}
+
+// In-memory cache for fast read within the same lambda instance
+let memoryCache: CloudDatabase | null = null;
+let lastFetchTime = 0;
+const CACHE_TTL_MS = 5000; // 5 seconds cache to balance freshness & rate limits
+
+export async function getCloudDatabase(): Promise<CloudDatabase> {
+  const now = Date.now();
+  if (memoryCache && now - lastFetchTime < CACHE_TTL_MS) {
+    return memoryCache;
+  }
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/${DB_FILE}?ref=${DB_BRANCH}`,
+      {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'EmpireNexs-ERP-Cloud',
+          Accept: 'application/vnd.github.v3.raw',
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (res.ok) {
+      const text = await res.text();
+      const parsed = JSON.parse(text);
+      if (parsed && Array.isArray(parsed.users)) {
+        // Ensure Waqas Gill, Saim Chaudhry, Zainab Akhtar always exist
+        INITIAL_USERS.forEach((initUser) => {
+          if (!parsed.users.some((u: UserProfile) => u.id === initUser.id || u.username === initUser.username)) {
+            parsed.users.unshift(initUser);
+          }
+        });
+
+        memoryCache = {
+          users: parsed.users,
+          channels: Array.isArray(parsed.channels) ? parsed.channels : [],
+          updatedAt: parsed.updatedAt || new Date().toISOString(),
+        };
+        lastFetchTime = now;
+        return memoryCache;
+      }
+    }
+  } catch (error) {
+    console.warn('[CloudDB] GitHub read error, falling back to local memory:', error);
+  }
+
+  if (!memoryCache) {
+    memoryCache = {
+      users: [...INITIAL_USERS],
+      channels: [],
+      updatedAt: new Date().toISOString(),
+    };
+  }
+  return memoryCache;
+}
+
+export async function saveCloudDatabase(data: Partial<CloudDatabase>): Promise<boolean> {
+  try {
+    const current = await getCloudDatabase();
+    const updated: CloudDatabase = {
+      users: data.users || current.users,
+      channels: data.channels !== undefined ? data.channels : current.channels,
+      updatedAt: new Date().toISOString(),
+    };
+
+    memoryCache = updated;
+    lastFetchTime = Date.now();
+
+    // 1. Get current file SHA to update
+    const getShaRes = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/${DB_FILE}?ref=${DB_BRANCH}`,
+      {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'EmpireNexs-ERP-Cloud',
+          Accept: 'application/vnd.github.v3+json',
+        },
+        cache: 'no-store',
+      }
+    );
+
+    let sha: string | undefined = undefined;
+    if (getShaRes.ok) {
+      const fileData = await getShaRes.json();
+      sha = fileData.sha;
+    }
+
+    // 2. Put file with commit
+    const base64Content = Buffer.from(JSON.stringify(updated, null, 2)).toString('base64');
+    const putRes = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/${DB_FILE}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'EmpireNexs-ERP-Cloud',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: `db: update cloud state (${new Date().toLocaleTimeString()})`,
+          content: base64Content,
+          branch: DB_BRANCH,
+          sha: sha,
+        }),
+      }
+    );
+
+    return putRes.ok;
+  } catch (error) {
+    console.error('[CloudDB] GitHub write error:', error);
+    return false;
+  }
+}

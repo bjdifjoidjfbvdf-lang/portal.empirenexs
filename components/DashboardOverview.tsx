@@ -74,15 +74,22 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({ onNavigate
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => onNavigate('channels')}
+              onClick={() => onNavigate('monthly-calc')}
               className="px-4 py-2.5 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-lg shadow-emerald-500/20 transition flex items-center gap-2"
             >
-              <Youtube className="w-4 h-4 fill-slate-950" />
+              <TrendingUp className="w-4 h-4 text-slate-950" />
+              <span>Monthly Calculations</span>
+            </button>
+            <button
+              onClick={() => onNavigate('channels')}
+              className="px-4 py-2.5 rounded-xl font-bold text-xs bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 transition flex items-center gap-2"
+            >
+              <Youtube className="w-4 h-4 text-emerald-400" />
               <span>Channels Vault</span>
             </button>
             <button
               onClick={() => onNavigate('niches')}
-              className="px-4 py-2.5 rounded-xl font-bold text-xs bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 transition flex items-center gap-2"
+              className="px-4 py-2.5 rounded-xl font-bold text-xs bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 transition flex items-center gap-2 hidden lg:flex"
             >
               <Film className="w-4 h-4 text-emerald-400" />
               <span>Niches Pipeline</span>
