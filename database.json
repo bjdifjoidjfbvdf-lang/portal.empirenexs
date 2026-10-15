@@ -40,7 +40,7 @@
       "username": "waqasgill",
       "email": "muhammadwaqasmwg@gmail.com",
       "password": "admin123",
-      "phone": "+92 300 0000000",
+      "phone": "+923075203713",
       "address": "EmpireNexs HQ, Musafirkhana",
       "role": "SUPER_ADMIN",
       "designation": "Founder & CEO",
@@ -49,7 +49,9 @@
       "canAccessAllBranches": true,
       "status": "ACTIVE",
       "joinedAt": "2026-01-10",
-      "emailVerified": true
+      "emailVerified": true,
+      "personalGoogleSheetUrl": "",
+      "personalGoogleSheetApiKey": ""
     },
     {
       "id": "user-1792089014295",
@@ -126,5 +128,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-15T19:18:10.629Z"
+  "updatedAt": "2026-10-15T19:23:40.353Z"
 }
