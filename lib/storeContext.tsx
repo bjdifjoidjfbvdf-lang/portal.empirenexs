@@ -231,7 +231,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const uUsername = (u.username || '').toLowerCase().trim();
       if (uEmail === cleanId || uUsername === cleanId) return true;
       if (
-        (cleanId === 'muhammadwaqasmwg@gmail.com' || cleanId === 'waqasgill' || cleanId === 'waqas@empirenexs.com') &&
+        (cleanId === 'muhammadwaqasmwg@gmail.com' || cleanId === 'waqasgill' || cleanId === 'waqas@empirenexs.com' || cleanId.includes('waqasgill') || cleanId.includes('muhammadwaqasmwg')) &&
         (u.id === 'user-waqas' || uUsername === 'waqasgill' || u.role === 'SUPER_ADMIN' || uEmail === 'muhammadwaqasmwg@gmail.com')
       ) {
         return true;

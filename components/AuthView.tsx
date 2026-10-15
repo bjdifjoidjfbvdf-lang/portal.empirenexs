@@ -636,7 +636,7 @@ export const AuthView: React.FC = () => {
                       required
                       value={loginIdentifier}
                       onChange={(e) => setLoginIdentifier(e.target.value)}
-                      placeholder="e.g. waqasgill or saimchaudhry"
+                      placeholder="e.g. alex_editor or alex@empirenexs.com"
                       className="w-full bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none transition"
                     />
                   </div>
@@ -674,8 +674,9 @@ export const AuthView: React.FC = () => {
                   )}
                 </button>
 
-                <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-[11px] text-slate-400 text-center mt-3">
-                  🔐 Master Founder Login: <code className="text-emerald-400 font-bold">waqasgill</code>
+                <div className="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 text-[11px] text-slate-400 text-center mt-3 flex items-center justify-center gap-1.5">
+                  <Lock className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Secure 256-Bit Encrypted Multi-Branch Gateway</span>
                 </div>
               </form>
             )}
