@@ -83,6 +83,7 @@ interface AppContextType {
   activeTabId: string;
   setActiveTabId: (tabId: string) => void;
   addNicheTab: (name: string, description: string, branchId: BranchId) => void;
+  deleteNicheTab: (nicheId: string) => void;
   addVideoToNiche: (nicheId: string, video: Omit<NicheVideoItem, 'id'>) => void;
   updateVideoInNiche: (nicheId: string, videoId: string, updates: Partial<NicheVideoItem>) => void;
   deleteVideoFromNiche: (nicheId: string, videoId: string) => void;
@@ -1311,6 +1312,16 @@ Instructions:
     };
     setNicheTabs((prev) => [...prev, newTab]);
     setActiveTabId(newTab.id);
+  };
+
+  const deleteNicheTab = (nicheId: string) => {
+    setNicheTabs((prev) => {
+      const remaining = prev.filter((t) => t.id !== nicheId);
+      if (activeTabId === nicheId && remaining.length > 0) {
+        setActiveTabId(remaining[0].id);
+      }
+      return remaining;
+    });
   };
 
   const addVideoToNiche = (nicheId: string, video: Omit<NicheVideoItem, 'id'>) => {
@@ -2620,6 +2631,7 @@ Instructions:
         activeTabId,
         setActiveTabId,
         addNicheTab,
+        deleteNicheTab,
         addVideoToNiche,
         updateVideoInNiche,
         deleteVideoFromNiche,

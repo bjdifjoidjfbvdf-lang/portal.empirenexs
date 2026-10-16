@@ -59,6 +59,7 @@ export const NichesHub: React.FC = () => {
     activeTabId,
     setActiveTabId,
     addNicheTab,
+    deleteNicheTab,
     addVideoToNiche,
     updateVideoInNiche,
     deleteVideoFromNiche,
@@ -80,6 +81,42 @@ export const NichesHub: React.FC = () => {
   const [selectedSheetCategory, setSelectedSheetCategory] = useState<string>('all');
   const [sheetSearch, setSheetSearch] = useState<string>('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Deleted/hidden sheet niche IDs (persisted locally)
+  const [deletedSheetNicheIds, setDeletedSheetNicheIds] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('empirenexs_deleted_sheet_niches');
+        return saved ? JSON.parse(saved) : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
+
+  const handleDeleteSheetNiche = (id: string, title: string) => {
+    if (window.confirm(`Are you sure you want to remove "${title}" from the Niches Hub view?`)) {
+      setDeletedSheetNicheIds((prev) => {
+        const next = [...prev, id];
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('empirenexs_deleted_sheet_niches', JSON.stringify(next));
+          } catch {}
+        }
+        return next;
+      });
+    }
+  };
+
+  const handleRestoreDeletedSheetNiches = () => {
+    if (window.confirm('Restore all previously deleted/hidden sheet niche items?')) {
+      setDeletedSheetNicheIds([]);
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('empirenexs_deleted_sheet_niches');
+      }
+    }
+  };
 
   const [isAddTabModalOpen, setIsAddTabModalOpen] = useState(false);
   const [newTabName, setNewTabName] = useState('');
@@ -108,6 +145,19 @@ export const NichesHub: React.FC = () => {
   });
 
   const activeTab = nicheTabs.find((t) => t.id === activeTabId) || nicheTabs[0];
+
+  const handleDeleteNicheTab = (tabId: string, tabName: string) => {
+    if (nicheTabs.length <= 1) {
+      alert('At least one niche tab must remain active in the system.');
+      return;
+    }
+    const confirmed = window.confirm(
+      `Are you sure you want to delete the niche "${tabName}"?\n\nThis will permanently delete this niche tab and all its video workflows.`
+    );
+    if (confirmed) {
+      deleteNicheTab(tabId);
+    }
+  };
 
   const handleCreateTab = (e: React.FormEvent) => {
     e.preventDefault();
@@ -322,25 +372,40 @@ export const NichesHub: React.FC = () => {
 
           {/* Search & Category Filter Controls */}
           <div className="flex flex-col gap-3 bg-[#161820] border border-[#232732] p-3.5 rounded-2xl">
-            {/* Search Input */}
-            <div className="relative w-full max-w-md">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={sheetSearch}
-                onChange={(e) => setSheetSearch(e.target.value)}
-                placeholder="Search Carl Jung, Trump, Elon Musk, Joker, Prayers, Space..."
-                className="w-full bg-[#111317] border border-[#232732] rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#c4f042]"
-              />
+            {/* Search Input & Restore Action */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+              <div className="relative w-full max-w-md">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={sheetSearch}
+                  onChange={(e) => setSheetSearch(e.target.value)}
+                  placeholder="Search Carl Jung, Trump, Elon Musk, Joker, Prayers, Space..."
+                  className="w-full bg-[#111317] border border-[#232732] rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#c4f042]"
+                />
+              </div>
+
+              {deletedSheetNicheIds.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleRestoreDeletedSheetNiches}
+                  className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
+                  title="Restore all deleted niche items"
+                >
+                  <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+                  <span>Restore {deletedSheetNicheIds.length} Deleted</span>
+                </button>
+              )}
             </div>
 
             {/* Dynamic 18 Category Pills with Live Counts */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
               {ALL_SHEET_TABS_LIST.map((tab) => {
+                const visibleItems = (sheetNiches || []).filter((i) => !deletedSheetNicheIds.includes(i.id));
                 const count =
                   tab.gid === 'all'
-                    ? (sheetNiches || []).length
-                    : (sheetNiches || []).filter(
+                    ? visibleItems.length
+                    : visibleItems.filter(
                         (i) => i.tabGid === tab.gid || (i.tabName && i.tabName.toLowerCase() === tab.name.toLowerCase())
                       ).length;
                 const isSelected = selectedSheetCategory === tab.gid;
@@ -375,6 +440,7 @@ export const NichesHub: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {(sheetNiches || [])
               .filter((item) => {
+                if (deletedSheetNicheIds.includes(item.id)) return false;
                 const matchesCategory =
                   selectedSheetCategory === 'all' ||
                   item.tabGid === selectedSheetCategory ||
@@ -428,22 +494,32 @@ export const NichesHub: React.FC = () => {
                     <div className="mt-4 pt-3 border-t border-[#232732] space-y-2.5">
                       <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono bg-[#111317] px-2.5 py-1.5 rounded-xl border border-[#232732]">
                         <span className="truncate pr-2">{item.url}</span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            navigator.clipboard.writeText(item.url);
-                            setCopiedId(item.id);
-                            setTimeout(() => setCopiedId(null), 2000);
-                          }}
-                          className="text-slate-400 hover:text-white transition shrink-0"
-                          title="Copy Link"
-                        >
-                          {isCopied ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                        </button>
+                        <div className="flex items-center gap-1 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(item.url);
+                              setCopiedId(item.id);
+                              setTimeout(() => setCopiedId(null), 2000);
+                            }}
+                            className="p-1 rounded text-slate-400 hover:text-white transition"
+                            title="Copy Link"
+                          >
+                            {isCopied ? (
+                              <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            ) : (
+                              <Copy className="w-3.5 h-3.5" />
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteSheetNiche(item.id, item.title)}
+                            className="p-1 rounded text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition"
+                            title="Delete this niche from view"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
 
                       <div className="flex items-center gap-1.5">
@@ -495,55 +571,81 @@ export const NichesHub: React.FC = () => {
               <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400 mr-1.5" />
               Sheet Tabs:
             </div>
-        {nicheTabs.map((tab) => {
-          const isActive = tab.id === activeTab?.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTabId(tab.id)}
-              className={`px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
-                isActive
-                  ? 'bg-slate-800 text-emerald-400 border border-emerald-500/30 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
-            >
-              <span>{tab.name}</span>
-              <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                  isActive ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-900 text-slate-400'
-                }`}
-              >
-                {tab.videos.length}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+            {nicheTabs.map((tab) => {
+              const isActive = tab.id === activeTab?.id;
+              return (
+                <div key={tab.id} className="relative group/tab flex items-center shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTabId(tab.id)}
+                    className={`px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
+                      isActive
+                        ? 'bg-slate-800 text-emerald-400 border border-emerald-500/30 shadow-sm pr-7'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 pr-7'
+                    }`}
+                  >
+                    <span>{tab.name}</span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                        isActive ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-900 text-slate-400'
+                      }`}
+                    >
+                      {tab.videos.length}
+                    </span>
+                  </button>
+                  {nicheTabs.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteNicheTab(tab.id, tab.name);
+                      }}
+                      title={`Delete niche "${tab.name}"`}
+                      className="absolute right-1.5 p-1 rounded hover:bg-rose-500/20 text-slate-500 hover:text-rose-400 opacity-40 group-hover/tab:opacity-100 transition"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
 
-      {/* Active Tab Info Banner */}
-      {activeTab && (
-        <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                Active Tab:
-              </span>
-              <h2 className="text-base font-bold text-white">{activeTab.name}</h2>
-              <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
-                Assigned: {(activeTab.branchId || 'musafirkhana').toUpperCase()} Branch
-              </span>
+          {/* Active Tab Info Banner */}
+          {activeTab && (
+            <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+                    Active Tab:
+                  </span>
+                  <h2 className="text-base font-bold text-white">{activeTab.name}</h2>
+                  <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
+                    Assigned: {(activeTab.branchId || 'musafirkhana').toUpperCase()} Branch
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 mt-1">{activeTab.description}</p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-slate-300">
+                  Total Videos in this Tab:{' '}
+                  <strong className="text-white font-bold">{activeTab.videos.length}</strong>
+                </span>
+                {nicheTabs.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteNicheTab(activeTab.id, activeTab.name)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 transition flex items-center gap-1.5 shadow-sm"
+                    title={`Delete niche "${activeTab.name}"`}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Delete Niche Tab</span>
+                  </button>
+                )}
+              </div>
             </div>
-            <p className="text-xs text-slate-400 mt-1">{activeTab.description}</p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-slate-300">
-              Total Videos in this Tab:{' '}
-              <strong className="text-white font-bold">{activeTab.videos.length}</strong>
-            </span>
-          </div>
-        </div>
-      )}
+          )}
 
       {/* Daily Niche Quota Widget */}
       <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
