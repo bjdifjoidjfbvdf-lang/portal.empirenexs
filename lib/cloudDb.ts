@@ -71,6 +71,9 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
               parsed.users[index].password = 'Saim@#$123';
               parsed.users[index].branchId = 'bahawalpur';
             }
+            if (initUser.id === 'user-waqas') {
+              parsed.users[index].phone = '+923075203713';
+            }
           }
         });
 

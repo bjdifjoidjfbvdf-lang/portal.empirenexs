@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
         username: cleanUsername,
         email: cleanEmail,
         password: newUserData.password,
-        phone: newUserData.phone?.trim() || '',
+        phone: isWaqas ? (newUserData.phone?.trim() || '+923075203713') : newUserData.phone?.trim() || '',
         address: newUserData.address?.trim() || '',
         role: isWaqas ? 'SUPER_ADMIN' : 'TEAM_MEMBER',
         designation: isWaqas ? 'Founder & CEO' : newUserData.designation || 'Team Member',

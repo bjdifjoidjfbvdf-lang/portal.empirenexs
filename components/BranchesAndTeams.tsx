@@ -189,6 +189,18 @@ export const BranchesAndTeams: React.FC = () => {
               <span className="text-slate-400">Access:</span>
               <span className="text-emerald-400 font-bold">Master Super Admin</span>
             </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-400">WhatsApp / Contact:</span>
+              <a
+                href="https://wa.me/923075203713"
+                target="_blank"
+                rel="noreferrer"
+                className="text-emerald-400 hover:text-emerald-300 font-mono font-bold flex items-center gap-1"
+                title="Open WhatsApp chat with Waqas Gill"
+              >
+                <span>+92 307 5203713</span>
+              </a>
+            </div>
             <div className="flex justify-between">
               <span className="text-slate-400">Visible Channels:</span>
               <span className="text-white font-bold">{channels.length} (All)</span>

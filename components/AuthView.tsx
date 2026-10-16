@@ -489,6 +489,18 @@ export const AuthView: React.FC = () => {
             <p className="text-slate-300 mt-3 pt-3 border-t border-slate-800">
               Oversees master systems, finance, API integrations, and final approval of all creator &amp; staff onboarding.
             </p>
+            <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
+              <span className="text-slate-400">WhatsApp / Direct:</span>
+              <a
+                href="https://wa.me/923075203713"
+                target="_blank"
+                rel="noreferrer"
+                className="text-emerald-400 hover:text-emerald-300 font-mono font-bold flex items-center gap-1"
+                title="Direct WhatsApp Contact with Waqas Gill"
+              >
+                <span>+92 307 5203713</span>
+              </a>
+            </div>
           </div>
 
           {/* Bahawalpur Branch */}
@@ -536,11 +548,14 @@ export const AuthView: React.FC = () => {
       </section>
 
       {/* 6. FOOTER */}
-      <footer className="mt-auto py-8 px-4 border-t border-slate-800 bg-[#040810] text-center text-xs text-slate-500">
+      <footer className="mt-auto py-8 px-4 border-t border-slate-800 bg-[#040810] text-center text-xs text-slate-500 space-y-1.5">
         <p className="font-medium text-slate-400">
           EmpireNexs Management System &copy; {new Date().getFullYear()} • Enterprise YouTube Automation ERP
         </p>
-        <p className="text-[11px] text-slate-600 mt-1">
+        <p className="text-[11px] text-slate-400">
+          Executive Desk: <a href="https://wa.me/923075203713" target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline font-mono font-bold">+92 307 5203713 (WhatsApp)</a> • <span className="text-slate-300">muhammadwaqasmwg@gmail.com</span>
+        </p>
+        <p className="text-[10px] text-slate-600">
           Musafirkhana (HQ) • Bahawalpur • Rahim Yar Khan • Founder &amp; CEO Waqas Gill
         </p>
       </footer>

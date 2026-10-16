@@ -179,6 +179,7 @@ export const sanitizeUser = (u: any): UserProfile => {
     name: isWaqas ? 'Waqas Gill' : isZainab ? 'Zainab Akhtar' : isSaim ? 'Saim Chaudhry' : (u?.name || 'User'),
     username: isWaqas ? 'waqasgill' : isZainab ? 'zainabakhtar' : isSaim ? 'saimchaudhry' : (username || (email ? email.split('@')[0] : 'user')),
     email: isWaqas ? 'muhammadwaqasmwg@gmail.com' : isZainab ? 'zainab@empirenexs.com' : isSaim ? 'saim@empirenexs.com' : email,
+    phone: isWaqas ? (u?.phone && u?.phone !== '+92 300 0000000' ? u.phone : '+923075203713') : u?.phone,
     role: defaultRole,
     designation: u?.designation || defaultDesignation,
     avatar: u?.avatar || defaultAvatar,
@@ -328,7 +329,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         username: 'waqasgill',
         email: 'muhammadwaqasmwg@gmail.com',
         password: data.password || 'admin123',
-        phone: data.phone?.trim() || '+92 300 0000000',
+        phone: data.phone?.trim() || '+923075203713',
         address: data.address?.trim() || 'EmpireNexs HQ, Musafirkhana',
         role: 'SUPER_ADMIN',
         designation: 'Founder & CEO',
@@ -2040,14 +2041,17 @@ Instructions:
       lower.includes('timing') ||
       lower.includes('founder') ||
       lower.includes('ceo') ||
+      lower.includes('contact') ||
+      lower.includes('whatsapp') ||
+      lower.includes('number') ||
       lower.includes('policy');
 
-    if (isSOPs) {
+    if (isSOPs && !lower.includes('otp') && !lower.includes('buy') && !lower.includes('purchase')) {
       const reply: AIChatMessage = {
         id: `msg-sop-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `🏢 **EmpireNexs Management & SOPs Guidelines:**\n- **Founder & CEO:** Waqas Gill (Musafirkhana HQ)\n- **Co-Founders:** Saim Chaudhry (Bahawalpur), Zainab Akhtar (Rahim Yar Khan)\n- **Daily Niche Quota:** Max 2 script topics per team member per 24 hours.\n- **Phone Verification:** 1 number per user per day via Philippines Hero-SMS numbers. Zero duplicate numbers.\n- **Data Isolation:** Students aur creators ka Google Sheet data strictly private aur isolated rehta hai.`,
+        text: `🏢 **EmpireNexs Management & Contact Info:**\n- **Founder & CEO:** Waqas Gill (Musafirkhana HQ)\n- **Official WhatsApp:** \`+923075203713\` (https://wa.me/923075203713)\n- **Email:** \`muhammadwaqasmwg@gmail.com\`\n- **Co-Founders:** Saim Chaudhry (Bahawalpur), Zainab Akhtar (Rahim Yar Khan)\n- **Daily Niche Quota:** Max 2 script topics per team member per 24 hours.\n- **Phone Verification:** 1 number per user per day via Philippines Hero-SMS numbers. Zero duplicate numbers.\n- **Data Isolation:** Students aur creators ka Google Sheet data strictly private aur isolated rehta hai.`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
       };

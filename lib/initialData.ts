@@ -55,7 +55,7 @@ export const INITIAL_USERS: UserProfile[] = [
     username: 'waqasgill',
     email: 'muhammadwaqasmwg@gmail.com',
     password: 'admin123',
-    phone: '+92 300 0000000',
+    phone: '+923075203713',
     address: 'EmpireNexs HQ, Musafirkhana',
     role: 'SUPER_ADMIN',
     designation: 'Founder & CEO',

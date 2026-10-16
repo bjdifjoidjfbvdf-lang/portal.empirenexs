@@ -39,7 +39,8 @@ export const UserProfileSettings: React.FC = () => {
   // Profile form state
   const [name, setName] = useState(currentUser?.name || 'Waqas Gill');
   const [username, setUsername] = useState(currentUser?.username || 'waqasgill');
-  const [phone, setPhone] = useState(currentUser?.phone || '');
+  const isWaqasUser = currentUser?.role === 'SUPER_ADMIN' || currentUser?.id === 'user-waqas';
+  const [phone, setPhone] = useState(currentUser?.phone || (isWaqasUser ? '+923075203713' : ''));
   const [address, setAddress] = useState(currentUser?.address || '');
   const [designation, setDesignation] = useState(currentUser?.designation || 'Founder & CEO');
   const [avatar, setAvatar] = useState(
@@ -50,9 +51,10 @@ export const UserProfileSettings: React.FC = () => {
 
   useEffect(() => {
     if (currentUser) {
+      const isWaqas = currentUser.role === 'SUPER_ADMIN' || currentUser.id === 'user-waqas';
       setName(currentUser.name || 'Waqas Gill');
       setUsername(currentUser.username || 'waqasgill');
-      setPhone(currentUser.phone || '');
+      setPhone(currentUser.phone && currentUser.phone !== '+92 300 0000000' ? currentUser.phone : (isWaqas ? '+923075203713' : ''));
       setAddress(currentUser.address || '');
       setDesignation(currentUser.designation || 'Founder & CEO');
       setAvatar(
