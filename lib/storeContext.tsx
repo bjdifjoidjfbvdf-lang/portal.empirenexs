@@ -54,8 +54,9 @@ interface AppContextType {
   unrestrictUser: (userId: string) => void;
   deleteUser: (userId: string) => { success: boolean; message: string };
   directCreateUser: (userData: Partial<UserProfile> & { name: string; username: string; email: string; password: string }) => { success: boolean; message: string };
-  updateMemberGoogleSheet: (userId: string, sheetUrl: string) => Promise<{ success: boolean; message: string }>;
+  updateMemberGoogleSheet: (userId: string, sheetUrl: string, webhookUrl?: string) => Promise<{ success: boolean; message: string }>;
   syncMemberSheetChannels: (userId: string, customSheetUrl?: string) => Promise<{ success: boolean; message: string; count?: number }>;
+  pushUserChannelsToSheet: (userId: string) => Promise<{ success: boolean; message: string; count?: number }>;
   selectedBranchId: BranchId;
   setSelectedBranchId: (branchId: BranchId) => void;
   availableUsers: UserProfile[];
@@ -759,9 +760,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Google Sheet Attachment & Auto-Fetch for Team Members (Option 1)
   const updateMemberGoogleSheet = async (
     userId: string,
-    sheetUrl: string
+    sheetUrl: string,
+    webhookUrl?: string
   ): Promise<{ success: boolean; message: string }> => {
     const cleanUrl = sheetUrl.trim();
+    const cleanWebhook = (webhookUrl || '').trim();
     try {
       const res = await fetch('/api/users', {
         method: 'POST',
@@ -769,19 +772,63 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({
           action: 'updateProfile',
           userId,
-          updates: { personalGoogleSheetUrl: cleanUrl },
+          updates: {
+            personalGoogleSheetUrl: cleanUrl,
+            personalGoogleSheetWebhookUrl: cleanWebhook,
+          },
         }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
         setUsers((prev) =>
-          prev.map((u) => (u.id === userId ? { ...u, personalGoogleSheetUrl: cleanUrl } : u))
+          prev.map((u) =>
+            u.id === userId
+              ? {
+                  ...u,
+                  personalGoogleSheetUrl: cleanUrl,
+                  personalGoogleSheetWebhookUrl: cleanWebhook,
+                }
+              : u
+          )
         );
+        if (currentUser.id === userId) {
+          setCurrentUser((prev) => ({
+            ...prev,
+            personalGoogleSheetUrl: cleanUrl,
+            personalGoogleSheetWebhookUrl: cleanWebhook,
+          }));
+        }
         return { success: true, message: data.message || 'Google Sheet URL updated successfully!' };
       }
       return { success: false, message: data.message || 'Failed to update Google Sheet URL' };
     } catch (e: any) {
       return { success: false, message: e?.message || 'Network error' };
+    }
+  };
+
+  const pushUserChannelsToSheet = async (
+    userId: string
+  ): Promise<{ success: boolean; message: string; count?: number }> => {
+    try {
+      const targetUser = users.find((u) => u.id === userId);
+      if (!targetUser) return { success: false, message: 'User not found in system.' };
+
+      const res = await fetch('/api/channels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'pushUserChannelsToSheet',
+          userId,
+        }),
+      });
+      const data = await res.json();
+      return {
+        success: data.success,
+        count: data.count,
+        message: data.message || 'Push complete!',
+      };
+    } catch (e: any) {
+      return { success: false, message: e?.message || 'Failed to push channels to Google Sheet' };
     }
   };
 
@@ -2751,6 +2798,7 @@ Instructions:
         directCreateUser,
         updateMemberGoogleSheet,
         syncMemberSheetChannels,
+        pushUserChannelsToSheet,
         selectedBranchId,
         setSelectedBranchId,
         availableUsers,

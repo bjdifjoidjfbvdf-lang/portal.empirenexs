@@ -36,6 +36,7 @@ export interface UserProfile {
   joinedAt?: string;
   emailVerified?: boolean;
   personalGoogleSheetUrl?: string;
+  personalGoogleSheetWebhookUrl?: string;
   personalGoogleSheetApiKey?: string;
   lastSheetSync?: string;
   syncedChannelsCount?: number;
@@ -180,6 +181,7 @@ export interface SystemSettings {
   dailyNumberLimitPerUser: number;
   dailyNicheLimitPerUser: number;
   heroSmsApiKey: string;
+  googleSheetsDispatcherWebhookUrl?: string;
 }
 
 export interface NicheSheetItem {

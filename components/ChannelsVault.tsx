@@ -44,6 +44,7 @@ export const ChannelsVault: React.FC = () => {
   // Modal state for adding channel
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingChannel, setEditingChannel] = useState<ChannelRecord | null>(null);
+  const [actionNotification, setActionNotification] = useState<string | null>(null);
 
   // Personal Sheet / CSV Import Modal state
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -216,12 +217,19 @@ export const ChannelsVault: React.FC = () => {
 
     if (editingChannel) {
       updateChannel(editingChannel.id, payload);
+      setActionNotification('Channel updated successfully!');
     } else {
       addChannel(payload);
+      setActionNotification(
+        currentUser?.personalGoogleSheetWebhookUrl
+          ? `✅ "${formData.channelName}" added to EmpireNexs & row auto-written into your Google Sheet cells!`
+          : `✅ "${formData.channelName}" added successfully to EmpireNexs Portal!`
+      );
     }
 
     setIsAddModalOpen(false);
     setEditingChannel(null);
+    setTimeout(() => setActionNotification(null), 5000);
   };
 
   const openEditModal = (ch: ChannelRecord) => {
@@ -251,6 +259,21 @@ export const ChannelsVault: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {actionNotification && (
+        <div className="p-3.5 rounded-2xl bg-emerald-950/70 border border-emerald-500/40 text-emerald-200 text-xs flex items-center justify-between shadow-lg animate-in fade-in">
+          <div className="flex items-center gap-2">
+            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span className="font-medium">{actionNotification}</span>
+          </div>
+          <button
+            onClick={() => setActionNotification(null)}
+            className="text-slate-400 hover:text-white text-xs font-bold px-2 py-0.5 rounded"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Header bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -627,10 +650,10 @@ export const ChannelsVault: React.FC = () => {
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-[#0b1120] border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl animate-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <Youtube className="w-5 h-5 text-red-500" />
-                {editingChannel ? 'Edit Channel in Sheet' : 'Add New Channel to Sheet'}
+                {editingChannel ? 'Edit Channel Details' : 'Add New Channel to EmpireNexs'}
               </h2>
               <button
                 onClick={() => setIsAddModalOpen(false)}
@@ -639,6 +662,15 @@ export const ChannelsVault: React.FC = () => {
                 ✕
               </button>
             </div>
+
+            {currentUser?.personalGoogleSheetWebhookUrl && (
+              <div className="mb-4 p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex items-center gap-2 text-xs text-emerald-300">
+                <FileSpreadsheet className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>
+                  <strong>Google Sheet Auto-Write Active:</strong> Ye channel save hotay hi aapki Google Sheet ke cells mein auto-enter ho jaye ga.
+                </span>
+              </div>
+            )}
 
             <form onSubmit={handleSaveChannel} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

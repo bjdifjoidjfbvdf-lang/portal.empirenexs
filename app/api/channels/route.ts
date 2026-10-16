@@ -26,7 +26,48 @@ export async function POST(req: NextRequest) {
       };
       channels.unshift(newChannel);
       await saveCloudDatabase({ channels });
-      return NextResponse.json({ success: true, channel: newChannel, message: 'Channel added successfully!' });
+
+      // Automatically push row into member's personal Google Sheet cells
+      let autoPushed = false;
+      const targetUser = db.users.find(
+        (u) => u.id === newChannel.userId || u.name === newChannel.managedBy || u.email === newChannel.managerMail
+      );
+      const webhook = targetUser?.personalGoogleSheetWebhookUrl || (db as any).settings?.googleSheetsDispatcherWebhookUrl;
+
+      if (webhook) {
+        try {
+          await fetch(webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'appendRow',
+              sheetUrl: targetUser?.personalGoogleSheetUrl || '',
+              channelName: newChannel.channelName,
+              channelUrl: newChannel.channelUrl,
+              niche: newChannel.niche,
+              status: newChannel.status,
+              managedBy: newChannel.managedBy,
+              branchId: newChannel.branchId,
+              email: newChannel.email,
+              createdNumber: newChannel.createdNumber,
+              notes: newChannel.notes,
+              timestamp: new Date().toISOString(),
+            }),
+          });
+          autoPushed = true;
+        } catch (e) {
+          console.warn('Auto-push to Google Sheet error:', e);
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        channel: newChannel,
+        autoPushed,
+        message: autoPushed
+          ? `Channel added to EmpireNexs & row auto-written to ${targetUser?.name}'s Google Sheet cells!`
+          : 'Channel added successfully to EmpireNexs Portal!',
+      });
     }
 
     // 2. UPDATE CHANNEL (Status change, Monetized, Sold, Demonetized)
@@ -218,6 +259,61 @@ export async function POST(req: NextRequest) {
         count: parsedChannels.length,
         channels: parsedChannels,
         message: `Successfully fetched and synced ${parsedChannels.length} channel(s) from ${targetUser.name}'s Google Sheet!`,
+      });
+    }
+
+    // 6. PUSH ALL USER CHANNELS DIRECTLY INTO GOOGLE SHEET CELLS
+    if (action === 'pushUserChannelsToSheet') {
+      const { userId } = body;
+      const targetUser = db.users.find((u) => u.id === userId);
+      if (!targetUser) {
+        return NextResponse.json({ success: false, message: 'User not found in system.' }, { status: 404 });
+      }
+
+      const webhook = targetUser.personalGoogleSheetWebhookUrl || (db as any).settings?.googleSheetsDispatcherWebhookUrl;
+      if (!webhook) {
+        return NextResponse.json({
+          success: false,
+          message: 'No Google Apps Script Webhook URL found. Please add the Webhook URL in user sheet settings so portal can write rows to cells.',
+        }, { status: 400 });
+      }
+
+      const userChannels = channels.filter((c) => c.userId === userId || c.managedBy === targetUser.name);
+      if (userChannels.length === 0) {
+        return NextResponse.json({ success: false, message: `No channels found for ${targetUser.name} to push.` }, { status: 400 });
+      }
+
+      let pushedCount = 0;
+      for (const ch of userChannels) {
+        try {
+          await fetch(webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'appendRow',
+              sheetUrl: targetUser.personalGoogleSheetUrl || '',
+              channelName: ch.channelName,
+              channelUrl: ch.channelUrl,
+              niche: ch.niche,
+              status: ch.status,
+              managedBy: ch.managedBy,
+              branchId: ch.branchId,
+              email: ch.email,
+              createdNumber: ch.createdNumber,
+              notes: ch.notes,
+              timestamp: new Date().toISOString(),
+            }),
+          });
+          pushedCount++;
+        } catch (e) {
+          console.warn('Push channel error:', e);
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        count: pushedCount,
+        message: `Successfully pushed ${pushedCount} channel(s) directly into ${targetUser.name}'s Google Sheet cells!`,
       });
     }
 

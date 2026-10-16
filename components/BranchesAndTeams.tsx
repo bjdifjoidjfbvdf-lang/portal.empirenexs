@@ -29,6 +29,8 @@ import {
   ExternalLink,
   RefreshCw,
   X,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { BranchComparisonAnalytics } from './BranchComparisonAnalytics';
 import { UserProfile } from '@/types';
@@ -48,6 +50,7 @@ export const BranchesAndTeams: React.FC = () => {
     directCreateUser,
     updateMemberGoogleSheet,
     syncMemberSheetChannels,
+    pushUserChannelsToSheet,
   } = useApp();
 
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
@@ -67,15 +70,42 @@ export const BranchesAndTeams: React.FC = () => {
   const [isSheetModalOpen, setIsSheetModalOpen] = useState(false);
   const [selectedUserForSheet, setSelectedUserForSheet] = useState<UserProfile | null>(null);
   const [sheetInputUrl, setSheetInputUrl] = useState('');
+  const [webhookInputUrl, setWebhookInputUrl] = useState('');
   const [syncingUserId, setSyncingUserId] = useState<string | null>(null);
   const [isSavingSheet, setIsSavingSheet] = useState(false);
+  const [isPushingChannels, setIsPushingChannels] = useState(false);
+  const [copiedScript, setCopiedScript] = useState(false);
   const [sheetFeedback, setSheetFeedback] = useState<string | null>(null);
 
   const openSheetModal = (u: UserProfile) => {
     setSelectedUserForSheet(u);
     setSheetInputUrl(u.personalGoogleSheetUrl || '');
+    setWebhookInputUrl(u.personalGoogleSheetWebhookUrl || '');
     setSheetFeedback(null);
     setIsSheetModalOpen(true);
+  };
+
+  const copyAppsScriptCode = () => {
+    const code = `function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    new Date().toLocaleDateString(),
+    data.channelName || '',
+    data.channelUrl || '',
+    data.niche || '',
+    data.status || 'Active',
+    data.managedBy || '',
+    data.branchId || '',
+    data.email || '',
+    data.createdNumber || '',
+    data.notes || ''
+  ]);
+  return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
+}`;
+    navigator.clipboard.writeText(code);
+    setCopiedScript(true);
+    setTimeout(() => setCopiedScript(false), 2500);
   };
 
   const handleSaveAndSyncSheet = async (e: React.FormEvent) => {
@@ -85,6 +115,7 @@ export const BranchesAndTeams: React.FC = () => {
     setSheetFeedback(null);
 
     const cleanUrl = sheetInputUrl.trim();
+    const cleanWebhook = webhookInputUrl.trim();
     if (!cleanUrl) {
       setSheetFeedback('Please enter a Google Sheet URL.');
       setIsSavingSheet(false);
@@ -92,7 +123,7 @@ export const BranchesAndTeams: React.FC = () => {
     }
 
     try {
-      await updateMemberGoogleSheet(selectedUserForSheet.id, cleanUrl);
+      await updateMemberGoogleSheet(selectedUserForSheet.id, cleanUrl, cleanWebhook);
       const syncRes = await syncMemberSheetChannels(selectedUserForSheet.id, cleanUrl);
       if (syncRes.success) {
         alert(syncRes.message);
@@ -114,6 +145,16 @@ export const BranchesAndTeams: React.FC = () => {
       alert(res.message);
     } finally {
       setSyncingUserId(null);
+    }
+  };
+
+  const handlePushChannelsToSheet = async (userId: string) => {
+    setIsPushingChannels(true);
+    try {
+      const res = await pushUserChannelsToSheet(userId);
+      alert(res.message);
+    } finally {
+      setIsPushingChannels(false);
     }
   };
 
@@ -807,7 +848,7 @@ export const BranchesAndTeams: React.FC = () => {
             <form onSubmit={handleSaveAndSyncSheet} className="space-y-4 text-xs">
               <div>
                 <label className="block text-slate-300 font-semibold mb-1.5">
-                  Google Sheet URL (Public / Anyone with the link):
+                  1. Google Sheet URL (Public / Anyone with the link):
                 </label>
                 <input
                   type="url"
@@ -819,15 +860,59 @@ export const BranchesAndTeams: React.FC = () => {
                 />
               </div>
 
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-slate-300 font-semibold">
+                    2. Apps Script Webhook URL (For Direct Cell Writing):
+                  </label>
+                  <button
+                    type="button"
+                    onClick={copyAppsScriptCode}
+                    className="text-[10px] text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 transition"
+                  >
+                    {copiedScript ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                    <span>{copiedScript ? 'Script Copied!' : 'Copy Ready Apps Script'}</span>
+                  </button>
+                </div>
+                <input
+                  type="url"
+                  value={webhookInputUrl}
+                  onChange={(e) => setWebhookInputUrl(e.target.value)}
+                  placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-mono text-xs"
+                />
+                <p className="text-[10px] text-slate-400 mt-1">
+                  Jab bhi member portal se naya channel add kare ga, row khud-b-khud is sheet ke cells mein likh di jaye gi.
+                </p>
+              </div>
+
+              {webhookInputUrl && (
+                <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between gap-2">
+                  <div>
+                    <p className="font-bold text-white text-xs">Direct Cell Auto-Write Ready</p>
+                    <p className="text-[10px] text-slate-400">Portal se channels is Google Sheet ke cells mein auto-enter honge.</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handlePushChannelsToSheet(selectedUserForSheet.id)}
+                    disabled={isPushingChannels}
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#c4f042] hover:bg-[#b4eb28] text-slate-950 transition flex items-center gap-1 shrink-0"
+                  >
+                    {isPushingChannels ? <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-950" /> : <FileSpreadsheet className="w-3.5 h-3.5 text-slate-950" />}
+                    <span>Push Channels to Cells</span>
+                  </button>
+                </div>
+              )}
+
               <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5 text-[11px] text-slate-400">
                 <p className="font-bold text-slate-200 flex items-center gap-1.5">
                   <AlertCircle className="w-3.5 h-3.5 text-emerald-400" />
-                  Auto-Fetch Guidelines:
+                  How Auto-Writing to Cells Works:
                 </p>
                 <ul className="list-disc pl-4 space-y-1 text-slate-400 text-[10px]">
-                  <li>Google Drive mein sheet ki sharing <strong>"Anyone with the link can view"</strong> honi chahiye.</li>
-                  <li>Sheet mein <strong>Channel Name</strong> aur <strong>Channel Link</strong> ke columns maujood hon.</li>
-                  <li>Save &amp; Fetch par click karte hi channels is member ke account aur <strong>Channels Vault</strong> mein automatically sync ho jayein ge.</li>
+                  <li>Member ki Google Sheet khol kar <strong>Extensions &gt; Apps Script</strong> mein code paste kar ke Web App deploy karein.</li>
+                  <li>Webhook link yahan save kar dein. Iske baad member ko sheet kholne ki zaroorat nahi hogi.</li>
+                  <li>Member portal ke <strong>Channels Vault</strong> se channel enter kare ga aur data foran Google Sheet ke cells mein chala jaye ga.</li>
                 </ul>
               </div>
 
@@ -847,12 +932,12 @@ export const BranchesAndTeams: React.FC = () => {
                   {isSavingSheet ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Fetching &amp; Syncing Channels...</span>
+                      <span>Saving &amp; Fetching...</span>
                     </>
                   ) : (
                     <>
                       <FileSpreadsheet className="w-4 h-4" />
-                      <span>Save &amp; Fetch Channels</span>
+                      <span>Save &amp; Sync Sheet</span>
                     </>
                   )}
                 </button>
