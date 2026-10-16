@@ -66,6 +66,11 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
                   ? parsed.users[index].canAccessAllBranches
                   : initUser.canAccessAllBranches,
             };
+            if (initUser.id === 'user-saim') {
+              parsed.users[index].email = 'saimishere45@gmail.com';
+              parsed.users[index].password = 'Saim@#$123';
+              parsed.users[index].branchId = 'bahawalpur';
+            }
           }
         });
 
