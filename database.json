@@ -500,7 +500,33 @@
       "timestamp": "06:59 AM",
       "createdAt": "2026-10-16T13:59:01.143Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792159154696",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "ham login la sakty hain ksi b channel ka ?",
+      "timestamp": "06:59 AM",
+      "createdAt": "2026-10-16T13:59:14.695Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-thx-1792159154696",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "You're most welcome **Waqas Gill**! 😊\n\nEmpireNexs team ke sath collaboration karne ka bohat shukriya. Agar kisi mazeed topic, channel link, ya verification OTP ki zaroorat ho to bila-jhijhak batayein!",
+      "timestamp": "06:59 AM",
+      "createdAt": "2026-10-16T13:59:14.695Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-16T13:59:02.139Z"
+  "updatedAt": "2026-10-16T13:59:15.667Z"
 }
