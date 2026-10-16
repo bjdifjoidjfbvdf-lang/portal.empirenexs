@@ -300,43 +300,88 @@ function buildItem(rawUrl: string, tabName: string, tabGid: string, idx: number)
   };
 }
 
+// In-memory cache for live Google Sheet items
+let cachedLiveItems: NicheSheetItem[] | null = null;
+let lastCacheFetchTime = 0;
+const CACHE_TTL_MS = 30000; // 30 seconds fresh cache
+
+async function fetchLiveTabLinks(gid: string): Promise<string[]> {
+  try {
+    const liveCsvUrl = `https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/gviz/tq?tqx=out:csv&gid=${gid}`;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 6000);
+    const res = await fetch(liveCsvUrl, { signal: controller.signal, cache: 'no-store' });
+    clearTimeout(timeout);
+    if (res.ok) {
+      const csv = await res.text();
+      const urls: string[] = [];
+      const lines = csv.split('\n');
+      for (const line of lines) {
+        const matches = line.match(/(https?:\/\/[^\s",]+)/gi);
+        if (matches) {
+          for (const m of matches) {
+            const clean = m.replace(/^"|"$/g, '').trim();
+            if (clean && !urls.includes(clean)) {
+              urls.push(clean);
+            }
+          }
+        }
+      }
+      return urls;
+    }
+  } catch (e) {
+    // Silently fall back to cached/pre-indexed
+  }
+  return [];
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const query = (searchParams.get('query') || '').toLowerCase().trim();
   const categoryFilter = (searchParams.get('category') || '').toLowerCase().trim();
   const tabFilter = (searchParams.get('tab') || '').toLowerCase().trim();
+  const forceRefresh = searchParams.get('refresh') === 'true';
 
-  // 1. Try to live fetch from Google Sheets CSV (or fallback to pre-indexed catalog)
-  const allItems: NicheSheetItem[] = [];
+  const now = Date.now();
+  let allItems: NicheSheetItem[] = [];
 
-  for (const tab of PRE_INDEXED_TAB_ITEMS) {
-    let links = tab.links;
+  // Use fast 30s cache unless expired or refresh requested
+  if (!forceRefresh && cachedLiveItems && (now - lastCacheFetchTime < CACHE_TTL_MS)) {
+    allItems = cachedLiveItems;
+  } else {
+    // Concurrently fetch live data from all configured Google Sheet tabs
+    const tabPromises = SHEET_TABS_CONFIG.map(async (tab) => {
+      const liveLinks = await fetchLiveTabLinks(tab.gid);
+      const preIndexed = PRE_INDEXED_TAB_ITEMS.find((p) => p.gid === tab.gid);
+      const fallbackLinks = preIndexed ? preIndexed.links : [];
 
-    // For specific requested tabs, we can also query Google Sheets live
-    if (tabFilter && tab.tabName.toLowerCase().includes(tabFilter)) {
-      try {
-        const liveCsvUrl = `https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/gviz/tq?tqx=out:csv&gid=${tab.gid}`;
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 4000);
-        const res = await fetch(liveCsvUrl, { signal: controller.signal, cache: 'no-store' });
-        clearTimeout(timeout);
-        if (res.ok) {
-          const csv = await res.text();
-          const parsed = csv
-            .split('\n')
-            .map((l) => {
-              const m = l.match(/(https?:\/\/[^\s",]+)/i);
-              return m ? m[1] : null;
-            })
-            .filter(Boolean) as string[];
-          if (parsed.length > 0) links = parsed;
+      // Combine links, ensuring new sheet rows are included alongside existing catalog
+      const combined = Array.from(new Set([...liveLinks, ...fallbackLinks]));
+      return combined.map((l, idx) => buildItem(l, tab.name, tab.gid, idx + 1));
+    });
+
+    const results = await Promise.allSettled(tabPromises);
+    for (let i = 0; i < results.length; i++) {
+      const r = results[i];
+      if (r.status === 'fulfilled') {
+        allItems.push(...r.value);
+      } else {
+        const tab = SHEET_TABS_CONFIG[i];
+        const preIndexed = PRE_INDEXED_TAB_ITEMS.find((p) => p.gid === tab.gid);
+        if (preIndexed) {
+          preIndexed.links.forEach((l, idx) => {
+            allItems.push(buildItem(l, tab.name, tab.gid, idx + 1));
+          });
         }
-      } catch (e) {}
+      }
     }
 
-    links.forEach((l, idx) => {
-      allItems.push(buildItem(l, tab.tabName, tab.gid, idx + 1));
-    });
+    if (allItems.length > 0) {
+      cachedLiveItems = allItems;
+      lastCacheFetchTime = now;
+    } else if (cachedLiveItems) {
+      allItems = cachedLiveItems;
+    }
   }
 
   // Build tabs metadata with counts

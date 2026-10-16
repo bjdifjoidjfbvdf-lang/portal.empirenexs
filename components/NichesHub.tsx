@@ -274,7 +274,7 @@ export const NichesHub: React.FC = () => {
 
           <button
             type="button"
-            onClick={() => refreshSheetNiches()}
+            onClick={() => refreshSheetNiches(true)}
             disabled={isFetchingSheetNiches}
             className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 disabled:opacity-50"
           >

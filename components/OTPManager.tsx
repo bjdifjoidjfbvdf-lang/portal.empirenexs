@@ -43,7 +43,11 @@ export const OTPManager: React.FC = () => {
 
   const todayCount = getUserTodayOTPCount(currentUser?.id || '');
   const totalCount = getUserTotalOTPCount(currentUser?.id || '');
-  const isLimitReached = todayCount >= settings.dailyNumberLimitPerUser;
+  const isPrivilegedOwner =
+    currentUser?.role === 'SUPER_ADMIN' ||
+    currentUser?.role === 'CO_FOUNDER' ||
+    currentUser?.role === 'BRANCH_HEAD';
+  const isLimitReached = !isPrivilegedOwner && todayCount >= settings.dailyNumberLimitPerUser;
 
   const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -95,13 +99,16 @@ export const OTPManager: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="px-3.5 py-2 rounded-xl bg-[#161820] border border-[#232732] text-xs flex items-center gap-2">
-            <Coins className="w-4 h-4 text-amber-400" />
-            <span className="text-slate-400">SMS Balance:</span>
-            <span className="font-bold text-amber-300 font-mono">
-              ${settings.smsBalance.toFixed(2)}
-            </span>
-          </div>
+          {/* SMS Balance visible ONLY to Team Owners and Super Admin Waqas Gill */}
+          {isPrivilegedOwner && (
+            <div className="px-3.5 py-2 rounded-xl bg-[#161820] border border-[#232732] text-xs flex items-center gap-2">
+              <Coins className="w-4 h-4 text-amber-400" />
+              <span className="text-slate-400">SMS Balance:</span>
+              <span className="font-bold text-amber-300 font-mono">
+                ${settings.smsBalance.toFixed(2)}
+              </span>
+            </div>
+          )}
 
           <button
             onClick={() => {
@@ -147,14 +154,14 @@ export const OTPManager: React.FC = () => {
           </div>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="text-2xl font-black text-white">
-              {todayCount} / {currentUser?.role === 'SUPER_ADMIN' ? '∞' : settings.dailyNumberLimitPerUser}
+              {todayCount} / {isPrivilegedOwner ? '∞' : settings.dailyNumberLimitPerUser}
             </span>
             <span
               className={`text-xs font-bold ${
                 isLimitReached ? 'text-red-400' : 'text-emerald-400'
               }`}
             >
-              {isLimitReached ? 'Limit Reached' : 'Available'}
+              {isPrivilegedOwner ? 'Unlimited (Owner)' : isLimitReached ? 'Limit Reached' : 'Available'}
             </span>
           </div>
           <p className="text-[11px] text-slate-400 mt-1">

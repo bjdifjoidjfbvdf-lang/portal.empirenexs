@@ -95,7 +95,7 @@ interface AppContextType {
   sheetNiches: NicheSheetItem[];
   sheetNichesCategories: { name: string; count: number }[];
   isFetchingSheetNiches: boolean;
-  refreshSheetNiches: () => Promise<void>;
+  refreshSheetNiches: (forceFresh?: boolean) => Promise<void>;
   searchSheetNiches: (query: string) => NicheSheetItem[];
 
   // AI Assistant & Chat
@@ -700,10 +700,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [sheetNichesCategories, setSheetNichesCategories] = useState<{ name: string; count: number }[]>([]);
   const [isFetchingSheetNiches, setIsFetchingSheetNiches] = useState<boolean>(false);
 
-  const refreshSheetNiches = async () => {
+  const refreshSheetNiches = async (forceFresh = false) => {
     setIsFetchingSheetNiches(true);
     try {
-      const res = await fetch('/api/niches-sheet');
+      const url = forceFresh ? '/api/niches-sheet?refresh=true' : '/api/niches-sheet';
+      const res = await fetch(url, { cache: 'no-store' });
       const data = await res.json();
       if (data.success && Array.isArray(data.items)) {
         setSheetNiches(data.items);
@@ -719,7 +720,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    refreshSheetNiches();
+    refreshSheetNiches(false);
+    // Automatic live sync every 30 seconds so newly added Google Sheet links appear automatically
+    const syncTimer = setInterval(() => {
+      refreshSheetNiches(false);
+    }, 30000);
+    return () => clearInterval(syncTimer);
   }, []);
 
   const searchSheetNiches = (query: string): NicheSheetItem[] => {
@@ -739,17 +745,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Load per-user persistent chat history
   useEffect(() => {
     if (typeof window !== 'undefined' && currentUser?.id) {
-      const savedUserChat = localStorage.getItem(`empirenexs_chat_${currentUser.id}`);
-      if (savedUserChat) {
-        try {
+      try {
+        const savedUserChat = localStorage.getItem(`empirenexs_chat_${currentUser.id}`);
+        if (savedUserChat) {
           const parsed = JSON.parse(savedUserChat);
           if (Array.isArray(parsed) && parsed.length > 0) {
             setChatMessages(parsed);
             return;
           }
-        } catch (e) {
-          console.warn('Error parsing user chat:', e);
         }
+      } catch (e) {
+        console.warn('Error parsing user chat:', e);
       }
       // Personalized welcome greeting
       setChatMessages([
@@ -764,10 +770,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }, [currentUser?.id]);
 
-  // Persist current user's chat messages to localStorage
+  // Persist current user's chat messages to localStorage safely
   useEffect(() => {
     if (typeof window !== 'undefined' && currentUser?.id && chatMessages.length > 0) {
-      localStorage.setItem(`empirenexs_chat_${currentUser.id}`, JSON.stringify(chatMessages));
+      try {
+        localStorage.setItem(`empirenexs_chat_${currentUser.id}`, JSON.stringify(chatMessages));
+      } catch (e) {
+        console.warn('LocalStorage quota notice (chat):', e);
+      }
     }
   }, [chatMessages, currentUser?.id]);
 
@@ -963,34 +973,54 @@ Instructions:
     }
   }, []);
 
-  // Save changes to localStorage
+  // Save changes to localStorage safely
   useEffect(() => {
     if (hasLoadedFromStorage && typeof window !== 'undefined') {
-      localStorage.setItem('empirenexs_users_prod', JSON.stringify(users));
+      try {
+        localStorage.setItem('empirenexs_users_prod', JSON.stringify(users));
+      } catch (err) {
+        console.warn('LocalStorage quota notice (users):', err);
+      }
     }
   }, [users, hasLoadedFromStorage]);
 
   useEffect(() => {
     if (hasLoadedFromStorage && typeof window !== 'undefined') {
-      localStorage.setItem('empirenexs_channels_prod', JSON.stringify(channels));
+      try {
+        localStorage.setItem('empirenexs_channels_prod', JSON.stringify(channels));
+      } catch (err) {
+        console.warn('LocalStorage quota notice (channels):', err);
+      }
     }
   }, [channels, hasLoadedFromStorage]);
 
   useEffect(() => {
     if (hasLoadedFromStorage && typeof window !== 'undefined') {
-      localStorage.setItem('empirenexs_otp_orders_prod', JSON.stringify(otpOrders));
+      try {
+        localStorage.setItem('empirenexs_otp_orders_prod', JSON.stringify(otpOrders));
+      } catch (err) {
+        console.warn('LocalStorage quota notice (otp orders):', err);
+      }
     }
   }, [otpOrders, hasLoadedFromStorage]);
 
   useEffect(() => {
     if (hasLoadedFromStorage && typeof window !== 'undefined') {
-      localStorage.setItem('empirenexs_niche_tabs_prod', JSON.stringify(nicheTabs));
+      try {
+        localStorage.setItem('empirenexs_niche_tabs_prod', JSON.stringify(nicheTabs));
+      } catch (err) {
+        console.warn('LocalStorage quota notice (niche tabs):', err);
+      }
     }
   }, [nicheTabs, hasLoadedFromStorage]);
 
   useEffect(() => {
     if (hasLoadedFromStorage && typeof window !== 'undefined') {
-      localStorage.setItem('empirenexs_niche_claims_prod', JSON.stringify(userNicheClaims));
+      try {
+        localStorage.setItem('empirenexs_niche_claims_prod', JSON.stringify(userNicheClaims));
+      } catch (err) {
+        console.warn('LocalStorage quota notice (niche claims):', err);
+      }
     }
   }, [userNicheClaims, hasLoadedFromStorage]);
 
@@ -1404,9 +1434,13 @@ Instructions:
       };
     }
 
-    // STRICT RULE 2: Daily limit of 1 per unique user in last 24 hours (Super Admin has Founder Override)
+    // STRICT RULE 2: Daily limit of 1 per unique user in last 24 hours (Team Owners: Super Admin, Co-Founders & Branch Heads have Unlimited Access)
+    const isTeamOwner =
+      currentUser.role === 'SUPER_ADMIN' ||
+      currentUser.role === 'CO_FOUNDER' ||
+      currentUser.role === 'BRANCH_HEAD';
     const todayUsed = getUserTodayOTPCount(currentUser.id);
-    if (currentUser.role !== 'SUPER_ADMIN' && todayUsed >= settings.dailyNumberLimitPerUser) {
+    if (!isTeamOwner && todayUsed >= settings.dailyNumberLimitPerUser) {
       return {
         success: false,
         message: `⚠️ **Daily Limit Exceeded:** You have already purchased your allowance of ${settings.dailyNumberLimitPerUser} number in the last 24 hours. Each user is limited to 1 number every 24 hours.`,

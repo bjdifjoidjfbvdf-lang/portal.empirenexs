@@ -93,12 +93,62 @@ export const UserProfileSettings: React.FC = () => {
     setIsUploading(true);
     const reader = new FileReader();
     reader.onload = () => {
-      const result = reader.result as string;
-      setAvatar(result);
-      setIsUploading(false);
-      // Auto-save avatar update
-      updateUserProfile({ avatar: result });
-      setProfileFeedback({ type: 'success', message: 'Profile picture uploaded and updated successfully!' });
+      try {
+        const rawResult = reader.result as string;
+        // Create an Image element to downscale for avatar size
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas');
+            const maxDim = 256;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(img, 0, 0, width, height);
+              const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+              setAvatar(compressedDataUrl);
+              setIsUploading(false);
+              updateUserProfile({ avatar: compressedDataUrl });
+              setProfileFeedback({ type: 'success', message: 'Profile picture uploaded and updated successfully!' });
+            } else {
+              setAvatar(rawResult);
+              setIsUploading(false);
+              updateUserProfile({ avatar: rawResult });
+              setProfileFeedback({ type: 'success', message: 'Profile picture updated successfully!' });
+            }
+          } catch (canvasErr) {
+            console.warn('Canvas resize error:', canvasErr);
+            setAvatar(rawResult);
+            setIsUploading(false);
+            updateUserProfile({ avatar: rawResult });
+            setProfileFeedback({ type: 'success', message: 'Profile picture updated successfully!' });
+          }
+        };
+        img.onerror = () => {
+          setIsUploading(false);
+          setProfileFeedback({ type: 'error', message: 'Could not process the selected image.' });
+        };
+        img.src = rawResult;
+      } catch (err) {
+        setIsUploading(false);
+        setProfileFeedback({ type: 'error', message: 'Failed to process image file.' });
+      }
     };
     reader.onerror = () => {
       setIsUploading(false);
