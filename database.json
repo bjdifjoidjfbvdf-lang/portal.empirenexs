@@ -71,6 +71,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-15",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792140055584",
+      "name": "Nisha",
+      "username": "nisha12",
+      "email": "nishwork234@gmail.com",
+      "password": "iiff1122",
+      "phone": "03074120756",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "rahim-yar-khan",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-16",
+      "emailVerified": true
     }
   ],
   "channels": [],
@@ -258,5 +277,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-16T08:13:30.445Z"
+  "updatedAt": "2026-10-16T08:40:55.584Z"
 }
