@@ -423,7 +423,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const isFounderCeo = (u: UserProfile | null | undefined): boolean => {
+    if (!u) return false;
+    const email = (u.email || '').toLowerCase().trim();
+    const username = (u.username || '').toLowerCase().trim();
+    return (
+      u.id === 'user-waqas' ||
+      u.role === 'SUPER_ADMIN' ||
+      username === 'waqasgill' ||
+      email === 'muhammadwaqasmwg@gmail.com' ||
+      email === 'waqas@empirenexs.com'
+    );
+  };
+
   const approveUser = (userId: string) => {
+    if (!isFounderCeo(currentUser)) {
+      alert('Security Alert: Sirf Founder & CEO (Waqas Gill) new accounts approve kar sakty hain.');
+      return;
+    }
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, status: 'ACTIVE' } : u))
     );
@@ -431,12 +448,22 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'approve', userId }),
+        body: JSON.stringify({
+          action: 'approve',
+          userId,
+          requesterId: currentUser?.id,
+          requesterRole: currentUser?.role,
+          requesterEmail: currentUser?.email,
+        }),
       }).catch((e) => console.warn('API sync notice:', e));
     }
   };
 
   const rejectUser = (userId: string) => {
+    if (!isFounderCeo(currentUser)) {
+      alert('Security Alert: Sirf Founder & CEO (Waqas Gill) applications decline kar sakty hain.');
+      return;
+    }
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, status: 'REJECTED' } : u))
     );
@@ -444,12 +471,22 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'reject', userId }),
+        body: JSON.stringify({
+          action: 'reject',
+          userId,
+          requesterId: currentUser?.id,
+          requesterRole: currentUser?.role,
+          requesterEmail: currentUser?.email,
+        }),
       }).catch((e) => console.warn('API sync notice:', e));
     }
   };
 
   const restrictUser = (userId: string) => {
+    if (!isFounderCeo(currentUser)) {
+      alert('Security Alert: Sirf Founder & CEO (Waqas Gill) team members ki access restrict kar sakty hain.');
+      return;
+    }
     if (userId === 'user-waqas' || (currentUser?.id === userId && currentUser?.role === 'SUPER_ADMIN')) {
       alert('Founder & CEO account cannot be restricted.');
       return;
@@ -464,12 +501,22 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'restrict', userId }),
+        body: JSON.stringify({
+          action: 'restrict',
+          userId,
+          requesterId: currentUser?.id,
+          requesterRole: currentUser?.role,
+          requesterEmail: currentUser?.email,
+        }),
       }).catch((e) => console.warn('API sync notice:', e));
     }
   };
 
   const unrestrictUser = (userId: string) => {
+    if (!isFounderCeo(currentUser)) {
+      alert('Security Alert: Sirf Founder & CEO (Waqas Gill) access restore kar sakty hain.');
+      return;
+    }
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, status: 'ACTIVE' } : u))
     );
@@ -477,12 +524,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'unrestrict', userId }),
+        body: JSON.stringify({
+          action: 'unrestrict',
+          userId,
+          requesterId: currentUser?.id,
+          requesterRole: currentUser?.role,
+          requesterEmail: currentUser?.email,
+        }),
       }).catch((e) => console.warn('API sync notice:', e));
     }
   };
 
   const deleteUser = (userId: string): { success: boolean; message: string } => {
+    if (!isFounderCeo(currentUser)) {
+      return { success: false, message: 'Unauthorized: Sirf Founder & CEO (Waqas Gill) members ko permanently remove kar sakty hain.' };
+    }
     const target = users.find((u) => u.id === userId);
     if (!target) {
       return { success: false, message: 'User not found in system.' };
@@ -500,15 +556,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete', userId }),
+        body: JSON.stringify({
+          action: 'delete',
+          userId,
+          requesterId: currentUser?.id,
+          requesterRole: currentUser?.role,
+          requesterEmail: currentUser?.email,
+        }),
       }).catch((e) => console.warn('API sync notice:', e));
     }
 
     return { success: true, message: `Member "${target.name}" (@${target.username}) has been permanently deleted.` };
   };
 
-  // Direct create user by Admin
+  // Direct create user by Admin (Restricted to Founder & CEO)
   const directCreateUser = (userData: Partial<UserProfile> & { name: string; username: string; email: string; password: string }): { success: boolean; message: string } => {
+    if (!isFounderCeo(currentUser)) {
+      return { success: false, message: 'Unauthorized: Sirf Founder & CEO (Waqas Gill) direct accounts create kar sakty hain.' };
+    }
     const cleanEmail = userData.email.toLowerCase().trim();
     const cleanUsername = userData.username.toLowerCase().trim();
 

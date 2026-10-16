@@ -56,6 +56,13 @@ export const BranchesAndTeams: React.FC = () => {
   const [modalFeedback, setModalFeedback] = useState<string | null>(null);
   const [activeSubTab, setActiveSubTab] = useState<'members' | 'comparison'>('members');
 
+  const isWaqasCeo =
+    currentUser?.role === 'SUPER_ADMIN' ||
+    currentUser?.id === 'user-waqas' ||
+    currentUser?.email === 'muhammadwaqasmwg@gmail.com' ||
+    currentUser?.email === 'waqas@empirenexs.com' ||
+    currentUser?.username === 'waqasgill';
+
   const handleCreateDirectUser = (e: React.FormEvent) => {
     e.preventDefault();
     setModalFeedback(null);
@@ -111,7 +118,7 @@ export const BranchesAndTeams: React.FC = () => {
           </p>
         </div>
 
-        {currentUser?.role === 'SUPER_ADMIN' && activeSubTab === 'members' && (
+        {isWaqasCeo && activeSubTab === 'members' && (
           <button
             onClick={() => setIsAddUserModalOpen(true)}
             className="px-4 py-2.5 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-lg shadow-emerald-500/20 flex items-center gap-1.5 shrink-0"
@@ -123,7 +130,7 @@ export const BranchesAndTeams: React.FC = () => {
       </div>
 
       {/* CEO Exclusive Tab Switcher */}
-      {currentUser?.role === 'SUPER_ADMIN' && (
+      {isWaqasCeo && (
         <div className="flex items-center gap-2 p-1 rounded-xl bg-slate-900 border border-slate-800 w-fit">
           <button
             onClick={() => setActiveSubTab('members')}
@@ -151,7 +158,7 @@ export const BranchesAndTeams: React.FC = () => {
       )}
 
       {/* View Content: Either Graphical Comparison or Team Members */}
-      {currentUser?.role === 'SUPER_ADMIN' && activeSubTab === 'comparison' ? (
+      {isWaqasCeo && activeSubTab === 'comparison' ? (
         <BranchComparisonAnalytics />
       ) : (
         <>
@@ -268,8 +275,8 @@ export const BranchesAndTeams: React.FC = () => {
         </div>
       </div>
 
-      {/* Pending User Approvals Section */}
-      {pendingUsers.length > 0 && (
+      {/* Pending User Approvals Section - RESTRICTED EXCLUSIVELY TO FOUNDER & CEO WAQAS GILL */}
+      {pendingUsers.length > 0 && isWaqasCeo && (
         <div className="p-5 rounded-2xl bg-amber-950/20 border border-amber-500/40">
           <div className="flex items-center justify-between mb-3">
             <div>
@@ -282,7 +289,7 @@ export const BranchesAndTeams: React.FC = () => {
               </p>
             </div>
             <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-              Founder Action Required
+              CEO Exclusive Action
             </span>
           </div>
 
@@ -345,13 +352,23 @@ export const BranchesAndTeams: React.FC = () => {
 
                 <div className="flex items-center gap-2 self-end md:self-center shrink-0">
                   <button
-                    onClick={() => rejectUser(pending.id)}
+                    onClick={() => {
+                      if (!isWaqasCeo) {
+                        alert('Unauthorized: Sirf Founder & CEO Waqas Gill account decline kar sakty hain.');
+                        return;
+                      }
+                      rejectUser(pending.id);
+                    }}
                     className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-500/30 transition"
                   >
                     Reject Request
                   </button>
                   <button
                     onClick={() => {
+                      if (!isWaqasCeo) {
+                        alert('Unauthorized: Sirf Founder & CEO Waqas Gill account approve kar sakty hain.');
+                        return;
+                      }
                       approveUser(pending.id);
                       alert(`Account for ${pending.name} (@${pending.username}) has been approved successfully!`);
                     }}
@@ -426,7 +443,7 @@ export const BranchesAndTeams: React.FC = () => {
                 </div>
 
                 {/* CEO Security Actions: Restrict Access or Delete User */}
-                {currentUser?.role === 'SUPER_ADMIN' && !isFounder && (
+                {isWaqasCeo && !isFounder && (
                   <div className="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     {/* Restrict / Unrestrict Button */}
                     {isRestricted ? (

@@ -149,12 +149,17 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             </span>
           </button>
 
-          {/* Pending Approvals Badge for Admin */}
-          {pendingUsers.length > 0 && currentUser?.role === 'SUPER_ADMIN' && (
+          {/* Pending Approvals Badge for Founder & CEO Waqas Gill */}
+          {pendingUsers.length > 0 &&
+            (currentUser?.role === 'SUPER_ADMIN' ||
+             currentUser?.id === 'user-waqas' ||
+             currentUser?.email === 'muhammadwaqasmwg@gmail.com' ||
+             currentUser?.email === 'waqas@empirenexs.com' ||
+             currentUser?.username === 'waqasgill') && (
             <button
               onClick={() => setActiveTab('team')}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 transition"
-              title="Click to review pending user approvals"
+              title="Click to review pending user approvals (Founder & CEO only)"
             >
               <UserPlus className="w-3.5 h-3.5 text-amber-400" />
               <span>{pendingUsers.length} Pending Approval</span>

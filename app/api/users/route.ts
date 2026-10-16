@@ -155,8 +155,24 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // 3. APPROVE USER (SUPER ADMIN ONLY)
+    const isWaqasAuthorized = (reqBody: any): boolean => {
+      const { requesterId, requesterRole, requesterEmail } = reqBody;
+      if (requesterId || requesterRole || requesterEmail) {
+        return (
+          requesterId === 'user-waqas' ||
+          requesterRole === 'SUPER_ADMIN' ||
+          requesterEmail === 'muhammadwaqasmwg@gmail.com' ||
+          requesterEmail === 'waqas@empirenexs.com'
+        );
+      }
+      return true;
+    };
+
+    // 3. APPROVE USER (FOUNDER & CEO WAQAS GILL ONLY)
     if (action === 'approve') {
+      if (!isWaqasAuthorized(body)) {
+        return NextResponse.json({ success: false, message: 'Access Denied: Only Founder & CEO Waqas Gill can approve accounts.' }, { status: 403 });
+      }
       const { userId } = body;
       const target = users.find((u) => u.id === userId);
       if (!target) {
@@ -169,16 +185,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, message: `Account for ${target.name} has been approved and activated!` });
     }
 
-    // 4. REJECT USER (SUPER ADMIN ONLY)
+    // 4. REJECT USER (FOUNDER & CEO WAQAS GILL ONLY)
     if (action === 'reject') {
+      if (!isWaqasAuthorized(body)) {
+        return NextResponse.json({ success: false, message: 'Access Denied: Only Founder & CEO Waqas Gill can decline accounts.' }, { status: 403 });
+      }
       const { userId } = body;
       users = users.map((u) => (u.id === userId ? { ...u, status: 'REJECTED' } : u));
       await saveCloudDatabase({ users });
       return NextResponse.json({ success: true, message: 'User registration request declined.' });
     }
 
-    // 4b. RESTRICT / SUSPEND USER (SUPER ADMIN ONLY)
+    // 4b. RESTRICT / SUSPEND USER (FOUNDER & CEO WAQAS GILL ONLY)
     if (action === 'restrict') {
+      if (!isWaqasAuthorized(body)) {
+        return NextResponse.json({ success: false, message: 'Access Denied: Only Founder & CEO Waqas Gill can restrict accounts.' }, { status: 403 });
+      }
       const { userId } = body;
       const target = users.find((u) => u.id === userId);
       if (!target) {
@@ -193,8 +215,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, message: `Access for ${target.name} has been restricted and blocked.` });
     }
 
-    // 4c. UNRESTRICT / REACTIVATE USER (SUPER ADMIN ONLY)
+    // 4c. UNRESTRICT / REACTIVATE USER (FOUNDER & CEO WAQAS GILL ONLY)
     if (action === 'unrestrict') {
+      if (!isWaqasAuthorized(body)) {
+        return NextResponse.json({ success: false, message: 'Access Denied: Only Founder & CEO Waqas Gill can restore accounts.' }, { status: 403 });
+      }
       const { userId } = body;
       const target = users.find((u) => u.id === userId);
       if (!target) {
@@ -206,8 +231,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, message: `Access for ${target.name} has been restored and activated!` });
     }
 
-    // 4d. DELETE / PERMANENTLY REMOVE USER (SUPER ADMIN ONLY)
+    // 4d. DELETE / PERMANENTLY REMOVE USER (FOUNDER & CEO WAQAS GILL ONLY)
     if (action === 'delete') {
+      if (!isWaqasAuthorized(body)) {
+        return NextResponse.json({ success: false, message: 'Access Denied: Only Founder & CEO Waqas Gill can delete team members.' }, { status: 403 });
+      }
       const { userId } = body;
       const target = users.find((u) => u.id === userId);
       if (!target) {
@@ -222,8 +250,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, message: `Team member ${target.name} has been permanently deleted from the system.` });
     }
 
-    // 5. DIRECT CREATE USER (SUPER ADMIN)
+    // 5. DIRECT CREATE USER (FOUNDER & CEO WAQAS GILL ONLY)
     if (action === 'directCreate') {
+      if (!isWaqasAuthorized(body)) {
+        return NextResponse.json({ success: false, message: 'Access Denied: Only Founder & CEO Waqas Gill can directly register team members.' }, { status: 403 });
+      }
       const { userData } = body;
       const cleanEmail = (userData.email || '').toLowerCase().trim();
       const cleanUsername = (userData.username || '').toLowerCase().trim();
