@@ -204,7 +204,33 @@
       "timestamp": "02:06 PM",
       "createdAt": "2026-10-15T21:06:09.555Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792138208645",
+      "userId": "user-saim",
+      "userName": "Saim Chaudhry",
+      "userEmail": "saim@empirenexs.com",
+      "userRole": "CO_FOUNDER",
+      "branchId": "bahawalpur",
+      "sender": "user",
+      "text": "Assalam o Alaikum! Kaise hain?",
+      "timestamp": "01:10 PM",
+      "createdAt": "2026-10-16T08:10:08.645Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-sal-1792138208645",
+      "userId": "user-saim",
+      "userName": "Saim Chaudhry",
+      "userEmail": "saim@empirenexs.com",
+      "userRole": "CO_FOUNDER",
+      "branchId": "bahawalpur",
+      "sender": "assistant",
+      "text": "وعلیکم السلام (Walaikum Assalam) **Saim Chaudhry**! 😊\n\nEmpireNexs AI Assistant aap ki khidmat mein hazir hai. Umeed hai aap ka din bohat acha guzar raha hoga.\n\nAaj aap kis cheez par baat ya kaam karna chahein gay?\n- **Branch Operations:** Aapki branch ke channels & video performance\n- **Channels Vault:** Branch Google Sheet & channel records\n- **Niche Topics:** Daily team script topics\n- **OTP Verification:** YouTube SMS phone numbers",
+      "timestamp": "01:10 PM",
+      "createdAt": "2026-10-16T08:10:08.645Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-16T08:02:41.314Z"
+  "updatedAt": "2026-10-16T08:10:10.666Z"
 }
