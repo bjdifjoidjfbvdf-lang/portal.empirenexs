@@ -474,7 +474,33 @@
       "timestamp": "02:57 AM",
       "createdAt": "2026-10-16T09:57:54.013Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792159141158",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "Assalam o Alaikum! Kaise hain?",
+      "timestamp": "06:59 AM",
+      "createdAt": "2026-10-16T13:59:01.143Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-sal-1792159141158",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "وعلیکم السلام (Walaikum Assalam) **Waqas Gill**! 😊\n\nEmpireNexs AI Assistant aap ki khidmat mein hazir hai. Umeed hai aap ka din bohat acha guzar raha hoga.\n\nAaj aap kis cheez par baat ya kaam karna chahein gay?\n- **All-to-All Operations & Sales:** All 3 branches monthly calculations & cashflow\n- **Channels Vault:** Full company channels database & Google Sheets\n- **Branch Analytics:** Graphical comparison between Musafirkhana, Bahawalpur & Rahim Yar Khan\n- **OTP & Niches:** Verification numbers & team claims",
+      "timestamp": "06:59 AM",
+      "createdAt": "2026-10-16T13:59:01.143Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-16T13:52:31.202Z"
+  "updatedAt": "2026-10-16T13:59:02.139Z"
 }
