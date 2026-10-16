@@ -54,6 +54,8 @@ interface AppContextType {
   unrestrictUser: (userId: string) => void;
   deleteUser: (userId: string) => { success: boolean; message: string };
   directCreateUser: (userData: Partial<UserProfile> & { name: string; username: string; email: string; password: string }) => { success: boolean; message: string };
+  updateMemberGoogleSheet: (userId: string, sheetUrl: string) => Promise<{ success: boolean; message: string }>;
+  syncMemberSheetChannels: (userId: string, customSheetUrl?: string) => Promise<{ success: boolean; message: string; count?: number }>;
   selectedBranchId: BranchId;
   setSelectedBranchId: (branchId: BranchId) => void;
   availableUsers: UserProfile[];
@@ -752,6 +754,90 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setCurrentUser(updatedUser);
     setUsers((prev) => prev.map((u) => (u.id === currentUser.id ? updatedUser : u)));
     return { success: true, message: 'Password has been updated successfully!' };
+  };
+
+  // Google Sheet Attachment & Auto-Fetch for Team Members (Option 1)
+  const updateMemberGoogleSheet = async (
+    userId: string,
+    sheetUrl: string
+  ): Promise<{ success: boolean; message: string }> => {
+    const cleanUrl = sheetUrl.trim();
+    try {
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'updateProfile',
+          userId,
+          updates: { personalGoogleSheetUrl: cleanUrl },
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setUsers((prev) =>
+          prev.map((u) => (u.id === userId ? { ...u, personalGoogleSheetUrl: cleanUrl } : u))
+        );
+        return { success: true, message: data.message || 'Google Sheet URL updated successfully!' };
+      }
+      return { success: false, message: data.message || 'Failed to update Google Sheet URL' };
+    } catch (e: any) {
+      return { success: false, message: e?.message || 'Network error' };
+    }
+  };
+
+  const syncMemberSheetChannels = async (
+    userId: string,
+    customSheetUrl?: string
+  ): Promise<{ success: boolean; message: string; count?: number }> => {
+    try {
+      const targetUser = users.find((u) => u.id === userId);
+      const sheetUrl = (customSheetUrl || targetUser?.personalGoogleSheetUrl || '').trim();
+      if (!sheetUrl) {
+        return { success: false, message: 'No Google Sheet URL attached for this member.' };
+      }
+
+      const res = await fetch('/api/channels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'syncUserSheet',
+          userId,
+          sheetUrl,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        // Fetch fresh channels
+        const channelsRes = await fetch('/api/channels');
+        const channelsData = await channelsRes.json();
+        if (channelsData.success && Array.isArray(channelsData.channels)) {
+          setChannels(channelsData.channels);
+        }
+
+        // Update user state in memory
+        setUsers((prev) =>
+          prev.map((u) =>
+            u.id === userId
+              ? {
+                  ...u,
+                  personalGoogleSheetUrl: sheetUrl,
+                  lastSheetSync: new Date().toISOString(),
+                  syncedChannelsCount: data.count || 0,
+                }
+              : u
+          )
+        );
+
+        return {
+          success: true,
+          count: data.count,
+          message: data.message || `Successfully synced ${data.count} channels!`,
+        };
+      }
+      return { success: false, message: data.message || 'Failed to sync Google Sheet channels' };
+    } catch (e: any) {
+      return { success: false, message: e?.message || 'Network error while syncing sheet' };
+    }
   };
 
   // Channels state
@@ -1830,6 +1916,54 @@ Instructions:
 
     const lower = trimmed.toLowerCase();
 
+    // 0. Live Agent / Waqas Gill WhatsApp Contact Intent
+    const isLiveAgentOrWaqas =
+      lower.includes('live agent') ||
+      lower.includes('live support') ||
+      lower.includes('waqas gill') ||
+      lower.includes('waqas') ||
+      lower.includes('ceo') ||
+      lower.includes('founder') ||
+      lower.includes('contact waqas') ||
+      lower.includes('contact agent') ||
+      lower.includes('whatsapp') ||
+      lower.includes('human agent') ||
+      lower.includes('talk to human') ||
+      lower.includes('talk to agent') ||
+      lower.includes('speak with agent') ||
+      lower.includes('direct contact') ||
+      lower.includes('phone number') ||
+      lower.includes('admin se baat') ||
+      lower.includes('rabta karna');
+
+    if (isLiveAgentOrWaqas) {
+      const waNumber = '923075203713';
+      const encodedMsg = encodeURIComponent(
+        `Assalam o Alaikum Waqas Bhai! Main EmpireNexs Management Portal se rabta kar raha hoon (${currentUser?.name || 'Team Member'}). Mujhe live assistance chahiye.`
+      );
+      const whatsappUrl = `https://wa.me/${waNumber}?text=${encodedMsg}`;
+
+      const reply: AIChatMessage = {
+        id: `msg-agent-${Date.now()}`,
+        sender: 'assistant',
+        senderName: 'Nexs AI Assistant',
+        text: `🟢 **EmpireNexs Live Support & Founder Direct Contact:**\n\nAap direct hamare **Founder & CEO (Waqas Gill)** ke sath WhatsApp par connect ho saktay hain.\n\n📱 **WhatsApp Direct:** [+923075203713](${whatsappUrl})\n👤 **Contact Person:** Muhammad Waqas Gill\n🏢 **Designation:** Founder & CEO (EmpireNexs)\n⚡ **Status:** Active on WhatsApp\n\n*Neechay diye gaye green **WhatsApp button** par click karein for instant chat.*`,
+        timestamp: timeStr,
+        createdAt: now.toISOString(),
+        fetchedItems: [
+          {
+            type: 'doc',
+            title: 'Waqas Gill (Founder & CEO) - Live WhatsApp',
+            details: 'Click to start direct chat on WhatsApp (+923075203713)',
+            link: whatsappUrl,
+          },
+        ],
+      };
+      setChatMessages((prev) => [...prev, reply]);
+      logToServer([userMsg, reply]);
+      return;
+    }
+
     // 1. Salam & Greetings
     const isSalam =
       lower.includes('salam') ||
@@ -2615,6 +2749,8 @@ Instructions:
         unrestrictUser,
         deleteUser,
         directCreateUser,
+        updateMemberGoogleSheet,
+        syncMemberSheetChannels,
         selectedBranchId,
         setSelectedBranchId,
         availableUsers,

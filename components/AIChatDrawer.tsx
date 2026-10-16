@@ -97,6 +97,7 @@ export const AIChatDrawer: React.FC = () => {
 
   const quickQuestions = [
     'Assalam o Alaikum! Kaise hain?',
+    'Contact Waqas Gill (Live Agent)',
     'Give me a Tech niche topic',
     'Request YouTube verification OTP number',
     'Kitne channel sell huay? (Monthly Sales)',
@@ -247,30 +248,64 @@ export const AIChatDrawer: React.FC = () => {
                             <FileSpreadsheet className="w-3 h-3" />
                             Fetched From Sheet / DB:
                           </p>
-                          {msg.fetchedItems.map((item, i) => (
-                            <div
-                              key={i}
-                              className="p-2.5 rounded-xl bg-[#111317] border border-[#232732] flex items-center justify-between gap-2"
-                            >
-                              <div className="truncate">
-                                <p className="font-bold text-white truncate">{item.title}</p>
-                                {item.details && (
-                                  <p className="text-[10px] text-slate-400 truncate">{item.details}</p>
-                                )}
-                              </div>
-                              {item.link && (
+                          {msg.fetchedItems.map((item, i) => {
+                            const isWhatsApp = Boolean(item.link?.includes('wa.me'));
+                            if (isWhatsApp) {
+                              return (
                                 <a
+                                  key={i}
                                   href={item.link}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="px-2 py-1 rounded-lg bg-[#c4f042]/15 hover:bg-[#c4f042]/25 text-[#c4f042] font-bold text-[10px] flex items-center gap-1 shrink-0 transition"
+                                  className="p-3 rounded-2xl bg-gradient-to-r from-emerald-950/90 via-emerald-900/40 to-[#0e2417] border border-emerald-500/50 hover:border-emerald-400 flex items-center justify-between gap-3 transition shadow-lg group/wa"
                                 >
-                                  <span>Open</span>
-                                  <ExternalLink className="w-3 h-3" />
+                                  <div className="flex items-center gap-2.5 truncate">
+                                    <div className="w-9 h-9 rounded-xl bg-[#25D366]/20 text-[#25D366] flex items-center justify-center shrink-0 border border-[#25D366]/40">
+                                      <MessageSquare className="w-4 h-4" />
+                                    </div>
+                                    <div className="truncate">
+                                      <p className="font-bold text-white text-xs group-hover/wa:text-[#25D366] transition truncate">
+                                        {item.title}
+                                      </p>
+                                      <p className="text-[10px] text-emerald-400 font-mono flex items-center gap-1.5 mt-0.5">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
+                                        <span>+92 307 5203713 • Online Now</span>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="px-3.5 py-1.5 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-slate-950 font-black text-xs flex items-center gap-1.5 shrink-0 shadow-[0_0_15px_rgba(37,211,102,0.35)] transition">
+                                    <span>Chat on WhatsApp</span>
+                                    <ExternalLink className="w-3.5 h-3.5" />
+                                  </div>
                                 </a>
-                              )}
-                            </div>
-                          ))}
+                              );
+                            }
+
+                            return (
+                              <div
+                                key={i}
+                                className="p-2.5 rounded-xl bg-[#111317] border border-[#232732] flex items-center justify-between gap-2"
+                              >
+                                <div className="truncate">
+                                  <p className="font-bold text-white truncate">{item.title}</p>
+                                  {item.details && (
+                                    <p className="text-[10px] text-slate-400 truncate">{item.details}</p>
+                                  )}
+                                </div>
+                                {item.link && (
+                                  <a
+                                    href={item.link}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="px-2 py-1 rounded-lg bg-[#c4f042]/15 hover:bg-[#c4f042]/25 text-[#c4f042] font-bold text-[10px] flex items-center gap-1 shrink-0 transition"
+                                  >
+                                    <span>Open</span>
+                                    <ExternalLink className="w-3 h-3" />
+                                  </a>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>

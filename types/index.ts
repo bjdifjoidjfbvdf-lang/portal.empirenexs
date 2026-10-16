@@ -37,6 +37,8 @@ export interface UserProfile {
   emailVerified?: boolean;
   personalGoogleSheetUrl?: string;
   personalGoogleSheetApiKey?: string;
+  lastSheetSync?: string;
+  syncedChannelsCount?: number;
 }
 
 export interface ChannelRecord {
