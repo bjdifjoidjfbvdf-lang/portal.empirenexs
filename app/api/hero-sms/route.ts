@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
           country: 'Philippines (+63)',
           cost: '$0.024',
           provider: 'Hero-SMS (hero-sms.com)',
-          expiresInSeconds: 120, // 2 minutes
+          expiresInSeconds: 300, // 5 minutes
         });
       }
 

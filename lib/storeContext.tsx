@@ -1024,6 +1024,43 @@ Instructions:
     }
   }, [userNicheClaims, hasLoadedFromStorage]);
 
+  // Safeguard: Check periodically for any expired pending OTP orders (5-minute window)
+  useEffect(() => {
+    if (!hasLoadedFromStorage || typeof window === 'undefined') return;
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const apiKey =
+        settings.heroSmsApiKey?.trim() ||
+        localStorage.getItem('empirenexs_herosms_key') ||
+        '5A61231e6A24791589Ae8efeAcfb7A4d';
+
+      setOtpOrders((prev) => {
+        let hasExpired = false;
+        const updated = prev.map((o) => {
+          if (o.status === 'PENDING_OTP' && o.expiresAt && now > o.expiresAt) {
+            hasExpired = true;
+            // Cancel on Hero-SMS in background for refund
+            fetch('/api/hero-sms', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'cancelOrder', orderId: o.id, apiKey }),
+            }).catch(() => null);
+            return { ...o, status: 'EXPIRED' as const };
+          }
+          return o;
+        });
+
+        if (hasExpired) {
+          setSettings((prevS) => ({ ...prevS, smsBalance: prevS.smsBalance + 0.024 }));
+        }
+
+        return hasExpired ? updated : prev;
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [hasLoadedFromStorage, settings.heroSmsApiKey]);
+
   // When current user changes, restrict or adapt branch selection
   useEffect(() => {
     if (!currentUser?.canAccessAllBranches) {
@@ -1336,18 +1373,23 @@ Instructions:
   };
 
   // Daily Phone Quota: 1 number in last 24 hours per user
+  // STRICT RULE: Daily limit ONLY consumes if OTP code was actually received!
+  // If no OTP arrives, or order times out / is cancelled, employee's quota is NOT consumed.
   const getUserTodayOTPCount = (userId: string): number => {
     const now = Date.now();
     const twentyFourHoursAgo = now - 24 * 60 * 60 * 1000;
     return otpOrders.filter((o) => {
-      if (o.userId !== userId || o.status === 'CANCELLED') return false;
+      if (o.userId !== userId) return false;
+      // Daily quota ONLY counts numbers where OTP code was actually received and completed!
+      const hasReceivedOtp = o.status === 'COMPLETED' && Boolean(o.otpCode && o.otpCode !== 'None');
+      if (!hasReceivedOtp) return false;
       const orderTime = new Date(o.createdAt).getTime();
       return !isNaN(orderTime) ? orderTime >= twentyFourHoursAgo : false;
     }).length;
   };
 
   const getUserTotalOTPCount = (userId: string): number => {
-    return otpOrders.filter((o) => o.userId === userId && o.status !== 'CANCELLED').length;
+    return otpOrders.filter((o) => o.userId === userId && o.status === 'COMPLETED' && Boolean(o.otpCode && o.otpCode !== 'None')).length;
   };
 
   // Duplicate Check: Check by channel name OR channel link FOREVER
@@ -1355,21 +1397,24 @@ Instructions:
     const cleanName = channelName.trim().toLowerCase();
     const cleanUrl = (channelUrl || '').trim().toLowerCase();
 
-    // Check in otpOrders
+    // Check in otpOrders (Only COMPLETED orders with OTP or currently active PENDING_OTP within 5 mins)
     const orderMatch = otpOrders.find(
       (o) =>
         (o.channelName.trim().toLowerCase() === cleanName ||
          (cleanUrl && o.channelUrl && o.channelUrl.trim().toLowerCase() === cleanUrl)) &&
-        (o.status === 'COMPLETED' || (o.status === 'PENDING_OTP' && (!o.expiresAt || Date.now() <= o.expiresAt)))
+        ((o.status === 'COMPLETED' && Boolean(o.otpCode)) ||
+         (o.status === 'PENDING_OTP' && (!o.expiresAt || Date.now() <= o.expiresAt)))
     );
     if (orderMatch) return orderMatch;
 
-    // Check in channels
+    // Check in channels (Only channels that received a real verified OTP number)
     const channelMatch = channels.find(
       (ch) =>
         (ch.channelName.trim().toLowerCase() === cleanName ||
          (cleanUrl && ch.channelUrl.trim().toLowerCase() === cleanUrl)) &&
-        Boolean(ch.createdNumber)
+        Boolean(ch.createdNumber) &&
+        !ch.createdNumber.includes('(Pending') &&
+        !ch.createdNumber.includes('(Cancelled')
     );
     if (channelMatch) {
       return {
@@ -1396,7 +1441,7 @@ Instructions:
 
   // STRICT PHONE OTP REQUEST:
   // Requires channelName AND channelUrl.
-  // Enforces zero duplicate EVER, and 1 per 24 hours per user.
+  // Enforces zero duplicate EVER, and 1 per 24 hours per user ONLY if OTP is received.
   const requestPhoneOTP = async (
     channelName: string,
     channelUrl: string,
@@ -1435,6 +1480,7 @@ Instructions:
     }
 
     // STRICT RULE 2: Daily limit of 1 per unique user in last 24 hours (Team Owners: Super Admin, Co-Founders & Branch Heads have Unlimited Access)
+    // NOTE: Daily limit ONLY consumes if OTP code was actually received!
     const isTeamOwner =
       currentUser.role === 'SUPER_ADMIN' ||
       currentUser.role === 'CO_FOUNDER' ||
@@ -1443,8 +1489,21 @@ Instructions:
     if (!isTeamOwner && todayUsed >= settings.dailyNumberLimitPerUser) {
       return {
         success: false,
-        message: `⚠️ **Daily Limit Exceeded:** You have already purchased your allowance of ${settings.dailyNumberLimitPerUser} number in the last 24 hours. Each user is limited to 1 number every 24 hours.`,
+        message: `⚠️ **Daily Limit Exceeded:** You have already used your allowance of ${settings.dailyNumberLimitPerUser} verified number in the last 24 hours. Daily quota only locks when an OTP code is received.`,
       };
+    }
+
+    // Prevent submitting another order while one is currently in 5-minute pending countdown
+    if (!isTeamOwner) {
+      const activePendingOrder = otpOrders.find(
+        (o) => o.userId === currentUser.id && o.status === 'PENDING_OTP' && (o.expiresAt ? Date.now() < o.expiresAt : true)
+      );
+      if (activePendingOrder) {
+        return {
+          success: false,
+          message: `⏳ **Pending Order in Progress:** You already have an active OTP request for "${activePendingOrder.channelName}" (${activePendingOrder.phoneNumber}) waiting for SMS. Please wait for the 5-minute timer or click 'Cancel / Refund' before requesting another number.`,
+        };
+      }
     }
 
     // REAL API Call to Hero-SMS (Country 4 = Philippines Google/YouTube $0.024)
@@ -1466,6 +1525,7 @@ Instructions:
       const orderId = data.orderId;
       const phoneNumber = data.phoneNumber;
 
+      // 5 Minutes (300 seconds / 300,000 ms) Countdown Window
       const newOrder: OTPOrderRecord = {
         id: orderId,
         userId: currentUser.id,
@@ -1481,7 +1541,7 @@ Instructions:
         status: 'PENDING_OTP',
         cost: '$0.024',
         createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
-        expiresAt: Date.now() + 120000,
+        expiresAt: Date.now() + 300000, // 5 minutes
       };
 
       setOtpOrders((prev) => [newOrder, ...prev]);
@@ -1489,51 +1549,10 @@ Instructions:
       // Deduct balance locally by 0.024
       setSettings((prev) => ({ ...prev, smsBalance: Math.max(0, prev.smsBalance - 0.024) }));
 
-      // Auto-update or create Channel in Channels Vault with real number
-      setChannels((prev) => {
-        const exists = prev.some(
-          (ch) =>
-            ch.channelName.toLowerCase() === trimmedChannel.toLowerCase() ||
-            (trimmedUrl && ch.channelUrl.toLowerCase() === trimmedUrl.toLowerCase())
-        );
-        if (exists) {
-          return prev.map((ch) =>
-            ch.channelName.toLowerCase() === trimmedChannel.toLowerCase() ||
-            (trimmedUrl && ch.channelUrl.toLowerCase() === trimmedUrl.toLowerCase())
-              ? { ...ch, createdNumber: phoneNumber, channelUrl: trimmedUrl || ch.channelUrl }
-              : ch
-          );
-        } else {
-          const slug = trimmedChannel.toLowerCase().replace(/[^a-z0-9]/g, '');
-          const newCh: ChannelRecord = {
-            id: `ch-${Date.now()}`,
-            nameAndLink: `${trimmedChannel} (${trimmedUrl || `https://youtube.com/@${slug}`})`,
-            channelName: trimmedChannel,
-            channelUrl: trimmedUrl || `https://youtube.com/@${slug || 'channel'}`,
-            status: 'Active',
-            email: `${slug || 'channel'}.empire@gmail.com`,
-            password: '••••••••••••',
-            twoFactor: 'Enabled',
-            managedBy: currentUser.name,
-            managerMail: currentUser.email,
-            backupCodes: 'Available',
-            createdNumber: phoneNumber,
-            pubId: `pub-${Math.floor(1000000000000000 + Math.random() * 9000000000000000)}`,
-            owner: currentUser.name,
-            ip: '104.28.19.45 (US Proxy)',
-            branchId: currentUser.branchId === 'all' ? 'musafirkhana' : currentUser.branchId,
-            niche: 'Automation / Tech',
-            subscribers: '0 (New)',
-            updatedAt: new Date().toISOString().split('T')[0],
-          };
-          return [newCh, ...prev];
-        }
-      });
-
-      // REAL HERO-SMS POLLING LOOP FOR REAL OTP
+      // REAL HERO-SMS POLLING LOOP FOR REAL OTP (5 minutes timeout)
       const pollIntervalMs = 4000;
       const startTime = Date.now();
-      const maxTimeMs = 120000; // 2 minutes
+      const maxTimeMs = 300000; // 5 minutes (300 seconds)
 
       const intervalId = setInterval(async () => {
         const elapsed = Date.now() - startTime;
@@ -1541,7 +1560,7 @@ Instructions:
         if (elapsed > maxTimeMs) {
           clearInterval(intervalId);
 
-          // Order timed out after 2 minutes! Cancel on Hero-SMS to get refund
+          // Order timed out after 5 minutes! Cancel on Hero-SMS to get instant refund
           await fetch('/api/hero-sms', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1557,7 +1576,7 @@ Instructions:
             id: `msg-otp-fail-${Date.now()}`,
             sender: 'assistant',
             senderName: 'Nexs AI Assistant',
-            text: `⚠️ **Verification Code Timed Out**\n\nNo SMS received from YouTube within 2 minutes. The order was automatically cancelled on Hero-SMS and $0.024 has been refunded to your account balance.`,
+            text: `⚠️ **Verification Code Timed Out (5 Minutes)**\n\nNo SMS received from YouTube within 5 minutes for channel "${trimmedChannel}". The order (#${orderId}) was automatically cancelled on Hero-SMS and $0.024 has been refunded to your account balance.\n\n*(Note: Your 1-number daily quota was NOT consumed since no OTP code was received).*`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           };
           setChatMessages((prev) => [...prev, failureMsg]);
@@ -1586,22 +1605,53 @@ Instructions:
               )
             );
 
-            // Update Channel in Channels Vault
-            setChannels((prev) =>
-              prev.map((ch) =>
-                ch.channelName.toLowerCase() === trimmedChannel.toLowerCase() ||
-                (trimmedUrl && ch.channelUrl.toLowerCase() === trimmedUrl.toLowerCase())
-                  ? { ...ch, createdNumber: `${phoneNumber} [OTP: ${realOtp}]` }
-                  : ch
-              )
-            );
+            // Auto-update or create Channel in Channels Vault with real verified number
+            setChannels((prev) => {
+              const exists = prev.some(
+                (ch) =>
+                  ch.channelName.toLowerCase() === trimmedChannel.toLowerCase() ||
+                  (trimmedUrl && ch.channelUrl.toLowerCase() === trimmedUrl.toLowerCase())
+              );
+              if (exists) {
+                return prev.map((ch) =>
+                  ch.channelName.toLowerCase() === trimmedChannel.toLowerCase() ||
+                  (trimmedUrl && ch.channelUrl.toLowerCase() === trimmedUrl.toLowerCase())
+                    ? { ...ch, createdNumber: `${phoneNumber} [OTP: ${realOtp}]`, channelUrl: trimmedUrl || ch.channelUrl }
+                    : ch
+                );
+              } else {
+                const slug = trimmedChannel.toLowerCase().replace(/[^a-z0-9]/g, '');
+                const newCh: ChannelRecord = {
+                  id: `ch-${Date.now()}`,
+                  nameAndLink: `${trimmedChannel} (${trimmedUrl || `https://youtube.com/@${slug}`})`,
+                  channelName: trimmedChannel,
+                  channelUrl: trimmedUrl || `https://youtube.com/@${slug || 'channel'}`,
+                  status: 'Active',
+                  email: `${slug || 'channel'}.empire@gmail.com`,
+                  password: '••••••••••••',
+                  twoFactor: 'Enabled',
+                  managedBy: currentUser.name,
+                  managerMail: currentUser.email,
+                  backupCodes: 'Available',
+                  createdNumber: `${phoneNumber} [OTP: ${realOtp}]`,
+                  pubId: `pub-${Math.floor(1000000000000000 + Math.random() * 9000000000000000)}`,
+                  owner: currentUser.name,
+                  ip: '104.28.19.45 (US Proxy)',
+                  branchId: currentUser.branchId === 'all' ? 'musafirkhana' : currentUser.branchId,
+                  niche: 'Automation / Tech',
+                  subscribers: '0 (New)',
+                  updatedAt: new Date().toISOString().split('T')[0],
+                };
+                return [newCh, ...prev];
+              }
+            });
 
             // Deliver Real OTP in chat
             const otpReceivedMsg: AIChatMessage = {
               id: `msg-otp-${Date.now()}`,
               sender: 'assistant',
               senderName: 'Nexs AI Assistant',
-              text: `🎉 **Hero-SMS Real YouTube OTP Code Received!**\n- **Channel:** ${trimmedChannel}\n- **Link:** ${trimmedUrl}\n- **Phone (Philippines):** \`${phoneNumber}\`\n- **Live OTP Code:** \`${realOtp}\`\n- **Hero-SMS Order ID:** \`#${orderId}\`\n\n(This number and verified code have been synchronized into Channels Vault).`,
+              text: `🎉 **Hero-SMS Real YouTube OTP Code Received!**\n- **Channel:** ${trimmedChannel}\n- **Link:** ${trimmedUrl}\n- **Phone (Philippines):** \`${phoneNumber}\`\n- **Live OTP Code:** \`${realOtp}\`\n- **Hero-SMS Order ID:** \`#${orderId}\`\n\n(This number and verified code have been synchronized into Channels Vault. Your daily 1-number limit is now recorded).`,
               timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               fetchedItems: [
                 {
@@ -1615,13 +1665,13 @@ Instructions:
             setChatMessages((prev) => [...prev, otpReceivedMsg]);
           }
         } catch (e) {
-          // Keep polling until 2 min timeout
+          // Keep polling until 5 min timeout
         }
       }, pollIntervalMs);
 
       return {
         success: true,
-        message: `✅ Real Hero-SMS Order Placed! Number: ${phoneNumber} for channel "${trimmedChannel}" (${trimmedUrl}). Waiting for YouTube SMS code (2 min timer)...`,
+        message: `✅ Real Hero-SMS Order Placed! Number: ${phoneNumber} for channel "${trimmedChannel}" (${trimmedUrl}). Waiting for YouTube SMS code (5-minute countdown)...`,
         order: newOrder,
       };
     } catch (e: any) {
@@ -1633,7 +1683,13 @@ Instructions:
   };
 
   const cancelOTPOrder = async (orderId: string) => {
-    const apiKey = settings.heroSmsApiKey?.trim();
+    const targetOrder = otpOrders.find((o) => o.id === orderId);
+    const wasPending = targetOrder?.status === 'PENDING_OTP';
+
+    const apiKey =
+      settings.heroSmsApiKey?.trim() ||
+      (typeof window !== 'undefined' ? localStorage.getItem('empirenexs_herosms_key') || '5A61231e6A24791589Ae8efeAcfb7A4d' : '5A61231e6A24791589Ae8efeAcfb7A4d');
+
     if (apiKey) {
       await fetch('/api/hero-sms', {
         method: 'POST',
@@ -1644,6 +1700,11 @@ Instructions:
     setOtpOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, status: 'CANCELLED' } : o))
     );
+
+    // If cancelled while pending, refund the $0.024 back to smsBalance
+    if (wasPending) {
+      setSettings((prev) => ({ ...prev, smsBalance: prev.smsBalance + 0.024 }));
+    }
   };
 
   // AI Assistant message handler
@@ -2082,7 +2143,7 @@ Instructions:
         id: `msg-wait-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **${extractedChannel}**\n- **Link:** ${extractedUrl}\n- **Phone (Philippines):** \`${otpResult.order?.phoneNumber}\`\n- **Cost:** $0.024\n- **Purchased By:** ${currentUser?.name || 'Creator'}\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (2 minute window). As soon as YouTube sends the code, it will be posted here automatically!`,
+        text: `⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **${extractedChannel}**\n- **Link:** ${extractedUrl}\n- **Phone (Philippines):** \`${otpResult.order?.phoneNumber}\`\n- **Cost:** $0.024\n- **Purchased By:** ${currentUser?.name || 'Creator'}\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
       };

@@ -40,6 +40,19 @@ export const OTPManager: React.FC = () => {
   const [selectedProvider, setSelectedProvider] = useState<'Hero-SMS'>('Hero-SMS');
   const [requestError, setRequestError] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [now, setNow] = useState(Date.now());
+
+  React.useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatRemainingCountdown = (expiresAt: number) => {
+    const diffSec = Math.max(0, Math.floor((expiresAt - now) / 1000));
+    const mins = Math.floor(diffSec / 60);
+    const secs = diffSec % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
 
   const todayCount = getUserTodayOTPCount(currentUser?.id || '');
   const totalCount = getUserTotalOTPCount(currentUser?.id || '');
@@ -143,7 +156,7 @@ export const OTPManager: React.FC = () => {
         {/* Your Daily Usage */}
         <div className="glass-panel p-4 rounded-xl">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400">Your Usage Today</span>
+            <span className="text-xs font-semibold text-slate-400">Daily Quota Status</span>
             <div
               className={`p-2 rounded-lg ${
                 isLimitReached ? 'bg-red-500/10 text-red-400' : 'bg-blue-500/10 text-blue-400'
@@ -161,11 +174,11 @@ export const OTPManager: React.FC = () => {
                 isLimitReached ? 'text-red-400' : 'text-emerald-400'
               }`}
             >
-              {isPrivilegedOwner ? 'Unlimited (Owner)' : isLimitReached ? 'Limit Reached' : 'Available'}
+              {isPrivilegedOwner ? 'Unlimited (Owner)' : isLimitReached ? 'Quota Used' : 'Quota Available'}
             </span>
           </div>
           <p className="text-[11px] text-slate-400 mt-1">
-            {currentUser?.name || 'Creator'} (Total Purchased: {totalCount})
+            {currentUser?.name || 'Creator'} • Quota only locks when OTP code arrives
           </p>
         </div>
 
@@ -213,7 +226,7 @@ export const OTPManager: React.FC = () => {
               Strict Verification Protocols Enforced:
             </p>
             <p className="text-slate-400 text-[11px]">
-              1️⃣ Channel name &amp; link required • 2️⃣ Strictly 1 number per user daily • 3️⃣ Duplicate numbers blocked per channel.
+              1️⃣ Channel name &amp; link required • 2️⃣ 5-minute timer (auto-cancel &amp; auto-refund) • 3️⃣ Quota only locks when OTP code arrives • 4️⃣ Duplicate channels blocked.
             </p>
           </div>
         </div>
@@ -348,10 +361,19 @@ export const OTPManager: React.FC = () => {
                           </button>
                         </div>
                       ) : isPending ? (
-                        <span className="text-amber-400 text-[11px] font-semibold flex items-center gap-1 animate-pulse">
-                          <Clock className="w-3.5 h-3.5" />
-                          Waiting SMS...
-                        </span>
+                        <div className="flex flex-col gap-1">
+                          <span className="text-amber-400 text-[11px] font-semibold flex items-center gap-1.5 animate-pulse">
+                            <Clock className="w-3.5 h-3.5" />
+                            Waiting SMS...
+                          </span>
+                          {order.expiresAt && (
+                            <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 w-fit flex items-center gap-1">
+                              <span>⏱</span>
+                              <span>{formatRemainingCountdown(order.expiresAt)}</span>
+                              <span className="text-[9px] text-amber-400/70 font-sans font-normal">(Auto-Refund)</span>
+                            </span>
+                          )}
+                        </div>
                       ) : (
                         <span className="text-slate-400">None</span>
                       )}
@@ -367,10 +389,12 @@ export const OTPManager: React.FC = () => {
                             ? 'bg-amber-500/20 text-amber-400 border-amber-500/30 animate-pulse'
                             : order.status === 'EXPIRED'
                             ? 'bg-red-500/20 text-red-400 border-red-500/30'
+                            : order.status === 'CANCELLED'
+                            ? 'bg-slate-700/50 text-slate-400 border-slate-600/40'
                             : 'bg-slate-700 text-slate-300'
                         }`}
                       >
-                        {order.status === 'EXPIRED' ? 'Expired / Refunded' : order.status}
+                        {order.status === 'EXPIRED' ? 'Expired & Refunded' : order.status === 'CANCELLED' ? 'Cancelled & Refunded' : order.status}
                       </span>
                     </td>
 
@@ -497,7 +521,7 @@ export const OTPManager: React.FC = () => {
               <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5 text-[11px]">
                 <div className="flex justify-between text-slate-400">
                   <span>Daily Usage Limit:</span>
-                  <span className="text-white font-bold">{todayCount} / {settings.dailyNumberLimitPerUser} used today</span>
+                  <span className="text-white font-bold">{todayCount} / {isPrivilegedOwner ? '∞ (Owner Unlimited)' : `${settings.dailyNumberLimitPerUser} used today`}</span>
                 </div>
                 <div className="flex justify-between text-slate-400">
                   <span>Hero-SMS Rate:</span>
@@ -505,7 +529,11 @@ export const OTPManager: React.FC = () => {
                 </div>
                 <div className="flex justify-between text-slate-400">
                   <span>Waiting Timeout:</span>
-                  <span className="text-slate-200">2 Minutes (auto-cancel &amp; auto-refund if no OTP)</span>
+                  <span className="text-emerald-400 font-semibold">5 Minutes (300s Live Countdown)</span>
+                </div>
+                <div className="flex justify-between text-slate-400">
+                  <span>Quota &amp; Refund Rule:</span>
+                  <span className="text-slate-300 text-right">If no OTP arrives in 5 mins, $0.024 is refunded &amp; daily limit is NOT consumed!</span>
                 </div>
               </div>
 
