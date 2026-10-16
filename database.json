@@ -90,6 +90,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-16",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792143539742",
+      "name": "Atif M Altaf",
+      "username": "atifmaltaf",
+      "email": "atifmaltaf2004@gmail.com",
+      "password": "Atiexs6237@#",
+      "phone": "+923040151624",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Channel Operations Manager",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-16",
+      "emailVerified": true
     }
   ],
   "channels": [],
@@ -355,5 +374,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-16T09:07:53.306Z"
+  "updatedAt": "2026-10-16T09:38:59.743Z"
 }
