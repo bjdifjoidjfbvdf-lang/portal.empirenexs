@@ -128,6 +128,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-16",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792147883748",
+      "name": "Mehran Malik",
+      "username": "mehran.malik",
+      "email": "mehran.myyt1@gmail.com",
+      "password": "Saim1234$",
+      "phone": "03053918161",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Channel Operations Manager",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-16",
+      "emailVerified": true
     }
   ],
   "channels": [],
@@ -419,5 +438,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-16T10:33:51.116Z"
+  "updatedAt": "2026-10-16T10:51:23.749Z"
 }
