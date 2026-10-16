@@ -230,7 +230,33 @@
       "timestamp": "01:10 PM",
       "createdAt": "2026-10-16T08:10:08.645Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792138217820",
+      "userId": "user-saim",
+      "userName": "Saim Chaudhry",
+      "userEmail": "saim@empirenexs.com",
+      "userRole": "CO_FOUNDER",
+      "branchId": "bahawalpur",
+      "sender": "user",
+      "text": "Request YouTube verification OTP number",
+      "timestamp": "01:10 PM",
+      "createdAt": "2026-10-16T08:10:17.820Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-ask-1792138217820",
+      "userId": "user-saim",
+      "userName": "Saim Chaudhry",
+      "userEmail": "saim@empirenexs.com",
+      "userRole": "CO_FOUNDER",
+      "branchId": "bahawalpur",
+      "sender": "assistant",
+      "text": "Bhai YouTube OTP verification number hasil karne ke liye please **Channel Name** aur **YouTube Channel URL** provide karein.\n\nExample:\n`name: Vikzai Shorts link: https://youtube.com/@vikzai`",
+      "timestamp": "01:10 PM",
+      "createdAt": "2026-10-16T08:10:17.820Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-16T08:10:10.666Z"
+  "updatedAt": "2026-10-16T08:10:19.663Z"
 }
