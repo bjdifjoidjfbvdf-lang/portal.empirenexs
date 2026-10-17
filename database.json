@@ -246,6 +246,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-17",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792242533886",
+      "name": "Faizan Zubair",
+      "username": "faizan",
+      "email": "faizanzubair7860@gmail.com",
+      "password": "@sunny1207",
+      "phone": "+92 3011814958",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-17",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -1054,5 +1073,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T08:29:45.117Z"
+  "updatedAt": "2026-10-17T13:08:53.886Z"
 }
