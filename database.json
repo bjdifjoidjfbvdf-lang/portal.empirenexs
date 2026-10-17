@@ -999,7 +999,33 @@
       "timestamp": "01:18 PM",
       "createdAt": "2026-10-17T08:18:40.325Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792225140452",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "give me otp number",
+      "timestamp": "01:19 PM",
+      "createdAt": "2026-10-17T08:19:00.452Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-ask-1792225140453",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "Bhai YouTube OTP verification number hasil karne ke liye please **Channel Name** aur **YouTube Channel URL** provide karein.\n\nExample:\n`name: Vikzai Shorts link: https://youtube.com/@vikzai`",
+      "timestamp": "01:19 PM",
+      "createdAt": "2026-10-17T08:19:00.452Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T08:18:41.244Z"
+  "updatedAt": "2026-10-17T08:19:00.797Z"
 }
