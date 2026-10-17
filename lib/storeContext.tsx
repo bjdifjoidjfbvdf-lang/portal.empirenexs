@@ -763,6 +763,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     sheetUrl: string,
     webhookUrl?: string
   ): Promise<{ success: boolean; message: string }> => {
+    const isWaqas =
+      currentUser.role === 'SUPER_ADMIN' ||
+      currentUser.id === 'user-waqas' ||
+      currentUser.email === 'muhammadwaqasmwg@gmail.com' ||
+      currentUser.email === 'waqas@empirenexs.com' ||
+      currentUser.username === 'waqasgill';
+    if (!isWaqas && currentUser.id !== userId) {
+      return { success: false, message: 'Unauthorized: Only Founder & CEO Waqas Gill can configure member Google Sheets.' };
+    }
+
     const cleanUrl = sheetUrl.trim();
     const cleanWebhook = (webhookUrl || '').trim();
     try {
@@ -809,6 +819,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const pushUserChannelsToSheet = async (
     userId: string
   ): Promise<{ success: boolean; message: string; count?: number }> => {
+    const isWaqas =
+      currentUser.role === 'SUPER_ADMIN' ||
+      currentUser.id === 'user-waqas' ||
+      currentUser.email === 'muhammadwaqasmwg@gmail.com' ||
+      currentUser.email === 'waqas@empirenexs.com' ||
+      currentUser.username === 'waqasgill';
+    if (!isWaqas && currentUser.id !== userId) {
+      return { success: false, message: 'Unauthorized: Only Founder & CEO Waqas Gill can push channels to member sheets.' };
+    }
+
     try {
       const targetUser = users.find((u) => u.id === userId);
       if (!targetUser) return { success: false, message: 'User not found in system.' };
@@ -836,6 +856,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     userId: string,
     customSheetUrl?: string
   ): Promise<{ success: boolean; message: string; count?: number }> => {
+    const isWaqas =
+      currentUser.role === 'SUPER_ADMIN' ||
+      currentUser.id === 'user-waqas' ||
+      currentUser.email === 'muhammadwaqasmwg@gmail.com' ||
+      currentUser.email === 'waqas@empirenexs.com' ||
+      currentUser.username === 'waqasgill';
+    if (!isWaqas && currentUser.id !== userId) {
+      return { success: false, message: 'Unauthorized: You can only sync your own Google Sheet.' };
+    }
+
     try {
       const targetUser = users.find((u) => u.id === userId);
       const sheetUrl = (customSheetUrl || targetUser?.personalGoogleSheetUrl || '').trim();
