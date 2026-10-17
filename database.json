@@ -189,7 +189,7 @@
     {
       "id": "user-1792159465593",
       "name": "Abid K.",
-      "username": "abidk",
+      "username": "khan",
       "email": "abidakmal891@gmail.com",
       "password": "Abid@#$khan123",
       "phone": "03216747655",
@@ -206,7 +206,8 @@
       "emailVerified": true,
       "personalGoogleSheetWebhookUrl": "",
       "lastSheetSync": "2026-10-17T08:04:27.029Z",
-      "syncedChannelsCount": 14
+      "syncedChannelsCount": 14,
+      "personalGoogleSheetApiKey": ""
     },
     {
       "id": "user-1792214981688",
@@ -1053,5 +1054,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T08:29:11.035Z"
+  "updatedAt": "2026-10-17T08:29:45.117Z"
 }
