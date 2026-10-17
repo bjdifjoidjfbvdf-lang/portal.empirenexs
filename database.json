@@ -265,6 +265,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-17",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792246485379",
+      "name": "hafsa",
+      "username": "hafsa",
+      "email": "hafsasiddique9191@gmail.com",
+      "password": "hafsa089",
+      "phone": "",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Channel Operations Manager",
+      "branchId": "musafirkhana",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-17",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -1073,5 +1092,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T13:08:53.886Z"
+  "updatedAt": "2026-10-17T14:14:45.379Z"
 }
