@@ -204,6 +204,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-16",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792214981688",
+      "name": "Vikzai",
+      "username": "vikzai",
+      "email": "softzune5@gmail.com",
+      "password": "Waqas@123",
+      "phone": "+923095055785",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "YouTube Scriptwriter",
+      "branchId": "musafirkhana",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-17",
+      "emailVerified": true
     }
   ],
   "channels": [],
@@ -547,5 +566,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-16T14:11:45.437Z"
+  "updatedAt": "2026-10-17T05:29:41.688Z"
 }
