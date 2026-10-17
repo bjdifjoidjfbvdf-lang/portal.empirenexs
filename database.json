@@ -564,7 +564,33 @@
       "timestamp": "06:59 AM",
       "createdAt": "2026-10-16T13:59:14.695Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792215132756",
+      "userId": "user-1792214981688",
+      "userName": "Vikzai",
+      "userEmail": "softzune5@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "live agent",
+      "timestamp": "10:32 AM",
+      "createdAt": "2026-10-17T05:32:12.756Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-agent-1792215132756",
+      "userId": "user-1792214981688",
+      "userName": "Vikzai",
+      "userEmail": "softzune5@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "🟢 **EmpireNexs Live Support & Founder Direct Contact:**\n\nAap direct hamare **Founder & CEO (Waqas Gill)** ke sath WhatsApp par connect ho saktay hain.\n\n📱 **WhatsApp Direct:** [+923075203713](https://wa.me/923075203713?text=Assalam%20o%20Alaikum%20Waqas%20Bhai!%20Main%20EmpireNexs%20Management%20Portal%20se%20rabta%20kar%20raha%20hoon%20(Vikzai).%20Mujhe%20live%20assistance%20chahiye.)\n👤 **Contact Person:** Muhammad Waqas Gill\n🏢 **Designation:** Founder & CEO (EmpireNexs)\n⚡ **Status:** Active on WhatsApp\n\n*Neechay diye gaye green **WhatsApp button** par click karein for instant chat.*",
+      "timestamp": "10:32 AM",
+      "createdAt": "2026-10-17T05:32:12.756Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T05:29:58.206Z"
+  "updatedAt": "2026-10-17T05:32:13.306Z"
 }
