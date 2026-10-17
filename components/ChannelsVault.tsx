@@ -21,6 +21,8 @@ import {
   FileSpreadsheet,
   AlertTriangle,
   RefreshCw,
+  DollarSign,
+  Tag,
 } from 'lucide-react';
 
 export const ChannelsVault: React.FC = () => {
@@ -31,6 +33,7 @@ export const ChannelsVault: React.FC = () => {
     addChannel,
     updateChannel,
     deleteChannel,
+    markChannelSold,
     bulkImportChannels,
     triggerGoogleSheetSync,
     isSyncingSheets,
@@ -45,6 +48,14 @@ export const ChannelsVault: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingChannel, setEditingChannel] = useState<ChannelRecord | null>(null);
   const [actionNotification, setActionNotification] = useState<string | null>(null);
+
+  // Sell Channel Modal state
+  const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+  const [sellingChannel, setSellingChannel] = useState<ChannelRecord | null>(null);
+  const [sellPrice, setSellPrice] = useState('120000');
+  const [sellCurrency, setSellCurrency] = useState<'PKR' | 'USD'>('PKR');
+  const [sellBuyer, setSellBuyer] = useState('');
+  const [sellDate, setSellDate] = useState(new Date().toISOString().split('T')[0]);
 
   // Personal Sheet / CSV Import Modal state
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -73,7 +84,24 @@ export const ChannelsVault: React.FC = () => {
     niche: 'Tech & AI',
     subscribers: '',
     notes: '',
+    salePrice: '' as string | number,
+    saleCurrency: 'PKR' as 'PKR' | 'USD',
+    soldTo: '',
+    soldAt: '',
   });
+
+  const parseStatus = (raw: string): ChannelRecord['status'] => {
+    const r = (raw || '').toLowerCase().trim();
+    if (r.includes('monetiz')) return 'Monetized';
+    if (r.includes('demonetiz')) return 'Demonetized';
+    if (r.includes('sold')) return 'Sold';
+    if (r.includes('wt') || r.includes('watch') || r.includes('watchtime') || r.includes('watch time')) return 'WT Done';
+    if (r.includes('sale') || r.includes('sell')) return 'For Sale';
+    if (r.includes('review')) return 'In Review';
+    if (r.includes('warm')) return 'Warmup';
+    if (r.includes('suspend')) return 'Suspended';
+    return 'Active';
+  };
 
   const togglePasswordVisibility = (channelId: string) => {
     setRevealedPasswords((prev) => ({
@@ -123,7 +151,7 @@ export const ChannelsVault: React.FC = () => {
                 nameAndLink: `${chName} - ${chUrl}`,
                 channelName: chName,
                 channelUrl: chUrl,
-                status: (parts[2]?.trim() as any) || 'Active',
+                status: parseStatus(parts[2]),
                 email: parts[3]?.trim() || `${chName.toLowerCase().replace(/[^a-z0-9]/g, '')}@gmail.com`,
                 password: parts[4]?.trim() || '••••••••',
                 twoFactor: parts[5]?.trim() || 'Enabled',
@@ -161,7 +189,7 @@ export const ChannelsVault: React.FC = () => {
                   nameAndLink: `${parts[0]} - ${parts[1] || ''}`,
                   channelName: parts[0],
                   channelUrl: parts[1] || `https://youtube.com/@${parts[0].toLowerCase().replace(/[^a-z0-9]/g, '')}`,
-                  status: (parts[2] as any) || 'Active',
+                  status: parseStatus(parts[2]),
                   email: parts[3] || '',
                   password: parts[4] || '••••••••',
                   twoFactor: parts[5] || 'Enabled',
@@ -213,6 +241,10 @@ export const ChannelsVault: React.FC = () => {
     const payload = {
       ...formData,
       nameAndLink: `${formData.channelName} - ${formData.channelUrl}`,
+      salePrice: formData.status === 'Sold' && formData.salePrice ? Number(formData.salePrice) : undefined,
+      saleCurrency: formData.status === 'Sold' ? formData.saleCurrency : undefined,
+      soldTo: formData.status === 'Sold' ? formData.soldTo : undefined,
+      soldAt: formData.status === 'Sold' ? (formData.soldAt || new Date().toISOString().split('T')[0]) : undefined,
     };
 
     if (editingChannel) {
@@ -253,6 +285,10 @@ export const ChannelsVault: React.FC = () => {
       niche: ch.niche,
       subscribers: ch.subscribers || '',
       notes: ch.notes || '',
+      salePrice: ch.salePrice ? String(ch.salePrice) : '',
+      saleCurrency: ch.saleCurrency || 'PKR',
+      soldTo: ch.soldTo || '',
+      soldAt: ch.soldAt || '',
     });
     setIsAddModalOpen(true);
   };
@@ -333,6 +369,10 @@ export const ChannelsVault: React.FC = () => {
                 niche: 'Tech & AI',
                 subscribers: '',
                 notes: '',
+                salePrice: '',
+                saleCurrency: 'PKR',
+                soldTo: '',
+                soldAt: '',
               });
               setIsAddModalOpen(true);
             }}
@@ -403,13 +443,15 @@ export const ChannelsVault: React.FC = () => {
             className="bg-[#111317] border border-[#232732] rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-[#c4f042]"
           >
             <option value="all">All Statuses ({filteredChannels.length})</option>
-            <option value="Active">Active</option>
-            <option value="Monetized">Monetized</option>
-            <option value="Sold">Sold</option>
-            <option value="Demonetized">Demonetized</option>
-            <option value="In Review">In Review</option>
-            <option value="Warmup">Warmup</option>
-            <option value="Suspended">Suspended</option>
+            <option value="Active">🟢 Active</option>
+            <option value="WT Done">🟣 WT Done (Watch Time)</option>
+            <option value="For Sale">🏷️ For Sale</option>
+            <option value="Sold">💰 Sold</option>
+            <option value="Monetized">💎 Monetized</option>
+            <option value="In Review">⏳ In Review</option>
+            <option value="Warmup">🔥 Warmup</option>
+            <option value="Demonetized">⚠️ Demonetized</option>
+            <option value="Suspended">⛔ Suspended</option>
           </select>
         </div>
       </div>
@@ -477,19 +519,65 @@ export const ChannelsVault: React.FC = () => {
 
                       {/* Status */}
                       <td className="py-3 px-3 whitespace-nowrap">
-                        <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                            ch.status === 'Monetized'
-                              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                              : ch.status === 'Active'
-                              ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                              : ch.status === 'In Review'
-                              ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                              : 'bg-slate-700 text-slate-300'
-                          }`}
-                        >
-                          {ch.status}
-                        </span>
+                        <div className="flex flex-col gap-1">
+                          <select
+                            value={ch.status}
+                            onChange={(e) => {
+                              const newStatus = e.target.value as ChannelRecord['status'];
+                              if (newStatus === 'Sold') {
+                                setSellingChannel(ch);
+                                setSellPrice(ch.salePrice ? String(ch.salePrice) : '120000');
+                                setSellCurrency(ch.saleCurrency || 'PKR');
+                                setSellBuyer(ch.soldTo || '');
+                                setSellDate(ch.soldAt || new Date().toISOString().split('T')[0]);
+                                setIsSellModalOpen(true);
+                              } else {
+                                updateChannel(ch.id, { status: newStatus });
+                                setActionNotification(`✅ Status of "${ch.channelName}" updated to "${newStatus}"!`);
+                                setTimeout(() => setActionNotification(null), 4000);
+                              }
+                            }}
+                            className={`px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider cursor-pointer border focus:outline-none transition-all shadow-sm ${
+                              ch.status === 'Monetized'
+                                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/30'
+                                : ch.status === 'WT Done'
+                                ? 'bg-purple-500/20 text-purple-300 border-purple-500/40 hover:bg-purple-500/30'
+                                : ch.status === 'For Sale'
+                                ? 'bg-sky-500/20 text-sky-300 border-sky-500/40 hover:bg-sky-500/30'
+                                : ch.status === 'Sold'
+                                ? 'bg-amber-500/20 text-amber-400 border-amber-500/40 hover:bg-amber-500/30'
+                                : ch.status === 'Active'
+                                ? 'bg-emerald-950/60 text-emerald-300 border-emerald-600/40 hover:bg-emerald-900/50'
+                                : ch.status === 'In Review'
+                                ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 hover:bg-blue-500/30'
+                                : ch.status === 'Warmup'
+                                ? 'bg-orange-500/20 text-orange-400 border-orange-500/30 hover:bg-orange-500/30'
+                                : ch.status === 'Demonetized'
+                                ? 'bg-red-500/20 text-red-400 border-red-500/30 hover:bg-red-500/30'
+                                : 'bg-slate-800 text-slate-300 border-slate-700'
+                            }`}
+                            title="Click to check or change channel status"
+                          >
+                            <option value="Active" className="bg-slate-900 text-emerald-400 font-bold">🟢 Active</option>
+                            <option value="WT Done" className="bg-slate-900 text-purple-300 font-bold">🟣 WT Done (Watchtime)</option>
+                            <option value="For Sale" className="bg-slate-900 text-sky-300 font-bold">🏷️ For Sale</option>
+                            <option value="Sold" className="bg-slate-900 text-amber-400 font-bold">💰 Sold (Log Price)</option>
+                            <option value="Monetized" className="bg-slate-900 text-emerald-300 font-bold">💎 Monetized</option>
+                            <option value="In Review" className="bg-slate-900 text-blue-400 font-bold">⏳ In Review</option>
+                            <option value="Warmup" className="bg-slate-900 text-orange-400 font-bold">🔥 Warmup</option>
+                            <option value="Demonetized" className="bg-slate-900 text-red-400 font-bold">⚠️ Demonetized</option>
+                            <option value="Suspended" className="bg-slate-900 text-slate-400 font-bold">⛔ Suspended</option>
+                          </select>
+
+                          {ch.status === 'Sold' && (
+                            <div className="flex items-center gap-1 text-[9px] text-amber-300/90 font-mono font-semibold">
+                              <span>
+                                {ch.saleCurrency === 'USD' ? '$' : 'Rs. '}{ch.salePrice?.toLocaleString()}
+                              </span>
+                              {ch.soldTo && <span className="text-slate-400 truncate max-w-[80px]">({ch.soldTo})</span>}
+                            </div>
+                          )}
+                        </div>
                       </td>
 
                       {/* Email */}
@@ -615,6 +703,40 @@ export const ChannelsVault: React.FC = () => {
                       {/* Actions */}
                       <td className="py-3 px-3 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end gap-1.5">
+                          {ch.status !== 'Sold' ? (
+                            <button
+                              onClick={() => {
+                                setSellingChannel(ch);
+                                setSellPrice('120000');
+                                setSellCurrency('PKR');
+                                setSellBuyer('');
+                                setSellDate(new Date().toISOString().split('T')[0]);
+                                setIsSellModalOpen(true);
+                              }}
+                              className="px-2 py-1 rounded-lg text-[10px] font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 transition flex items-center gap-1"
+                              title="Mark channel as Sold and record amount"
+                            >
+                              <DollarSign className="w-3 h-3" />
+                              <span>Sell</span>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setSellingChannel(ch);
+                                setSellPrice(ch.salePrice ? String(ch.salePrice) : '120000');
+                                setSellCurrency(ch.saleCurrency || 'PKR');
+                                setSellBuyer(ch.soldTo || '');
+                                setSellDate(ch.soldAt || new Date().toISOString().split('T')[0]);
+                                setIsSellModalOpen(true);
+                              }}
+                              className="px-2 py-1 rounded-lg text-[10px] font-bold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 transition flex items-center gap-1"
+                              title="Edit Sale Price or Buyer"
+                            >
+                              <DollarSign className="w-3 h-3" />
+                              <span>Edit Sale</span>
+                            </button>
+                          )}
+
                           <button
                             onClick={() => openEditModal(ch)}
                             className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-emerald-400 transition"
@@ -705,17 +827,57 @@ export const ChannelsVault: React.FC = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, status: e.target.value as ChannelRecord['status'] })
                     }
-                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500 font-semibold"
                   >
-                    <option value="Active">Active</option>
-                    <option value="Monetized">Monetized</option>
-                    <option value="Sold">Sold</option>
-                    <option value="Demonetized">Demonetized</option>
-                    <option value="In Review">In Review</option>
-                    <option value="Warmup">Warmup</option>
-                    <option value="Suspended">Suspended</option>
+                    <option value="Active">🟢 Active</option>
+                    <option value="WT Done">🟣 WT Done (Watch Time Complete)</option>
+                    <option value="For Sale">🏷️ For Sale</option>
+                    <option value="Sold">💰 Sold</option>
+                    <option value="Monetized">💎 Monetized</option>
+                    <option value="In Review">⏳ In Review</option>
+                    <option value="Warmup">🔥 Warmup</option>
+                    <option value="Demonetized">⚠️ Demonetized</option>
+                    <option value="Suspended">⛔ Suspended</option>
                   </select>
                 </div>
+
+                {formData.status === 'Sold' && (
+                  <div className="md:col-span-2 p-3.5 rounded-xl bg-amber-950/30 border border-amber-500/30 grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block font-semibold text-amber-300 mb-1">Sale Price / Amount *</label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="any"
+                        value={formData.salePrice}
+                        onChange={(e) => setFormData({ ...formData, salePrice: e.target.value })}
+                        placeholder="e.g. 120000"
+                        className="w-full px-3 py-2 bg-slate-950 border border-amber-500/40 rounded-lg text-white font-mono focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-semibold text-amber-300 mb-1">Currency</label>
+                      <select
+                        value={formData.saleCurrency}
+                        onChange={(e) => setFormData({ ...formData, saleCurrency: e.target.value as 'PKR' | 'USD' })}
+                        className="w-full px-3 py-2 bg-slate-950 border border-amber-500/40 rounded-lg text-white font-bold focus:outline-none"
+                      >
+                        <option value="PKR">PKR (Rs.)</option>
+                        <option value="USD">USD ($)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block font-semibold text-amber-300 mb-1">Sold To (Buyer Name)</label>
+                      <input
+                        type="text"
+                        value={formData.soldTo}
+                        onChange={(e) => setFormData({ ...formData, soldTo: e.target.value })}
+                        placeholder="e.g. Ali Raza / Direct Client"
+                        className="w-full px-3 py-2 bg-slate-950 border border-amber-500/40 rounded-lg text-white focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <label className="block font-semibold text-slate-300 mb-1">Assigned Branch</label>
@@ -924,7 +1086,7 @@ export const ChannelsVault: React.FC = () => {
                   rows={5}
                   value={pasteRows}
                   onChange={(e) => setPasteRows(e.target.value)}
-                  placeholder={`Apex Tech Documentaries\thttps://youtube.com/@apextech\tActive\tapex@gmail.com\tpassword123\nLuxury Empire\thttps://youtube.com/@luxuryempire\tActive\tluxury@gmail.com\tpassword123`}
+                  placeholder={`Apex Tech Documentaries\thttps://youtube.com/@apextech\tWT Done\tapex@gmail.com\tpassword123\nLuxury Empire\thttps://youtube.com/@luxuryempire\tActive\tluxury@gmail.com\tpassword123`}
                   className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono text-[11px] focus:outline-none focus:border-emerald-500 placeholder-slate-600"
                 />
                 <p className="text-[10px] text-slate-500 mt-1">
@@ -956,6 +1118,132 @@ export const ChannelsVault: React.FC = () => {
                       <span>Import &amp; Save to Cloud</span>
                     </>
                   )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Record Channel Sale Modal */}
+      {isSellModalOpen && sellingChannel && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#0b1120] border border-amber-500/40 rounded-2xl w-full max-w-md p-6 shadow-2xl animate-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+                  <DollarSign className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Record Channel Sale</h3>
+                  <p className="text-[11px] text-slate-400">Add sale price and buyer to sync with Monthly Sales</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsSellModalOpen(false)}
+                className="text-slate-400 hover:text-white text-sm"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mb-4 p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+              <p className="font-bold text-white text-xs">{sellingChannel.channelName}</p>
+              <p className="text-[11px] text-slate-400 truncate">{sellingChannel.channelUrl}</p>
+              <div className="flex items-center gap-2 text-[10px] text-slate-400 pt-1">
+                <span>Managed: <strong>{sellingChannel.managedBy}</strong></span>
+                <span>•</span>
+                <span>Branch: <strong>{sellingChannel.branchId.toUpperCase()}</strong></span>
+              </div>
+            </div>
+
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const priceNum = parseFloat(sellPrice) || 0;
+                await markChannelSold(
+                  sellingChannel.id,
+                  priceNum,
+                  sellBuyer.trim() || 'Direct Client',
+                  sellDate,
+                  sellCurrency
+                );
+                setIsSellModalOpen(false);
+                setActionNotification(
+                  `💰 "${sellingChannel.channelName}" recorded as Sold for ${
+                    sellCurrency === 'USD' ? '$' : 'Rs. '
+                  }${priceNum.toLocaleString()} to ${sellBuyer || 'Direct Client'}!`
+                );
+                setTimeout(() => setActionNotification(null), 5000);
+              }}
+              className="space-y-4 text-xs"
+            >
+              <div className="grid grid-cols-3 gap-2">
+                <div className="col-span-2">
+                  <label className="block font-semibold text-slate-300 mb-1">Sale Price / Amount *</label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    step="any"
+                    value={sellPrice}
+                    onChange={(e) => setSellPrice(e.target.value)}
+                    placeholder="e.g. 120000"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono focus:outline-none focus:border-amber-500"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-300 mb-1">Currency</label>
+                  <select
+                    value={sellCurrency}
+                    onChange={(e) => setSellCurrency(e.target.value as 'PKR' | 'USD')}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:outline-none focus:border-amber-500"
+                  >
+                    <option value="PKR">PKR (Rs.)</option>
+                    <option value="USD">USD ($)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-300 mb-1">Buyer / Sold To</label>
+                <input
+                  type="text"
+                  value={sellBuyer}
+                  onChange={(e) => setSellBuyer(e.target.value)}
+                  placeholder="e.g. Ali Raza / Tech Investor / Direct Buyer"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-300 mb-1">Sale Date</label>
+                <input
+                  type="date"
+                  value={sellDate}
+                  onChange={(e) => setSellDate(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div className="p-3 rounded-xl bg-amber-950/30 border border-amber-500/20 text-[11px] text-amber-200/90 leading-relaxed">
+                💡 <strong>Auto Financial Sync:</strong> Ye amount automatically aapke <strong>"Monthly Sales"</strong> calculations mein record ho jayegi aur monthly revenue mein add ho jayegi.
+              </div>
+
+              <div className="pt-2 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsSellModalOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition flex items-center gap-1.5 shadow-lg shadow-amber-500/20"
+                >
+                  <DollarSign className="w-4 h-4" />
+                  <span>Confirm Sale &amp; Log Revenue</span>
                 </button>
               </div>
             </form>

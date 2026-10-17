@@ -47,7 +47,7 @@ export interface ChannelRecord {
   nameAndLink: string;
   channelName: string;
   channelUrl: string;
-  status: 'Active' | 'Monetized' | 'In Review' | 'Suspended' | 'Warmup' | 'Sold' | 'Demonetized';
+  status: 'Active' | 'Monetized' | 'In Review' | 'Suspended' | 'Warmup' | 'Sold' | 'Demonetized' | 'WT Done' | 'For Sale';
   email: string;
   password: string;
   twoFactor: string;

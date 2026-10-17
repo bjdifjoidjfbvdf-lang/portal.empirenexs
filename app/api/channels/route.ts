@@ -207,6 +207,8 @@ export async function POST(req: NextRequest) {
           if (rawStatus.includes('monetiz')) status = 'Monetized';
           else if (rawStatus.includes('demonetiz')) status = 'Demonetized';
           else if (rawStatus.includes('sold')) status = 'Sold';
+          else if (rawStatus.includes('wt') || rawStatus.includes('watch') || rawStatus.includes('watchtime') || rawStatus.includes('watch time')) status = 'WT Done';
+          else if (rawStatus.includes('sale') || rawStatus.includes('sell')) status = 'For Sale';
           else if (rawStatus.includes('review')) status = 'In Review';
           else if (rawStatus.includes('warm')) status = 'Warmup';
           else if (rawStatus.includes('suspend')) status = 'Suspended';
