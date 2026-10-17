@@ -1025,7 +1025,33 @@
       "timestamp": "01:19 PM",
       "createdAt": "2026-10-17T08:19:00.452Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792225160760",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "`name: juma Shorts link: https://youtube.com/@vikghghghzai`",
+      "timestamp": "01:19 PM",
+      "createdAt": "2026-10-17T08:19:20.760Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-wait-1792225161608",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **juma Shorts**\n- **Link:** https://youtube.com/@vikghghghzai`\n- **Phone (Philippines):** `+639755040874`\n- **Cost:** $0.024\n- **Purchased By:** Waqas Gill\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "01:19 PM",
+      "createdAt": "2026-10-17T08:19:20.760Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T08:19:00.797Z"
+  "updatedAt": "2026-10-17T08:19:22.514Z"
 }
