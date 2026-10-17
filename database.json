@@ -260,7 +260,7 @@
       "branchId": "bahawalpur",
       "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
       "canAccessAllBranches": false,
-      "status": "PENDING",
+      "status": "ACTIVE",
       "joiningType": "PERCENTAGE",
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-17",
@@ -1092,5 +1092,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T14:50:56.491Z"
+  "updatedAt": "2026-10-17T14:50:58.807Z"
 }
