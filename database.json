@@ -223,6 +223,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-17",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792222603334",
+      "name": "Hafsa Siddique",
+      "username": "hafsan",
+      "email": "hafsasiddique890@gmail.com",
+      "password": "hafsa@089",
+      "phone": "03036766114",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Channel Operations Manager",
+      "branchId": "musafirkhana",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-17",
+      "emailVerified": true
     }
   ],
   "channels": [],
@@ -592,5 +611,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T05:32:13.306Z"
+  "updatedAt": "2026-10-17T07:36:43.335Z"
 }
