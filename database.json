@@ -201,9 +201,10 @@
       "canAccessAllBranches": false,
       "status": "ACTIVE",
       "joiningType": "PERCENTAGE",
-      "personalGoogleSheetUrl": "",
+      "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/1uz9zTOwtq-xHkH1uQ5LJgmTDUh6BhY7_RX85vaCR0Vo/edit?usp=sharing",
       "joinedAt": "2026-10-16",
-      "emailVerified": true
+      "emailVerified": true,
+      "personalGoogleSheetWebhookUrl": ""
     },
     {
       "id": "user-1792214981688",
@@ -611,5 +612,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T07:54:21.514Z"
+  "updatedAt": "2026-10-17T08:02:44.675Z"
 }
