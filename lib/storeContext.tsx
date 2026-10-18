@@ -1670,7 +1670,7 @@ Instructions:
         country: 'Philippines (+63)',
         otpCode: 'Active',
         status: 'COMPLETED',
-        cost: '$0.024',
+        cost: '',
         createdAt: channelMatch.updatedAt,
         expiresAt: 0,
       };
@@ -1779,7 +1779,7 @@ Instructions:
         country: 'Philippines (+63)',
         otpCode: null,
         status: 'PENDING_OTP',
-        cost: '$0.024',
+        cost: '',
         createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
         expiresAt: Date.now() + 300000, // 5 minutes
       };
@@ -1816,7 +1816,7 @@ Instructions:
             id: `msg-otp-fail-${Date.now()}`,
             sender: 'assistant',
             senderName: 'Nexs AI Assistant',
-            text: `⚠️ **Verification Code Timed Out (5 Minutes)**\n\nNo SMS received from YouTube within 5 minutes for channel "${trimmedChannel}". The order (#${orderId}) was automatically cancelled on Hero-SMS and $0.024 has been refunded to your account balance.\n\n*(Note: Your 1-number daily quota was NOT consumed since no OTP code was received).*`,
+            text: `⚠️ **Verification Code Timed Out (5 Minutes)**\n\nNo SMS received from YouTube within 5 minutes for channel "${trimmedChannel}". The order (#${orderId}) was automatically cancelled on Hero-SMS and your daily quota has been restored.\n\n*(Note: Your 1-number daily quota was NOT consumed since no OTP code was received).*`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           };
           setChatMessages((prev) => [...prev, failureMsg]);
@@ -2434,7 +2434,7 @@ Instructions:
         id: `msg-wait-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **${extractedChannel}**\n- **Link:** ${extractedUrl}\n- **Phone (Philippines):** \`${otpResult.order?.phoneNumber}\`\n- **Cost:** $0.024\n- **Purchased By:** ${currentUser?.name || 'Creator'}\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!`,
+        text: `⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **${extractedChannel}**\n- **Link:** ${extractedUrl}\n- **Phone (Philippines):** \`${otpResult.order?.phoneNumber}\`\n- **Purchased By:** ${currentUser?.name || 'Creator'}\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
       };

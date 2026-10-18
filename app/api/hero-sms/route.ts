@@ -110,7 +110,7 @@ export async function POST(req: NextRequest) {
           phoneNumber: number,
           service: 'Google / YouTube / Gmail',
           country: 'Philippines (+63)',
-          cost: '$0.024',
+          cost: '',
           provider: 'Hero-SMS (hero-sms.com)',
           expiresInSeconds: 300, // 5 minutes
         });
@@ -143,7 +143,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: true,
         response: text,
-        message: 'Order cancelled on Hero-SMS and $0.024 refunded to your Hero-SMS balance.',
+        message: 'Order cancelled on Hero-SMS and refunded to your Hero-SMS balance.',
       });
     }
 

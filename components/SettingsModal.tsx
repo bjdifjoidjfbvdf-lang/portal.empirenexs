@@ -146,7 +146,7 @@ export const SettingsView: React.FC = () => {
               <h2 className="text-sm font-bold text-white">Hero-SMS Integration (hero-sms.com)</h2>
             </div>
             <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              Philippines (+63) Fixed @ $0.024
+              Philippines (+63) Direct Carrier Route
             </span>
           </div>
           <p className="text-slate-400 text-xs">

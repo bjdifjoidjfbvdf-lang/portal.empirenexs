@@ -194,7 +194,7 @@ export const OTPManager: React.FC = () => {
             <span className="text-lg font-bold text-white">{settings.smsProvider}</span>
             <span className="text-xs text-emerald-400 font-semibold">• Active</span>
           </div>
-          <p className="text-[11px] text-slate-400 mt-1">Avg cost: $0.40 / YouTube OTP</p>
+          <p className="text-[11px] text-slate-400 mt-1">Direct Carrier Dedicated Delivery</p>
         </div>
 
         {/* Channels Linked */}
@@ -263,7 +263,6 @@ export const OTPManager: React.FC = () => {
                 <th className="py-3 px-3 font-bold">Country &amp; Provider</th>
                 <th className="py-3 px-3 font-bold">OTP Code</th>
                 <th className="py-3 px-3 font-bold">Status</th>
-                <th className="py-3 px-3 font-bold">Cost</th>
                 <th className="py-3 px-3 font-bold">Purchased At</th>
                 <th className="py-3 px-3 font-bold text-right">Action</th>
               </tr>
@@ -271,7 +270,7 @@ export const OTPManager: React.FC = () => {
             <tbody className="divide-y divide-slate-800/60 font-sans">
               {otpOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="py-12 text-center text-slate-400 font-sans">
+                  <td colSpan={9} className="py-12 text-center text-slate-400 font-sans">
                     No OTP orders found. When a team member requests a number, the live audit log will appear here.
                   </td>
                 </tr>
@@ -398,11 +397,6 @@ export const OTPManager: React.FC = () => {
                       </span>
                     </td>
 
-                    {/* Cost */}
-                    <td className="py-3 px-3 whitespace-nowrap font-mono text-slate-300">
-                      {order.cost}
-                    </td>
-
                     {/* Purchased At */}
                     <td className="py-3 px-3 whitespace-nowrap font-mono text-[11px] text-slate-400">
                       {order.createdAt}
@@ -509,8 +503,8 @@ export const OTPManager: React.FC = () => {
                     <span className="font-bold text-slate-100">Hero-SMS (hero-sms.com)</span>
                     <span className="text-slate-400 text-[11px] block">Country: Philippines (+63)</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded font-mono font-bold text-amber-300 bg-amber-500/10 border border-amber-500/30 text-xs">
-                    $0.024
+                  <span className="px-2 py-0.5 rounded font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 text-xs">
+                    Active
                   </span>
                 </div>
                 <p className="text-[10px] text-emerald-400 mt-1">
@@ -524,16 +518,12 @@ export const OTPManager: React.FC = () => {
                   <span className="text-white font-bold">{todayCount} / {isPrivilegedOwner ? '∞ (Owner Unlimited)' : `${settings.dailyNumberLimitPerUser} used today`}</span>
                 </div>
                 <div className="flex justify-between text-slate-400">
-                  <span>Hero-SMS Rate:</span>
-                  <span className="text-amber-300 font-mono font-bold">$0.024</span>
-                </div>
-                <div className="flex justify-between text-slate-400">
                   <span>Waiting Timeout:</span>
                   <span className="text-emerald-400 font-semibold">5 Minutes (300s Live Countdown)</span>
                 </div>
                 <div className="flex justify-between text-slate-400">
                   <span>Quota &amp; Refund Rule:</span>
-                  <span className="text-slate-300 text-right">If no OTP arrives in 5 mins, $0.024 is refunded &amp; daily limit is NOT consumed!</span>
+                  <span className="text-slate-300 text-right">If no OTP arrives in 5 mins, order is cancelled &amp; daily limit is NOT consumed!</span>
                 </div>
               </div>
 
