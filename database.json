@@ -303,6 +303,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-18",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792329257506",
+      "name": "Muhammad Ahmad",
+      "username": "m.ahmad",
+      "email": "ahmaddnb00@gmail.com",
+      "password": "Ahmad111",
+      "phone": "3297857501",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Channel Operations Manager",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-18",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -1167,5 +1186,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-18T13:11:50.698Z"
+  "updatedAt": "2026-10-18T13:14:17.506Z"
 }
