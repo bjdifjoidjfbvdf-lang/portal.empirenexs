@@ -2,14 +2,14 @@
   "users": [
     {
       "id": "user-zainab",
-      "name": "Zainab Akhtar",
-      "username": "zainabakhtar",
+      "name": "Zainab Athar",
+      "username": "zainabathar",
       "email": "zainab@empirenexs.com",
       "password": "zainab123",
       "phone": "+92 302 2222222",
       "address": "Gulshan-e-Iqbal, Rahim Yar Khan",
-      "role": "CO_FOUNDER",
-      "designation": "Co-Founder / Head of Rahim Yar Khan",
+      "role": "BRANCH_HEAD",
+      "designation": "Branch Head / Rahim Yar Khan",
       "branchId": "rahim-yar-khan",
       "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
       "canAccessAllBranches": false,
@@ -1094,7 +1094,33 @@
       "timestamp": "01:19 PM",
       "createdAt": "2026-10-17T08:19:20.760Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792302030654",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "otp k lia aik number do",
+      "timestamp": "10:40 AM",
+      "createdAt": "2026-10-18T05:40:30.650Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-wait-1792302031238",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **juma Shorts**\n- **Link:** https://youtube.com/@vikghghghzai`\n- **Phone (Philippines):** `+639532230607`\n- **Purchased By:** Waqas Gill\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "10:40 AM",
+      "createdAt": "2026-10-18T05:40:30.650Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-18T00:23:55.181Z"
+  "updatedAt": "2026-10-18T05:40:32.000Z"
 }
