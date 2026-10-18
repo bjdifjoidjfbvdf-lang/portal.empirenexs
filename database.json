@@ -307,7 +307,11 @@
       "owner": "EmpireNexs",
       "branchId": "musafirkhana",
       "userId": "user-1792159465593",
-      "updatedAt": "2026-10-17T08:04:27.029Z"
+      "updatedAt": "2026-10-18T00:23:55.180Z",
+      "salePrice": 24000,
+      "soldTo": "Direct Client",
+      "soldAt": "2026-10-18",
+      "saleCurrency": "PKR"
     },
     {
       "id": "ch-user-1792159465593-1792224267029-1",
@@ -1092,5 +1096,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-17T14:50:58.807Z"
+  "updatedAt": "2026-10-18T00:23:55.181Z"
 }
