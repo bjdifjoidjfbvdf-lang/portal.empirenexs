@@ -911,7 +911,7 @@ export const NichesHub: React.FC = () => {
                 >
                   <option value="musafirkhana">Musafirkhana (Waqas Gill)</option>
                   <option value="bahawalpur">Bahawalpur (Saim Ch)</option>
-                  <option value="rahim-yar-khan">Rahim Yar Khan (Zainab Akhtar)</option>
+                  <option value="rahim-yar-khan">Rahim Yar Khan (Zainab Athar)</option>
                 </select>
               </div>
 

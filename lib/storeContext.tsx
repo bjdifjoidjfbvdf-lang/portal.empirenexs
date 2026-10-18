@@ -172,20 +172,20 @@ export const sanitizeUser = (u: any): UserProfile => {
     defaultAvatar = u?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80';
   } else if (isZainab) {
     defaultBranch = 'rahim-yar-khan';
-    defaultRole = 'CO_FOUNDER';
-    defaultDesignation = 'Co-Founder / Head of Rahim Yar Khan';
+    defaultRole = 'BRANCH_HEAD';
+    defaultDesignation = 'Branch Head / Rahim Yar Khan';
     defaultAvatar = u?.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80';
   }
 
   return {
     ...u,
     id: id || `user-${Date.now()}`,
-    name: isWaqas ? 'Waqas Gill' : isZainab ? 'Zainab Akhtar' : isSaim ? 'Saim Chaudhry' : (u?.name || 'User'),
-    username: isWaqas ? 'waqasgill' : isZainab ? 'zainabakhtar' : isSaim ? 'saimchaudhry' : (username || (email ? email.split('@')[0] : 'user')),
+    name: isWaqas ? 'Waqas Gill' : isZainab ? 'Zainab Athar' : isSaim ? 'Saim Chaudhry' : (u?.name || 'User'),
+    username: isWaqas ? 'waqasgill' : isZainab ? 'zainabathar' : isSaim ? 'saimchaudhry' : (username || (email ? email.split('@')[0] : 'user')),
     email: isWaqas ? 'muhammadwaqasmwg@gmail.com' : isZainab ? 'zainab@empirenexs.com' : isSaim ? 'saim@empirenexs.com' : email,
     phone: isWaqas ? (u?.phone && u?.phone !== '+92 300 0000000' ? u.phone : '+923075203713') : u?.phone,
-    role: defaultRole,
-    designation: u?.designation || defaultDesignation,
+    role: isZainab ? 'BRANCH_HEAD' : defaultRole,
+    designation: isZainab ? 'Branch Head / Rahim Yar Khan' : (u?.designation || defaultDesignation),
     avatar: u?.avatar || defaultAvatar,
     branchId: (u?.branchId || defaultBranch) as BranchId,
     status: u?.status || 'ACTIVE',
@@ -1042,7 +1042,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 Branches: 
 1. Musafirkhana (Founder & CEO: Waqas Gill)
 2. Bahawalpur (Co-Founder: Saim Ch)
-3. Rahim Yar Khan (Co-Founder: Zainab Akhtar)
+3. Rahim Yar Khan (Branch Head: Zainab Athar)
 Instructions:
 - Provide fast, accurate, professional guidance.
 - When someone asks for a channel link or details, search the Channels Vault and deliver the exact link and status.
@@ -1302,7 +1302,7 @@ Instructions:
 
   // STRICT DATA ISOLATION:
   // - Waqas Gill (Founder & CEO): Sees ALL channels across ALL branches & managers
-  // - Branch Heads (Saim Ch, Zainab Akhtar): See channels of their branch
+  // - Branch Heads (Saim Ch, Zainab Athar): See channels of their branch
   // - Regular Team Members (Mubashir, editors): ONLY see their OWN channels!
   const filteredChannels = channels.filter((ch) => {
     if (currentUser?.role === 'SUPER_ADMIN') {
@@ -2247,7 +2247,7 @@ Instructions:
         id: `msg-calc-ceo-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `📊 **CEO Executive Operations & Sales Summary (All-to-All):**\n\n**🌐 Global Network Totals:**\n- **Total Channels in Vault:** ${totalCount}\n- **Currently Monetized Running:** ${monetizedCount}\n- **Active Fleet:** ${activeCount}\n- **Sold Channels:** ${soldCount}\n- **Issues / Demonetized:** ${demonetizedCount}\n- **Total Revenue (PKR):** Rs. ${totalRev.toLocaleString()}\n\n**🏢 Branch-by-Branch Breakdown:**\n- **Musafirkhana (HQ):** ${mfkChannels.filter((c) => c.status === 'Monetized').length} Monetized | ${mfkChannels.filter((c) => c.status === 'Sold').length} Sold | Rev: Rs. ${mfkRev.toLocaleString()}\n- **Bahawalpur (Zainab Akhtar):** ${bwpChannels.filter((c) => c.status === 'Monetized').length} Monetized | ${bwpChannels.filter((c) => c.status === 'Sold').length} Sold | Rev: Rs. ${bwpRev.toLocaleString()}\n- **Rahim Yar Khan (Saim Chaudhry):** ${rykChannels.filter((c) => c.status === 'Monetized').length} Monetized | ${rykChannels.filter((c) => c.status === 'Sold').length} Sold | Rev: Rs. ${rykRev.toLocaleString()}\n\n📈 *CEO Graphical View:* Aap **"Branches & Teams"** page par naya **'📊 Branches Graphical Comparison'** tab khol kar visual comparative bars, revenue distributions aur personal directives notes bhi dekh saktay hain!`,
+        text: `📊 **CEO Executive Operations & Sales Summary (All-to-All):**\n\n**🌐 Global Network Totals:**\n- **Total Channels in Vault:** ${totalCount}\n- **Currently Monetized Running:** ${monetizedCount}\n- **Active Fleet:** ${activeCount}\n- **Sold Channels:** ${soldCount}\n- **Issues / Demonetized:** ${demonetizedCount}\n- **Total Revenue (PKR):** Rs. ${totalRev.toLocaleString()}\n\n**🏢 Branch-by-Branch Breakdown:**\n- **Musafirkhana (HQ):** ${mfkChannels.filter((c) => c.status === 'Monetized').length} Monetized | ${mfkChannels.filter((c) => c.status === 'Sold').length} Sold | Rev: Rs. ${mfkRev.toLocaleString()}\n- **Bahawalpur (Saim Chaudhry):** ${bwpChannels.filter((c) => c.status === 'Monetized').length} Monetized | ${bwpChannels.filter((c) => c.status === 'Sold').length} Sold | Rev: Rs. ${bwpRev.toLocaleString()}\n- **Rahim Yar Khan (Zainab Athar):** ${rykChannels.filter((c) => c.status === 'Monetized').length} Monetized | ${rykChannels.filter((c) => c.status === 'Sold').length} Sold | Rev: Rs. ${rykRev.toLocaleString()}\n\n📈 *CEO Graphical View:* Aap **"Branches & Teams"** page par naya **'📊 Branches Graphical Comparison'** tab khol kar visual comparative bars, revenue distributions aur personal directives notes bhi dekh saktay hain!`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
       };
@@ -2273,7 +2273,7 @@ Instructions:
         id: `msg-sop-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `🏢 **EmpireNexs Management & Contact Info:**\n- **Founder & CEO:** Waqas Gill (Musafirkhana HQ)\n- **Official WhatsApp:** \`+923075203713\` (https://wa.me/923075203713)\n- **Email:** \`muhammadwaqasmwg@gmail.com\`\n- **Co-Founders:** Saim Chaudhry (Bahawalpur), Zainab Akhtar (Rahim Yar Khan)\n- **Daily Niche Quota:** Max 2 script topics per team member per 24 hours.\n- **Phone Verification:** 1 number per user per day via Philippines Hero-SMS numbers. Zero duplicate numbers.\n- **Data Isolation:** Students aur creators ka Google Sheet data strictly private aur isolated rehta hai.`,
+        text: `🏢 **EmpireNexs Management & Contact Info:**\n- **Founder & CEO:** Waqas Gill (Musafirkhana HQ)\n- **Official WhatsApp:** \`+923075203713\` (https://wa.me/923075203713)\n- **Email:** \`muhammadwaqasmwg@gmail.com\`\n- **Co-Founder:** Saim Chaudhry (Bahawalpur)\n- **Branch Head:** Zainab Athar (Rahim Yar Khan)\n- **Daily Niche Quota:** Max 2 script topics per team member per 24 hours.\n- **Phone Verification:** 1 number per user per day via Philippines Hero-SMS numbers. Zero duplicate numbers.\n- **Data Isolation:** Students aur creators ka Google Sheet data strictly private aur isolated rehta hai.`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
       };

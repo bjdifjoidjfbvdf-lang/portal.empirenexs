@@ -890,7 +890,7 @@ export const ChannelsVault: React.FC = () => {
                   >
                     <option value="musafirkhana">Musafirkhana (Waqas Gill)</option>
                     <option value="bahawalpur">Bahawalpur (Saim Ch)</option>
-                    <option value="rahim-yar-khan">Rahim Yar Khan (Zainab Akhtar)</option>
+                    <option value="rahim-yar-khan">Rahim Yar Khan (Zainab Athar)</option>
                   </select>
                 </div>
 
@@ -988,7 +988,7 @@ export const ChannelsVault: React.FC = () => {
                     type="text"
                     value={formData.owner}
                     onChange={(e) => setFormData({ ...formData, owner: e.target.value })}
-                    placeholder="e.g. Waqas Gill / Saim Ch / Zainab Akhtar"
+                    placeholder="e.g. Waqas Gill / Saim Ch / Zainab Athar"
                     className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>

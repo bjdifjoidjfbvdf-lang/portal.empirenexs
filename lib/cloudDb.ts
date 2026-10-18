@@ -43,10 +43,12 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
       const text = await res.text();
       const parsed = JSON.parse(text);
       if (parsed && Array.isArray(parsed.users)) {
-        // Ensure Waqas Gill, Saim Chaudhry, Zainab Akhtar always exist and have complete schemas
+        // Ensure Waqas Gill, Saim Chaudhry, Zainab Athar always exist and have complete schemas
         INITIAL_USERS.forEach((initUser) => {
           const index = parsed.users.findIndex(
-            (u: UserProfile) => u.id === initUser.id || (u.username && u.username === initUser.username)
+            (u: UserProfile) =>
+              u.id === initUser.id ||
+              (u.username && (u.username === initUser.username || (initUser.id === 'user-zainab' && u.username === 'zainabakhtar')))
           );
           if (index === -1) {
             parsed.users.unshift(initUser);
@@ -73,6 +75,13 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
             }
             if (initUser.id === 'user-waqas') {
               parsed.users[index].phone = '+923075203713';
+            }
+            if (initUser.id === 'user-zainab' || parsed.users[index].username === 'zainabakhtar' || parsed.users[index].username === 'zainabathar') {
+              parsed.users[index].name = 'Zainab Athar';
+              parsed.users[index].username = 'zainabathar';
+              parsed.users[index].role = 'BRANCH_HEAD';
+              parsed.users[index].designation = 'Branch Head / Rahim Yar Khan';
+              parsed.users[index].branchId = 'rahim-yar-khan';
             }
           }
         });

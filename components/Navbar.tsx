@@ -112,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
                 {currentUser?.branchId === 'bahawalpur'
                   ? 'Bahawalpur Branch (Saim Chaudhry)'
                   : currentUser?.branchId === 'rahim-yar-khan'
-                  ? 'Rahim Yar Khan Branch (Zainab Akhtar)'
+                  ? 'Rahim Yar Khan Branch (Zainab Athar)'
                   : 'Musafirkhana Branch (Waqas Gill)'}
               </span>
             </div>

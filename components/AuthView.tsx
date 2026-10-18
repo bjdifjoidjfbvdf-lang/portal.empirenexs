@@ -529,15 +529,15 @@ export const AuthView: React.FC = () => {
             <div className="flex items-center gap-3">
               <img
                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80"
-                alt="Zainab Akhtar"
+                alt="Zainab Athar"
                 className="w-12 h-12 rounded-xl object-cover border-2 border-purple-400"
               />
               <div>
                 <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30">
                   Branch Hub
                 </span>
-                <p className="font-bold text-white text-sm mt-1">Zainab Akhtar</p>
-                <p className="text-slate-400 text-[11px]">Co-Founder / Head of Rahim Yar Khan</p>
+                <p className="font-bold text-white text-sm mt-1">Zainab Athar</p>
+                <p className="text-slate-400 text-[11px]">Branch Head / Rahim Yar Khan</p>
               </div>
             </div>
             <p className="text-slate-300 mt-3 pt-3 border-t border-slate-800">
@@ -818,7 +818,7 @@ export const AuthView: React.FC = () => {
                       className="w-full bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-white outline-none"
                     >
                       <option value="bahawalpur">Bahawalpur Hub (Saim Chaudhry)</option>
-                      <option value="rahim-yar-khan">Rahim Yar Khan Hub (Zainab Akhtar)</option>
+                      <option value="rahim-yar-khan">Rahim Yar Khan Hub (Zainab Athar)</option>
                       <option value="musafirkhana">Musafirkhana HQ (Waqas Gill)</option>
                     </select>
                   </div>

@@ -97,14 +97,14 @@ export const BranchComparisonAnalytics: React.FC = () => {
     {
       id: 'bahawalpur',
       name: 'Bahawalpur Branch',
-      head: 'Zainab Akhtar / Saim Chaudhry',
+      head: 'Saim Chaudhry',
       city: 'Bahawalpur',
       color: 'blue',
     },
     {
       id: 'rahim-yar-khan',
       name: 'Rahim Yar Khan Branch',
-      head: 'Saim Chaudhry / Zainab Akhtar',
+      head: 'Zainab Athar',
       city: 'Rahim Yar Khan',
       color: 'purple',
     },
@@ -639,7 +639,7 @@ export const BranchComparisonAnalytics: React.FC = () => {
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-blue-400 flex items-center gap-1.5">
               <Building2 className="w-3.5 h-3.5" />
-              Bahawalpur Branch Notes (Zainab Akhtar)
+              Bahawalpur Branch Notes (Saim Chaudhry)
             </label>
             <textarea
               value={ceoNotes.bahawalpur}
@@ -654,7 +654,7 @@ export const BranchComparisonAnalytics: React.FC = () => {
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-purple-400 flex items-center gap-1.5">
               <Building2 className="w-3.5 h-3.5" />
-              Rahim Yar Khan Notes (Saim Chaudhry)
+              Rahim Yar Khan Branch Notes (Zainab Athar)
             </label>
             <textarea
               value={ceoNotes.rahimYarKhan}
