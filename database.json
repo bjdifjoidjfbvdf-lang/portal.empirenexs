@@ -1120,7 +1120,33 @@
       "timestamp": "10:40 AM",
       "createdAt": "2026-10-18T05:40:30.650Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792302057206",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "Request YouTube verification OTP number",
+      "timestamp": "10:40 AM",
+      "createdAt": "2026-10-18T05:40:57.206Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-err-1792302057237",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "⚠️ **Duplicate Channel Blocked:** Channel \"juma Shorts\" (https://youtube.com/@vikghghghzai`) has already received a verified phone number (+639532230607 - Status: Active). Multiple numbers for the same channel are strictly prohibited.",
+      "timestamp": "10:40 AM",
+      "createdAt": "2026-10-18T05:40:57.206Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-18T05:40:32.000Z"
+  "updatedAt": "2026-10-18T05:40:57.787Z"
 }
