@@ -355,7 +355,7 @@
       "branchId": "rahim-yar-khan",
       "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
       "canAccessAllBranches": false,
-      "status": "PENDING",
+      "status": "REJECTED",
       "joiningType": "PERCENTAGE",
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-19",
@@ -1737,5 +1737,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-19T15:14:31.267Z"
+  "updatedAt": "2026-10-19T15:17:49.721Z"
 }
