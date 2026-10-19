@@ -1392,7 +1392,33 @@
       "timestamp": "06:49 PM",
       "createdAt": "2026-10-19T13:49:07.574Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792417899696",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "opne mopre",
+      "timestamp": "06:51 PM",
+      "createdAt": "2026-10-19T13:51:39.695Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-default-1792417899696",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "Mein EmpireNexs AI Operations Assistant hoon. Mein aap ko Channels Vault, Video Niches & Scripts, YouTube OTP Verification, aur Monthly Sales ke baray mein complete assist kar sakta hoon.\n\n- **OTP Number ke liye:** *\"Vikzai channel ke liye OTP number do\"* (Channel link ke sath)\n- **Topic claim karne ke liye:** *\"Mujhe Tech niche ka topic do\"* (Daily limit: 2)\n- **Channel search karne ke liye:** Channel ka naam likhein.\n\nAap kis cheez par kaam karna chahein gay?",
+      "timestamp": "06:51 PM",
+      "createdAt": "2026-10-19T13:51:39.695Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-19T13:49:08.918Z"
+  "updatedAt": "2026-10-19T13:51:40.518Z"
 }
