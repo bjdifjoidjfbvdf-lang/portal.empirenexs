@@ -1813,7 +1813,33 @@
       "timestamp": "08:33 PM",
       "createdAt": "2026-10-19T15:33:34.664Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792424318750",
+      "userId": "user-1792422871266",
+      "userName": "Habiba",
+      "userEmail": "habibayousaf361@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "Request YouTube verification OTP number",
+      "timestamp": "08:38 PM",
+      "createdAt": "2026-10-19T15:38:38.750Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-askname-1792424318751",
+      "userId": "user-1792422871266",
+      "userName": "Habiba",
+      "userEmail": "habibayousaf361@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "Link `https://www.youtube.com/@%D0%91%D0%BE%D0%B6%D0%B5%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9%D0%9C%D0%B8%D1%85%D0%B0%D0%B8%D0%BB` ke liye please **Channel Name** specify karein taake verification number order ho sake.",
+      "timestamp": "08:38 PM",
+      "createdAt": "2026-10-19T15:38:38.750Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-19T15:33:35.430Z"
+  "updatedAt": "2026-10-19T15:38:39.366Z"
 }
