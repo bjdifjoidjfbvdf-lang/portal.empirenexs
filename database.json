@@ -1496,7 +1496,33 @@
       "timestamp": "06:52 PM",
       "createdAt": "2026-10-19T13:52:45.283Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792418701792",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "user",
+      "text": "Assalam o Alaikum! Kaise hain?",
+      "timestamp": "07:05 AM",
+      "createdAt": "2026-10-19T14:05:01.781Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-sal-1792418701792",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "assistant",
+      "text": "وعلیکم السلام (Walaikum Assalam) **Hassan**! 😊\n\nEmpireNexs AI Assistant aap ki khidmat mein hazir hai. Umeed hai aap ka din bohat acha guzar raha hoga.\n\nAaj aap kis cheez par baat ya kaam karna chahein gay?\n- **Assigned Channels:** Aapke assigned YouTube channels ka data\n- **Niche Topics:** Script topics claim karna (daily quota)\n- **OTP Verification:** Real SIM YouTube SMS verification code lena",
+      "timestamp": "07:05 AM",
+      "createdAt": "2026-10-19T14:05:01.781Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-19T13:52:46.179Z"
+  "updatedAt": "2026-10-19T14:05:02.082Z"
 }
