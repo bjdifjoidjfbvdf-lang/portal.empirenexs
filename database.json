@@ -1210,7 +1210,33 @@
       "timestamp": "02:05 PM",
       "createdAt": "2026-10-19T09:05:48.979Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792400778863",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "Request YouTube verification OTP number     channel name :Божественный Михаил",
+      "timestamp": "02:06 PM",
+      "createdAt": "2026-10-19T09:06:18.862Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-ask-1792400778864",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "Bhai YouTube OTP verification number hasil karne ke liye please **Channel Name** aur **YouTube Channel URL** provide karein.\n\nExample:\n`name: Vikzai Shorts link: https://youtube.com/@vikzai`",
+      "timestamp": "02:06 PM",
+      "createdAt": "2026-10-19T09:06:18.862Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-19T09:05:49.428Z"
+  "updatedAt": "2026-10-19T09:06:19.369Z"
 }
