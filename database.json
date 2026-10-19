@@ -341,6 +341,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-19",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792422319853",
+      "name": "Richard Abram",
+      "username": "habiba",
+      "email": "ehsankhan03337851943@gmail.com",
+      "password": "habiba123",
+      "phone": "03263715520",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "rahim-yar-khan",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-19",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -1699,5 +1718,5 @@
       "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-19T14:12:58.042Z"
+  "updatedAt": "2026-10-19T15:05:19.854Z"
 }
