@@ -11,6 +11,7 @@ import {
   AIChatMessage,
   SystemSettings,
   OTPOrderRecord,
+  ProxyRecord,
   ChatLogEntry,
   NicheSheetItem,
 } from '@/types';
@@ -131,6 +132,20 @@ interface AppContextType {
   getUserTodayOTPCount: (userId: string) => number;
   getUserTotalOTPCount: (userId: string) => number;
   getChannelExistingNumber: (channelName: string, channelUrl?: string) => OTPOrderRecord | undefined;
+
+  // Proxies & Dedicated IPs (Proxy6.net)
+  proxies: ProxyRecord[];
+  requestProxy: (
+    channelName: string,
+    channelUrl?: string,
+    country?: string,
+    type?: 'http' | 'socks'
+  ) => Promise<{ success: boolean; message: string; proxy?: ProxyRecord }>;
+  renewProxy: (proxyId: string) => Promise<{ success: boolean; message: string }>;
+  toggleUserProxyAuthorization: (targetUserId: string, authorized: boolean) => Promise<{ success: boolean; message: string }>;
+  getUserTodayProxyCount: (userId: string) => number;
+  getUserTotalProxyCount: (userId: string) => number;
+  getUserProxySpend: (userId: string) => number;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -190,6 +205,7 @@ export const sanitizeUser = (u: any): UserProfile => {
     branchId: (u?.branchId || defaultBranch) as BranchId,
     status: u?.status || 'ACTIVE',
     canAccessAllBranches: isWaqas ? true : !!u?.canAccessAllBranches,
+    canBuyProxies: isWaqas ? true : !!u?.canBuyProxies,
   };
 };
 
@@ -602,6 +618,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       branchId: userData.branchId || 'musafirkhana',
       avatar: userData.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
       canAccessAllBranches: userData.canAccessAllBranches || false,
+      canBuyProxies: userData.canBuyProxies || false,
       status: 'ACTIVE',
       joinedAt: new Date().toISOString().split('T')[0],
       emailVerified: true,
@@ -1079,6 +1096,9 @@ Instructions:
   // Phone Number & OTP Orders state
   const [otpOrders, setOtpOrders] = useState<OTPOrderRecord[]>(INITIAL_OTP_ORDERS);
 
+  // Proxies & Dedicated IPs state
+  const [proxies, setProxies] = useState<ProxyRecord[]>([]);
+
   const [isSyncingSheets, setIsSyncingSheets] = useState<boolean>(false);
   const [isSyncModalOpen, setIsSyncModalOpen] = useState<boolean>(false);
   const [hasLoadedFromStorage, setHasLoadedFromStorage] = useState(false);
@@ -1125,6 +1145,12 @@ Instructions:
         if (savedClaims) {
           const parsed = JSON.parse(savedClaims);
           if (Array.isArray(parsed)) setUserNicheClaims(parsed);
+        }
+
+        const savedProxies = localStorage.getItem('empirenexs_proxies_prod');
+        if (savedProxies) {
+          const parsed = JSON.parse(savedProxies);
+          if (Array.isArray(parsed)) setProxies(parsed);
         }
 
         const savedSessionId = localStorage.getItem('empirenexs_session_user_prod');
@@ -1185,6 +1211,26 @@ Instructions:
           })
           .catch(() => null);
 
+        // Fetch central OTP orders from server API to stay in sync
+        fetch('/api/otp')
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success && Array.isArray(data.otpOrders) && data.otpOrders.length > 0) {
+              setOtpOrders(data.otpOrders);
+            }
+          })
+          .catch(() => null);
+
+        // Fetch proxies from server API to stay in sync
+        fetch(`/api/proxy?userId=${savedSessionId || ''}&isWaqas=${savedSessionId === 'user-waqas' ? 'true' : 'false'}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success && Array.isArray(data.proxies)) {
+              setProxies(data.proxies);
+            }
+          })
+          .catch(() => null);
+
         const savedTheme = (localStorage.getItem('empirenexs_theme') as 'dark' | 'light') || 'dark';
         setThemeState(savedTheme);
         if (savedTheme === 'dark') {
@@ -1233,6 +1279,16 @@ Instructions:
       }
     }
   }, [otpOrders, hasLoadedFromStorage]);
+
+  useEffect(() => {
+    if (hasLoadedFromStorage && typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('empirenexs_proxies_prod', JSON.stringify(proxies));
+      } catch (err) {
+        console.warn('LocalStorage quota notice (proxies):', err);
+      }
+    }
+  }, [proxies, hasLoadedFromStorage]);
 
   useEffect(() => {
     if (hasLoadedFromStorage && typeof window !== 'undefined') {
@@ -1786,6 +1842,13 @@ Instructions:
 
       setOtpOrders((prev) => [newOrder, ...prev]);
 
+      // Sync new pending order to cloud database
+      fetch('/api/otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'saveOrder', order: newOrder }),
+      }).catch(() => null);
+
       // Deduct balance locally by 0.024
       setSettings((prev) => ({ ...prev, smsBalance: Math.max(0, prev.smsBalance - 0.024) }));
 
@@ -1811,6 +1874,12 @@ Instructions:
             prev.map((o) => (o.id === orderId && o.status === 'PENDING_OTP' ? { ...o, status: 'EXPIRED' } : o))
           );
           setSettings((prev) => ({ ...prev, smsBalance: prev.smsBalance + 0.024 }));
+
+          fetch('/api/otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'cancelOrder', orderId }),
+          }).catch(() => null);
 
           const failureMsg: AIChatMessage = {
             id: `msg-otp-fail-${Date.now()}`,
@@ -1844,6 +1913,16 @@ Instructions:
                 o.id === orderId ? { ...o, status: 'COMPLETED', otpCode: realOtp } : o
               )
             );
+
+            // Sync completed status & OTP code to cloud database
+            fetch('/api/otp', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'saveOrder',
+                order: { ...newOrder, status: 'COMPLETED', otpCode: realOtp },
+              }),
+            }).catch(() => null);
 
             // Auto-update or create Channel in Channels Vault with real verified number
             setChannels((prev) => {
@@ -1945,6 +2024,120 @@ Instructions:
     if (wasPending) {
       setSettings((prev) => ({ ...prev, smsBalance: prev.smsBalance + 0.024 }));
     }
+
+    fetch('/api/otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'cancelOrder', orderId }),
+    }).catch(() => null);
+  };
+
+  // Proxies & Dedicated IPs (Proxy6.net)
+  const requestProxy = async (
+    channelName: string,
+    channelUrl: string = '',
+    country: string = 'us',
+    type: 'http' | 'socks' = 'http'
+  ): Promise<{ success: boolean; message: string; proxy?: ProxyRecord }> => {
+    if (!currentUser) return { success: false, message: 'Please login first.' };
+
+    try {
+      const res = await fetch('/api/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'buy',
+          userId: currentUser.id,
+          userName: currentUser.name,
+          userEmail: currentUser.email,
+          branchId: currentUser.branchId,
+          channelName: channelName.trim(),
+          channelUrl: channelUrl.trim(),
+          country,
+          type,
+          apiKey: settings.proxy6ApiKey,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success && data.proxy) {
+        setProxies((prev) => [data.proxy, ...prev]);
+        return { success: true, message: data.message, proxy: data.proxy };
+      }
+      return { success: false, message: data.message || 'Failed to purchase proxy.' };
+    } catch (e: any) {
+      return { success: false, message: `Network Error: ${e.message || 'Failed to connect'}` };
+    }
+  };
+
+  const renewProxy = async (proxyId: string): Promise<{ success: boolean; message: string }> => {
+    try {
+      const res = await fetch('/api/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'renew',
+          proxyId,
+          userId: currentUser?.id,
+          apiKey: settings.proxy6ApiKey,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setProxies((prev) =>
+          prev.map((p) => (p.id === proxyId ? { ...p, expiresAt: data.expiresAt, status: 'ACTIVE' } : p))
+        );
+        return { success: true, message: data.message };
+      }
+      return { success: false, message: data.message || 'Failed to renew proxy.' };
+    } catch (e: any) {
+      return { success: false, message: e.message || 'Network error' };
+    }
+  };
+
+  const toggleUserProxyAuthorization = async (
+    targetUserId: string,
+    authorized: boolean
+  ): Promise<{ success: boolean; message: string }> => {
+    try {
+      const res = await fetch('/api/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'toggleAuthorization',
+          targetUserId,
+          authorized,
+          adminUserId: currentUser?.id,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setUsers((prev) =>
+          prev.map((u) => (u.id === targetUserId ? { ...u, canBuyProxies: authorized } : u))
+        );
+        return { success: true, message: data.message };
+      }
+      return { success: false, message: data.message || 'Failed to update authorization.' };
+    } catch (e: any) {
+      return { success: false, message: e.message || 'Network error' };
+    }
+  };
+
+  const getUserTodayProxyCount = (userId: string): number => {
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    return proxies.filter((p) => p.userId === userId && new Date(p.createdAt).getTime() > oneDayAgo).length;
+  };
+
+  const getUserTotalProxyCount = (userId: string): number => {
+    return proxies.filter((p) => p.userId === userId).length;
+  };
+
+  const getUserProxySpend = (userId: string): number => {
+    return proxies
+      .filter((p) => p.userId === userId)
+      .reduce((sum, p) => sum + (p.costUsd || 1.77), 0);
   };
 
   // AI Assistant message handler
@@ -2877,6 +3070,13 @@ Instructions:
         getUserTodayOTPCount,
         getUserTotalOTPCount,
         getChannelExistingNumber,
+        proxies,
+        requestProxy,
+        renewProxy,
+        toggleUserProxyAuthorization,
+        getUserTodayProxyCount,
+        getUserTotalProxyCount,
+        getUserProxySpend,
       }}
     >
       {children}

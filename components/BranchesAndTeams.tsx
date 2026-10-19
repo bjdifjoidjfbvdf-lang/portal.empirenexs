@@ -31,6 +31,8 @@ import {
   X,
   Copy,
   Check,
+  Globe,
+  ShieldCheck,
 } from 'lucide-react';
 import { BranchComparisonAnalytics } from './BranchComparisonAnalytics';
 import { UserProfile } from '@/types';
@@ -51,6 +53,7 @@ export const BranchesAndTeams: React.FC = () => {
     updateMemberGoogleSheet,
     syncMemberSheetChannels,
     pushUserChannelsToSheet,
+    toggleUserProxyAuthorization,
   } = useApp();
 
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
@@ -63,6 +66,7 @@ export const BranchesAndTeams: React.FC = () => {
   const [newUserBranch, setNewUserBranch] = useState<BranchId>('bahawalpur');
   const [newUserRole, setNewUserRole] = useState<UserRole>('TEAM_MEMBER');
   const [newUserDesignation, setNewUserDesignation] = useState('Senior Video Editor');
+  const [newUserCanBuyProxies, setNewUserCanBuyProxies] = useState(false);
   const [modalFeedback, setModalFeedback] = useState<string | null>(null);
   const [activeSubTab, setActiveSubTab] = useState<'members' | 'comparison'>('members');
 
@@ -200,6 +204,7 @@ export const BranchesAndTeams: React.FC = () => {
       branchId: newUserBranch,
       role: newUserRole,
       designation: newUserDesignation,
+      canBuyProxies: newUserCanBuyProxies,
     });
 
     if (res.success) {
@@ -212,6 +217,7 @@ export const BranchesAndTeams: React.FC = () => {
       setNewUserPass('');
       setNewUserPhone('');
       setNewUserAddress('');
+      setNewUserCanBuyProxies(false);
     } else {
       setModalFeedback(res.message);
     }
@@ -654,6 +660,43 @@ export const BranchesAndTeams: React.FC = () => {
                   )}
                 </div>
 
+                {/* Proxy6 Authorization Toggle (CEO only) or Member Status */}
+                {isWaqasCeo ? (
+                  <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
+                    <span className="flex items-center gap-1.5 text-slate-400 font-medium text-[11px]">
+                      <Globe className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Proxy Purchases:</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const nextState = !user.canBuyProxies;
+                        const res = await toggleUserProxyAuthorization(user.id, nextState);
+                        alert(res.message);
+                      }}
+                      className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border transition flex items-center gap-1 ${
+                        user.canBuyProxies
+                          ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 hover:bg-cyan-500/30'
+                          : 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200 hover:bg-slate-800'
+                      }`}
+                      title={user.canBuyProxies ? 'Click to revoke Proxy6 buying authorization' : 'Click to authorize Proxy6 buying access (1/day limit)'}
+                    >
+                      <ShieldCheck className="w-3 h-3" />
+                      <span>{user.canBuyProxies ? '✓ Authorized' : '+ Authorize'}</span>
+                    </button>
+                  </div>
+                ) : user.canBuyProxies ? (
+                  <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
+                    <span className="flex items-center gap-1.5 text-cyan-400 font-semibold text-[10px]">
+                      <Globe className="w-3.5 h-3.5" />
+                      <span>Proxy6: Authorized (1/day)</span>
+                    </span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-mono">
+                      Dedicated IPs
+                    </span>
+                  </div>
+                ) : null}
+
                 {/* CEO Security Actions: Restrict Access or Delete User */}
                 {isWaqasCeo && !isFounder && (
                   <div className="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
@@ -823,6 +866,20 @@ export const BranchesAndTeams: React.FC = () => {
                   />
                 </div>
               </div>
+
+              {/* Authorize Proxies Checkbox */}
+              <label className="flex items-center gap-2.5 text-slate-300 font-semibold cursor-pointer select-none bg-slate-950 p-2.5 rounded-xl border border-slate-800 hover:border-cyan-500/50 transition">
+                <input
+                  type="checkbox"
+                  checked={newUserCanBuyProxies}
+                  onChange={(e) => setNewUserCanBuyProxies(e.target.checked)}
+                  className="w-4 h-4 rounded text-cyan-500 focus:ring-cyan-500 focus:ring-offset-0 bg-slate-900 border-slate-700 cursor-pointer"
+                />
+                <span className="flex items-center gap-1.5 text-xs text-white">
+                  <Globe className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Authorize Proxy Purchases (Proxy6.net - 1/day)</span>
+                </span>
+              </label>
 
               <div className="flex gap-2 pt-3">
                 <button

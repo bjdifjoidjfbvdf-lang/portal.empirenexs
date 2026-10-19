@@ -14,6 +14,7 @@ import { AuthView } from '@/components/AuthView';
 import { UserProfileSettings } from '@/components/UserProfileSettings';
 import { MonthlyCalculations } from '@/components/MonthlyCalculations';
 import { BranchComparisonAnalytics } from '@/components/BranchComparisonAnalytics';
+import { ProxiesManager } from '@/components/ProxiesManager';
 import { useApp } from '@/lib/storeContext';
 import { Sparkles, Bot } from 'lucide-react';
 
@@ -46,6 +47,7 @@ export default function HomePage() {
             {activeTab === 'niches' && <NichesHub />}
             {activeTab === 'team' && <BranchesAndTeams />}
             {activeTab === 'otp' && <OTPManager />}
+            {activeTab === 'proxies' && <ProxiesManager />}
             {activeTab === 'profile' && <UserProfileSettings />}
             {activeTab === 'settings' && <SettingsView />}
           </div>

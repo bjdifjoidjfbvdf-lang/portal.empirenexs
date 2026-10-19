@@ -18,6 +18,7 @@ import {
   BarChart3,
   Search,
   Grid2X2,
+  Globe,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -33,7 +34,7 @@ interface NavItem {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
-  const { channels, nicheTabs, setIsChatOpen, currentUser, otpOrders } = useApp();
+  const { channels, nicheTabs, setIsChatOpen, currentUser, otpOrders, proxies } = useApp();
 
   const dashboardSection: NavItem[] = [
     {
@@ -83,6 +84,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       label: 'Phone & OTP Vault',
       icon: Smartphone,
       badge: `${otpOrders.length}`,
+    },
+    {
+      id: 'proxies',
+      label: 'Dedicated Proxies',
+      icon: Globe,
+      badge: proxies.length > 0 ? `${proxies.length}` : undefined,
     },
   ];
 

@@ -40,6 +40,7 @@ export interface UserProfile {
   personalGoogleSheetApiKey?: string;
   lastSheetSync?: string;
   syncedChannelsCount?: number;
+  canBuyProxies?: boolean;
 }
 
 export interface ChannelRecord {
@@ -169,6 +170,28 @@ export interface OTPOrderRecord {
   expiresAt: number;
 }
 
+export interface ProxyRecord {
+  id: string;
+  proxy6Id?: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  branchId: BranchId;
+  ip: string;
+  port: string | number;
+  user: string;
+  pass: string;
+  type: 'http' | 'socks';
+  country: string;
+  version: 'ipv4' | 'ipv6' | 'shared';
+  assignedChannelName: string;
+  assignedChannelUrl?: string;
+  costUsd: number;
+  status: 'ACTIVE' | 'EXPIRED' | 'RENEWED';
+  createdAt: string;
+  expiresAt: string;
+}
+
 export interface SystemSettings {
   geminiApiKey: string;
   googleSheetChannelsUrl: string;
@@ -182,6 +205,8 @@ export interface SystemSettings {
   dailyNicheLimitPerUser: number;
   heroSmsApiKey: string;
   googleSheetsDispatcherWebhookUrl?: string;
+  proxy6ApiKey?: string;
+  proxyBalance?: number;
 }
 
 export interface NicheSheetItem {

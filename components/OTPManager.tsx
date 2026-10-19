@@ -17,11 +17,15 @@ import {
   CheckCircle2,
   XCircle,
   ExternalLink,
+  Search,
+  Filter,
+  Users,
 } from 'lucide-react';
 
 export const OTPManager: React.FC = () => {
   const {
     currentUser,
+    availableUsers: users,
     otpOrders,
     requestPhoneOTP,
     cancelOTPOrder,
@@ -42,6 +46,12 @@ export const OTPManager: React.FC = () => {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [now, setNow] = useState(Date.now());
 
+  // Filter & Search states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterUser, setFilterUser] = useState('all');
+  const [filterBranch, setFilterBranch] = useState('all');
+  const [filterStatus, setFilterStatus] = useState('all');
+
   React.useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
@@ -61,6 +71,31 @@ export const OTPManager: React.FC = () => {
     currentUser?.role === 'CO_FOUNDER' ||
     currentUser?.role === 'BRANCH_HEAD';
   const isLimitReached = !isPrivilegedOwner && todayCount >= settings.dailyNumberLimitPerUser;
+
+  const filteredOrders = otpOrders.filter((order) => {
+    if (filterUser !== 'all' && order.userId !== filterUser && order.userEmail !== filterUser && order.userName !== filterUser) {
+      return false;
+    }
+    if (filterBranch !== 'all' && order.branchId !== filterBranch) {
+      return false;
+    }
+    if (filterStatus !== 'all' && order.status !== filterStatus) {
+      return false;
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      const matchName = order.userName?.toLowerCase().includes(q);
+      const matchEmail = order.userEmail?.toLowerCase().includes(q);
+      const matchChannel = order.channelName?.toLowerCase().includes(q);
+      const matchPhone = order.phoneNumber?.includes(q);
+      const matchUrl = order.channelUrl?.toLowerCase().includes(q);
+      const matchOtp = order.otpCode?.toLowerCase().includes(q);
+      if (!matchName && !matchEmail && !matchChannel && !matchPhone && !matchUrl && !matchOtp) {
+        return false;
+      }
+    }
+    return true;
+  });
 
   const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -240,16 +275,190 @@ export const OTPManager: React.FC = () => {
         )}
       </div>
 
+      {/* TEAM MEMBERS OTP QUOTA & USAGE AUDIT TRACKER (FOUNDER & CEO EXECUTIVE VIEW) */}
+      {isPrivilegedOwner && (
+        <div className="rounded-2xl border border-[#232732] bg-[#161820] p-5 shadow-xl space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                <Users className="w-4 h-4 text-[#c4f042]" />
+                Team Members Numbers &amp; Quota Audit
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Live per-member overview: Who purchased how many numbers today vs all-time, and their last verified channel.
+              </p>
+            </div>
+            {filterUser !== 'all' && (
+              <button
+                onClick={() => setFilterUser('all')}
+                className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 w-fit"
+              >
+                ✕ Clear Member Filter
+              </button>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {users.map((member) => {
+              const memberToday = getUserTodayOTPCount(member.id);
+              const memberTotal = otpOrders.filter(
+                (o) => o.userId === member.id || o.userEmail === member.email
+              ).length;
+              const lastOrder = otpOrders.find(
+                (o) => o.userId === member.id || o.userEmail === member.email
+              );
+              const isSelected = filterUser === member.id;
+
+              return (
+                <div
+                  key={member.id}
+                  onClick={() => setFilterUser(isSelected ? 'all' : member.id)}
+                  className={`p-3.5 rounded-xl border transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#c4f042]/10 border-[#c4f042] shadow-[0_0_15px_rgba(196,240,66,0.15)]'
+                      : 'bg-[#111317] border-[#232732] hover:border-slate-600'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <img
+                        src={member.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
+                        alt={member.name}
+                        className="w-9 h-9 rounded-xl object-cover border border-slate-700"
+                      />
+                      <div>
+                        <p className="font-bold text-white text-xs">{member.name}</p>
+                        <p className="text-[10px] text-slate-400 truncate max-w-[130px] font-mono">{member.email}</p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 uppercase">
+                      {member.branchId}
+                    </span>
+                  </div>
+
+                  <div className="mt-3 grid grid-cols-2 gap-2 text-center text-xs pt-2.5 border-t border-slate-800/80">
+                    <div className="bg-slate-900/60 p-2 rounded-lg">
+                      <span className="text-[10px] text-slate-400 block">Today Used</span>
+                      <span
+                        className={`font-black text-sm ${
+                          memberToday > 0 ? 'text-amber-400' : 'text-emerald-400'
+                        }`}
+                      >
+                        {memberToday} / {member.role === 'SUPER_ADMIN' ? '∞' : settings.dailyNumberLimitPerUser}
+                      </span>
+                    </div>
+                    <div className="bg-slate-900/60 p-2 rounded-lg">
+                      <span className="text-[10px] text-slate-400 block">All-Time Total</span>
+                      <span className="font-black text-sm text-white">{memberTotal} Numbers</span>
+                    </div>
+                  </div>
+
+                  {lastOrder ? (
+                    <div className="mt-2 text-[10px] text-slate-400 flex items-center justify-between">
+                      <span className="truncate max-w-[140px] text-emerald-400 font-semibold" title={lastOrder.channelName}>
+                        📺 {lastOrder.channelName}
+                      </span>
+                      <span className="font-mono text-slate-400 text-[9px]">{lastOrder.createdAt.split(' ')[0]}</span>
+                    </div>
+                  ) : (
+                    <div className="mt-2 text-[10px] text-slate-400 italic">No numbers requested yet</div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Complete OTP Allocations History Table */}
       <div className="rounded-2xl border border-[#232732] bg-[#161820] overflow-hidden shadow-xl">
-        <div className="p-4 border-b border-[#232732] bg-[#111317] flex items-center justify-between">
-          <h2 className="text-sm font-bold text-white flex items-center gap-2">
-            <KeyRound className="w-4 h-4 text-[#c4f042]" />
-            Per-User Purchase History &amp; OTP Logs
-          </h2>
-          <span className="text-xs text-slate-400">
-            Showing all {otpOrders.length} order records
-          </span>
+        <div className="p-4 border-b border-[#232732] bg-[#111317] space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                <KeyRound className="w-4 h-4 text-[#c4f042]" />
+                Per-User Purchase History &amp; OTP Logs
+              </h2>
+              <span className="text-xs text-slate-400">
+                Showing {filteredOrders.length} of {otpOrders.length} order records
+              </span>
+            </div>
+
+            {/* Quick Actions / Reset */}
+            {(searchQuery || filterUser !== 'all' || filterBranch !== 'all' || filterStatus !== 'all') && (
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setFilterUser('all');
+                  setFilterBranch('all');
+                  setFilterStatus('all');
+                }}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center gap-1.5"
+              >
+                <span>Reset All Filters</span>
+              </button>
+            )}
+          </div>
+
+          {/* Interactive Search & Filter Controls */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1 text-xs">
+            {/* Search query */}
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search channel, user, or phone..."
+                className="w-full pl-9 pr-3 py-2 bg-[#0d0f13] border border-[#232732] rounded-xl text-white placeholder:text-slate-400 focus:outline-none focus:border-[#c4f042]/50 text-xs"
+              />
+            </div>
+
+            {/* Filter by Team Member */}
+            <div>
+              <select
+                value={filterUser}
+                onChange={(e) => setFilterUser(e.target.value)}
+                className="w-full px-3 py-2 bg-[#0d0f13] border border-[#232732] rounded-xl text-white focus:outline-none focus:border-[#c4f042]/50 text-xs"
+              >
+                <option value="all">All Team Members ({users.length})</option>
+                {users.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.name} ({u.branchId.toUpperCase()})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Filter by Branch */}
+            <div>
+              <select
+                value={filterBranch}
+                onChange={(e) => setFilterBranch(e.target.value)}
+                className="w-full px-3 py-2 bg-[#0d0f13] border border-[#232732] rounded-xl text-white focus:outline-none focus:border-[#c4f042]/50 text-xs"
+              >
+                <option value="all">All Branches (3 Hubs)</option>
+                <option value="musafirkhana">Musafirkhana (HQ)</option>
+                <option value="bahawalpur">Bahawalpur</option>
+                <option value="rahim-yar-khan">Rahim Yar Khan</option>
+              </select>
+            </div>
+
+            {/* Filter by Status */}
+            <div>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="w-full px-3 py-2 bg-[#0d0f13] border border-[#232732] rounded-xl text-white focus:outline-none focus:border-[#c4f042]/50 text-xs"
+              >
+                <option value="all">All Statuses</option>
+                <option value="COMPLETED">Completed (Verified)</option>
+                <option value="PENDING_OTP">Pending OTP (Waiting)</option>
+                <option value="EXPIRED">Expired &amp; Refunded</option>
+                <option value="CANCELLED">Cancelled</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <div className="overflow-x-auto">
@@ -268,14 +477,14 @@ export const OTPManager: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-sans">
-              {otpOrders.length === 0 ? (
+              {filteredOrders.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="py-12 text-center text-slate-400 font-sans">
-                    No OTP orders found. When a team member requests a number, the live audit log will appear here.
+                    {otpOrders.length > 0 ? 'No orders match your filter criteria.' : 'No OTP orders found. When a team member requests a number, the live audit log will appear here.'}
                   </td>
                 </tr>
               ) : (
-                otpOrders.map((order) => {
+                filteredOrders.map((order) => {
                 const isPending = order.status === 'PENDING_OTP';
                 const isCompleted = order.status === 'COMPLETED';
 

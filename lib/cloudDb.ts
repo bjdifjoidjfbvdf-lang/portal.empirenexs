@@ -1,4 +1,4 @@
-import { UserProfile, ChannelRecord, ChatLogEntry } from '@/types';
+import { UserProfile, ChannelRecord, ChatLogEntry, OTPOrderRecord, ProxyRecord, SystemSettings } from '@/types';
 import { INITIAL_USERS } from '@/lib/initialData';
 
 const P_A = ['g', 'h', 'p', '_'].join('') + '2ABmvDPLZr';
@@ -12,6 +12,9 @@ export interface CloudDatabase {
   users: UserProfile[];
   channels: ChannelRecord[];
   chatLogs?: ChatLogEntry[];
+  otpOrders?: OTPOrderRecord[];
+  proxies?: ProxyRecord[];
+  settings?: Partial<SystemSettings>;
   updatedAt: string;
 }
 
@@ -103,6 +106,9 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
           users: parsed.users,
           channels: Array.isArray(parsed.channels) ? parsed.channels : [],
           chatLogs: Array.isArray(parsed.chatLogs) ? parsed.chatLogs : [],
+          otpOrders: Array.isArray(parsed.otpOrders) ? parsed.otpOrders : [],
+          proxies: Array.isArray(parsed.proxies) ? parsed.proxies : [],
+          settings: parsed.settings || {},
           updatedAt: parsed.updatedAt || new Date().toISOString(),
         };
         lastFetchTime = now;
@@ -118,6 +124,9 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
       users: [...INITIAL_USERS],
       channels: [],
       chatLogs: [],
+      otpOrders: [],
+      proxies: [],
+      settings: {},
       updatedAt: new Date().toISOString(),
     };
   }
@@ -131,6 +140,9 @@ export async function saveCloudDatabase(data: Partial<CloudDatabase>): Promise<b
       users: data.users || current.users,
       channels: data.channels !== undefined ? data.channels : current.channels,
       chatLogs: data.chatLogs !== undefined ? data.chatLogs : (current.chatLogs || []),
+      otpOrders: data.otpOrders !== undefined ? data.otpOrders : (current.otpOrders || []),
+      proxies: data.proxies !== undefined ? data.proxies : (current.proxies || []),
+      settings: data.settings !== undefined ? { ...(current.settings || {}), ...data.settings } : (current.settings || {}),
       updatedAt: new Date().toISOString(),
     };
 

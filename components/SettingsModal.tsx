@@ -11,6 +11,7 @@ import {
   Check,
   RefreshCw,
   Sparkles,
+  Globe,
 } from 'lucide-react';
 
 export const SettingsView: React.FC = () => {
@@ -20,7 +21,32 @@ export const SettingsView: React.FC = () => {
   const [nichesUrl, setNichesUrl] = useState(settings.googleSheetNichesUrl);
   const [apiKey, setApiKey] = useState(settings.geminiApiKey);
   const [systemPrompt, setSystemPrompt] = useState(settings.aiSystemPrompt);
+  const [proxy6ApiKey, setProxy6ApiKey] = useState(settings.proxy6ApiKey || '');
+  const [testingProxy6, setTestingProxy6] = useState(false);
+  const [proxy6Feedback, setProxy6Feedback] = useState<string | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  const handleTestProxy6 = async () => {
+    setTestingProxy6(true);
+    setProxy6Feedback(null);
+    try {
+      if (proxy6ApiKey !== settings.proxy6ApiKey) {
+        updateSettings({ proxy6ApiKey: proxy6ApiKey.trim() });
+      }
+      const res = await fetch(`/api/proxy6?action=balance&apiKey=${encodeURIComponent(proxy6ApiKey.trim())}`);
+      const data = await res.json();
+      if (data.status === 'yes' || data.balance !== undefined) {
+        setProxy6Feedback(`Connected successfully! Current Proxy6 Balance: $${Number(data.balance || 0).toFixed(2)} USD`);
+        updateSettings({ proxyBalance: Number(data.balance || 0) });
+      } else {
+        setProxy6Feedback(`Proxy6 Notice: ${data.error || 'Failed to connect. Check API key.'}`);
+      }
+    } catch (err: any) {
+      setProxy6Feedback(`Connection failed: ${err.message}`);
+    } finally {
+      setTestingProxy6(false);
+    }
+  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +55,7 @@ export const SettingsView: React.FC = () => {
       googleSheetNichesUrl: nichesUrl,
       geminiApiKey: apiKey,
       aiSystemPrompt: systemPrompt,
+      proxy6ApiKey: proxy6ApiKey.trim(),
     });
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 2500);
@@ -164,6 +191,52 @@ export const SettingsView: React.FC = () => {
               Endpoint: <code>https://hero-sms.com/stubs/handler_api.php</code> • Service: <code>go</code> (Google/YouTube) • Country: <code>4</code> (Philippines)
             </p>
           </div>
+        </div>
+
+        {/* Proxy6.net API Configuration */}
+        <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Globe className="w-4 h-4 text-cyan-400" />
+              <h2 className="text-sm font-bold text-white">Proxy6.net Integration (Dedicated Proxies &amp; IPs)</h2>
+            </div>
+            <button
+              type="button"
+              onClick={handleTestProxy6}
+              disabled={testingProxy6 || !proxy6ApiKey.trim()}
+              className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-900/60 transition flex items-center gap-1.5 disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${testingProxy6 ? 'animate-spin' : ''}`} />
+              <span>{testingProxy6 ? 'Checking...' : 'Check Balance'}</span>
+            </button>
+          </div>
+          <p className="text-slate-400 text-xs">
+            Enter your Proxy6.net API Key to enable automated provisioning of dedicated datacenter IPv4 proxies for team YouTube channels:
+          </p>
+          <div>
+            <input
+              type="password"
+              value={proxy6ApiKey}
+              onChange={(e) => setProxy6ApiKey(e.target.value)}
+              placeholder="e.g. 81a0b5f12e-9d22a8..."
+              className="w-full px-3 py-2.5 bg-slate-950 border border-slate-700/80 rounded-lg text-white font-mono text-xs focus:outline-none focus:border-cyan-500"
+            />
+            <p className="text-[10px] text-slate-400 mt-1">
+              API Documentation: <code>https://proxy6.net/en/developers</code> • Dedicated IPv4 proxies with HTTP/SOCKS5 authentication.
+            </p>
+          </div>
+
+          {proxy6Feedback && (
+            <div
+              className={`p-3 rounded-xl text-xs font-mono border ${
+                proxy6Feedback.includes('successfully')
+                  ? 'bg-emerald-950/40 text-emerald-300 border-emerald-500/30'
+                  : 'bg-amber-950/40 text-amber-300 border-amber-500/30'
+              }`}
+            >
+              {proxy6Feedback}
+            </div>
+          )}
         </div>
 
         {/* Save button */}
