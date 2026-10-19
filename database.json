@@ -1314,7 +1314,33 @@
       "timestamp": "02:06 PM",
       "createdAt": "2026-10-19T09:06:56.664Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792400856018",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "https://youtube.com/channel/UCWa-cB9dIYoDQdubZbNvzlQ?si=9CdOBpMwno_ZOpWU",
+      "timestamp": "02:07 PM",
+      "createdAt": "2026-10-19T09:07:36.018Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-askname-1792400856018",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "Link `https://youtube.com/channel/UCWa-cB9dIYoDQdubZbNvzlQ?si=9CdOBpMwno_ZOpWU` ke liye please **Channel Name** specify karein taake verification number order ho sake.",
+      "timestamp": "02:07 PM",
+      "createdAt": "2026-10-19T09:07:36.018Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-19T09:06:57.045Z"
+  "updatedAt": "2026-10-19T09:07:36.396Z"
 }
