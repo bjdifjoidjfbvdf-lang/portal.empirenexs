@@ -1522,7 +1522,33 @@
       "timestamp": "07:05 AM",
       "createdAt": "2026-10-19T14:05:01.781Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792418735182",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "user",
+      "text": "aik num do verifi krny k liy",
+      "timestamp": "07:05 AM",
+      "createdAt": "2026-10-19T14:05:35.182Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-ask-1792418735182",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "assistant",
+      "text": "Bhai YouTube OTP verification number hasil karne ke liye please **Channel Name** aur **YouTube Channel URL** provide karein.\n\nExample:\n`name: Vikzai Shorts link: https://youtube.com/@vikzai`",
+      "timestamp": "07:05 AM",
+      "createdAt": "2026-10-19T14:05:35.182Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-19T14:05:02.082Z"
+  "updatedAt": "2026-10-19T14:05:35.969Z"
 }
