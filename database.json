@@ -1418,7 +1418,59 @@
       "timestamp": "06:51 PM",
       "createdAt": "2026-10-19T13:51:39.695Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792417918812",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "Request YouTube verification OTP number",
+      "timestamp": "06:51 PM",
+      "createdAt": "2026-10-19T13:51:58.811Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-askname-1792417918812",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "Link `https://www.youtube.com/@brand-v6q` ke liye please **Channel Name** specify karein taake verification number order ho sake.",
+      "timestamp": "06:51 PM",
+      "createdAt": "2026-10-19T13:51:58.811Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792417919229",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "Request YouTube verification OTP number",
+      "timestamp": "06:51 PM",
+      "createdAt": "2026-10-19T13:51:59.229Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-askname-1792417919230",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "Link `https://www.youtube.com/@brand-v6q` ke liye please **Channel Name** specify karein taake verification number order ho sake.",
+      "timestamp": "06:51 PM",
+      "createdAt": "2026-10-19T13:51:59.229Z",
+      "month": "2026-10"
     }
   ],
-  "updatedAt": "2026-10-19T13:51:40.518Z"
+  "updatedAt": "2026-10-19T13:51:59.704Z"
 }
