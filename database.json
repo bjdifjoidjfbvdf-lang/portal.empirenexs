@@ -273,7 +273,7 @@
       "username": "hafsa",
       "email": "hafsasiddique9191@gmail.com",
       "password": "hafsa089",
-      "phone": "",
+      "phone": "03036766114",
       "address": "",
       "role": "TEAM_MEMBER",
       "designation": "Channel Operations Manager",
@@ -284,7 +284,8 @@
       "joiningType": "PERCENTAGE",
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-17",
-      "emailVerified": true
+      "emailVerified": true,
+      "personalGoogleSheetApiKey": ""
     },
     {
       "id": "user-1792329110698",
@@ -2103,5 +2104,5 @@
     }
   ],
   "settings": {},
-  "updatedAt": "2026-10-20T17:03:30.145Z"
+  "updatedAt": "2026-10-20T17:04:58.614Z"
 }
