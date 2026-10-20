@@ -2043,7 +2043,25 @@
       "month": "2026-10"
     }
   ],
-  "otpOrders": [],
+  "otpOrders": [
+    {
+      "id": "1001159649",
+      "userId": "user-1792329257506",
+      "userName": "Muhammad Ahmad",
+      "userEmail": "ahmaddnb00@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Голос Божьей Благодати",
+      "channelUrl": "https://youtube.com/channel/UC4ueroAO15G5-GG7WKvmPVg?si=Hso-LLkOPGkCfjvg",
+      "phoneNumber": "+639950005107",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-20 09:03:10",
+      "expiresAt": 1792487290872
+    }
+  ],
   "proxies": [
     {
       "id": "px-1792474036325",
@@ -2068,5 +2086,5 @@
     }
   ],
   "settings": {},
-  "updatedAt": "2026-10-20T07:49:40.804Z"
+  "updatedAt": "2026-10-20T09:03:11.069Z"
 }
