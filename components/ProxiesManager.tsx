@@ -42,6 +42,7 @@ export const ProxiesManager: React.FC = () => {
     currentUser,
     availableUsers: users,
     proxies,
+    refreshProxies,
     requestProxy,
     renewProxy,
     toggleUserProxyAuthorization,
@@ -53,6 +54,7 @@ export const ProxiesManager: React.FC = () => {
   } = useApp();
 
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [selectedChannel, setSelectedChannel] = useState('');
   const [selectedChannelUrl, setSelectedChannelUrl] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('US');
@@ -193,12 +195,27 @@ export const ProxiesManager: React.FC = () => {
         <div className="flex items-center gap-3">
           {/* Live Balance (visible ONLY to Waqas / Super Admin) */}
           {isPrivilegedOwner && (
-            <div className="px-3.5 py-2 rounded-xl bg-[#161820] border border-[#232732] text-xs flex items-center gap-2">
-              <Coins className="w-4 h-4 text-emerald-400" />
-              <span className="text-slate-400">Dedicated IP Balance:</span>
-              <span className="font-bold text-emerald-300 font-mono">
-                ${(settings.proxyBalance || 24.50).toFixed(2)} USD
-              </span>
+            <div className="flex items-center gap-1.5">
+              <div className="px-3.5 py-2 rounded-xl bg-[#161820] border border-[#232732] text-xs flex items-center gap-2">
+                <Coins className="w-4 h-4 text-emerald-400" />
+                <span className="text-slate-400">Dedicated IP Balance:</span>
+                <span className="font-bold text-emerald-300 font-mono">
+                  ${(settings.proxyBalance || 4.10).toFixed(2)} USD
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={async () => {
+                  setIsSyncing(true);
+                  await refreshProxies();
+                  setIsSyncing(false);
+                }}
+                disabled={isSyncing}
+                className="p-2 rounded-xl bg-[#161820] hover:bg-[#1f232e] border border-[#232732] text-slate-400 hover:text-white transition disabled:opacity-50"
+                title="Sync Live Balance & Active Dedicated IPs"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-[#c4f042]' : ''}`} />
+              </button>
             </div>
           )}
 

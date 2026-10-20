@@ -11,7 +11,55 @@ export async function GET(req: NextRequest) {
     const isWaqas = searchParams.get('isWaqas') === 'true';
 
     const db = await getCloudDatabase();
-    const allProxies = db.proxies || [];
+    let allProxies = db.proxies || [];
+
+    // Auto-sync active proxies from provider if empty or requested
+    const apiKey = (process.env.PROXY6_API_KEY || db.settings?.proxy6ApiKey || '31e70f0958-42f8755ad4-890c13f45a').trim();
+    if (allProxies.length === 0 && apiKey) {
+      try {
+        const res = await fetch(`https://px6.link/api/${apiKey}/getproxy/`, { cache: 'no-store' });
+        const data = await res.json();
+        if (data.status === 'yes' && data.list) {
+          const imported: ProxyRecord[] = [];
+          Object.keys(data.list).forEach((k) => {
+            const item = data.list[k];
+            if (item.active === '1') {
+              imported.push({
+                id: `px-${item.id}`,
+                proxy6Id: String(item.id),
+                userId: 'user-waqas',
+                userName: 'Waqas Gill',
+                userEmail: 'muhammadwaqasmwg@gmail.com',
+                branchId: 'musafirkhana',
+                ip: item.ip,
+                port: parseInt(item.port, 10),
+                user: item.user,
+                pass: item.pass,
+                type: (item.type || 'http').toLowerCase(),
+                country: (item.country || 'US').toUpperCase(),
+                version: 'ipv4',
+                assignedChannelName: 'HQ Reserved',
+                assignedChannelUrl: '',
+                costUsd: 1.50,
+                status: 'ACTIVE',
+                createdAt: item.date ? new Date(item.date).toISOString() : new Date().toISOString(),
+                expiresAt: item.date_end ? new Date(item.date_end).toISOString() : new Date(Date.now() + 30 * 86400000).toISOString(),
+              });
+            }
+          });
+          if (imported.length > 0) {
+            allProxies = imported;
+            db.proxies = imported;
+            if (!db.settings) db.settings = {};
+            db.settings.proxy6ApiKey = apiKey;
+            db.settings.proxyBalance = parseFloat(data.balance || '4.10');
+            await saveCloudDatabase(db);
+          }
+        }
+      } catch (e) {
+        console.warn('Initial proxy sync notice:', e);
+      }
+    }
 
     // If Waqas (CEO), return ALL proxies across all branches & members
     // If regular team member, return ONLY their own purchased proxies

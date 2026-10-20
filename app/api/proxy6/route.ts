@@ -19,7 +19,8 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const apiUrl = `https://proxy6.net/api/${apiKey}/getproxy`;
+    // Official Proxy6 API endpoint: https://px6.link/api/{apiKey}/{method}/?{params}
+    const apiUrl = `https://px6.link/api/${apiKey}/getproxy/`;
     const res = await fetch(apiUrl, { cache: 'no-store' });
     const data = await res.json();
 
@@ -78,9 +79,9 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      // Live buy on proxy6.net
-      // https://proxy6.net/api/{api_key}/buy?count={count}&period={period}&country={country}&version={version}&type={type}
-      const buyUrl = `https://proxy6.net/api/${apiKey}/buy?count=${count}&period=${period}&country=${country.toLowerCase()}&version=${version}&type=${type}`;
+      // Live buy on Proxy6
+      // https://px6.link/api/{api_key}/buy/?count={count}&period={period}&country={country}&version={version}&type={type}
+      const buyUrl = `https://px6.link/api/${apiKey}/buy/?count=${count}&period=${period}&country=${country.toLowerCase()}&version=${version}&type=${type}`;
       const res = await fetch(buyUrl, { cache: 'no-store' });
       const data = await res.json();
 
@@ -123,7 +124,7 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      const prolongUrl = `https://proxy6.net/api/${apiKey}/prolong?period=${period}&ids=${ids}`;
+      const prolongUrl = `https://px6.link/api/${apiKey}/prolong/?period=${period}&ids=${ids}`;
       const res = await fetch(prolongUrl, { cache: 'no-store' });
       const data = await res.json();
 

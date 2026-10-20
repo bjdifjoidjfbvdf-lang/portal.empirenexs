@@ -135,6 +135,7 @@ interface AppContextType {
 
   // Proxies & Dedicated IPs (Proxy6.net)
   proxies: ProxyRecord[];
+  refreshProxies: () => Promise<void>;
   requestProxy: (
     channelName: string,
     channelUrl?: string,
@@ -1073,9 +1074,11 @@ Instructions:
     dailyNumberLimitPerUser: 1,
     dailyNicheLimitPerUser: 2,
     heroSmsApiKey: '5A61231e6A24791589Ae8efeAcfb7A4d',
+    proxy6ApiKey: '31e70f0958-42f8755ad4-890c13f45a',
+    proxyBalance: 4.10,
   });
 
-  // Load saved Hero-SMS key on mount and fetch real balance
+  // Load saved API keys on mount and fetch real balances
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedKey = localStorage.getItem('empirenexs_herosms_key') || '5A61231e6A24791589Ae8efeAcfb7A4d';
@@ -1086,6 +1089,19 @@ Instructions:
           .then((d) => {
             if (d.success && typeof d.balance === 'number') {
               setSettings((prev) => ({ ...prev, smsBalance: d.balance }));
+            }
+          })
+          .catch(() => null);
+      }
+
+      const savedProxyKey = localStorage.getItem('empirenexs_proxy6_key') || '31e70f0958-42f8755ad4-890c13f45a';
+      if (savedProxyKey) {
+        setSettings((prev) => ({ ...prev, proxy6ApiKey: savedProxyKey }));
+        fetch(`/api/proxy6?action=balance&apiKey=${savedProxyKey}`)
+          .then((r) => r.json())
+          .then((d) => {
+            if (d.success && typeof d.balance === 'number') {
+              setSettings((prev) => ({ ...prev, proxyBalance: d.balance }));
             }
           })
           .catch(() => null);
@@ -2096,6 +2112,25 @@ Instructions:
     }
   };
 
+  const refreshProxies = async (): Promise<void> => {
+    try {
+      const isWaqas = currentUser?.role === 'SUPER_ADMIN' || currentUser?.id === 'user-waqas';
+      const res = await fetch(`/api/proxy?userId=${currentUser?.id || ''}&isWaqas=${isWaqas ? 'true' : 'false'}`);
+      const data = await res.json();
+      if (data.success && Array.isArray(data.proxies)) {
+        setProxies(data.proxies);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('empirenexs_proxies_prod', JSON.stringify(data.proxies));
+        }
+      }
+      if (data.settings?.proxyBalance !== undefined) {
+        setSettings((prev) => ({ ...prev, proxyBalance: data.settings.proxyBalance }));
+      }
+    } catch (e) {
+      console.warn('Failed to refresh proxies:', e);
+    }
+  };
+
   const toggleUserProxyAuthorization = async (
     targetUserId: string,
     authorized: boolean
@@ -2987,8 +3022,13 @@ Instructions:
   const updateSettings = (newSettings: Partial<SystemSettings>) => {
     setSettings((prev) => {
       const updated = { ...prev, ...newSettings };
-      if (typeof window !== 'undefined' && newSettings.heroSmsApiKey) {
-        localStorage.setItem('empirenexs_herosms_key', newSettings.heroSmsApiKey);
+      if (typeof window !== 'undefined') {
+        if (newSettings.heroSmsApiKey) {
+          localStorage.setItem('empirenexs_herosms_key', newSettings.heroSmsApiKey);
+        }
+        if (newSettings.proxy6ApiKey) {
+          localStorage.setItem('empirenexs_proxy6_key', newSettings.proxy6ApiKey);
+        }
       }
       return updated;
     });
@@ -3071,6 +3111,7 @@ Instructions:
         getUserTotalOTPCount,
         getChannelExistingNumber,
         proxies,
+        refreshProxies,
         requestProxy,
         renewProxy,
         toggleUserProxyAuthorization,
