@@ -2055,8 +2055,8 @@
       "phoneNumber": "+639972779454",
       "provider": "Hero-SMS",
       "country": "Philippines (+63)",
-      "otpCode": null,
-      "status": "PENDING_OTP",
+      "otpCode": "412623",
+      "status": "COMPLETED",
       "cost": "",
       "createdAt": "2026-10-20 11:08:11",
       "expiresAt": 1792494791783
@@ -2103,5 +2103,5 @@
     }
   ],
   "settings": {},
-  "updatedAt": "2026-10-20T11:08:12.274Z"
+  "updatedAt": "2026-10-20T11:08:54.012Z"
 }
