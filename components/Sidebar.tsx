@@ -93,17 +93,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
     },
   ];
 
+  const isPrivilegedOwner = currentUser?.role === 'SUPER_ADMIN' || currentUser?.id === 'user-waqas';
+
   const settingsSection: NavItem[] = [
     {
       id: 'profile',
       label: 'Profile Settings',
       icon: User,
     },
-    {
-      id: 'settings',
-      label: 'Sheets & APIs',
-      icon: Settings,
-    },
+    ...(isPrivilegedOwner
+      ? [
+          {
+            id: 'settings',
+            label: 'Sheets & APIs',
+            icon: Settings,
+          },
+        ]
+      : []),
   ];
 
   const renderNavGroup = (title: string, items: NavItem[]) => (

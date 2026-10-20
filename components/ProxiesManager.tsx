@@ -182,7 +182,7 @@ export const ProxiesManager: React.FC = () => {
               Proxies &amp; Dedicated IPs Vault
             </h1>
             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#c4f042]/15 text-[#c4f042] border border-[#c4f042]/30">
-              Proxy6.net API
+              Dedicated IPv4
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-1">
@@ -191,11 +191,11 @@ export const ProxiesManager: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Live Proxy6 Balance (visible ONLY to Waqas / Super Admin) */}
+          {/* Live Balance (visible ONLY to Waqas / Super Admin) */}
           {isPrivilegedOwner && (
             <div className="px-3.5 py-2 rounded-xl bg-[#161820] border border-[#232732] text-xs flex items-center gap-2">
               <Coins className="w-4 h-4 text-emerald-400" />
-              <span className="text-slate-400">Proxy6 Balance:</span>
+              <span className="text-slate-400">Dedicated IP Balance:</span>
               <span className="font-bold text-emerald-300 font-mono">
                 ${(settings.proxyBalance || 24.50).toFixed(2)} USD
               </span>
@@ -243,7 +243,7 @@ export const ProxiesManager: React.FC = () => {
                 Proxy Purchase Authorization Required
               </h2>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Aapka account abhi proxies purchase karne ke liye authorized nahi hai. Proxy6.net se proxy purchase karne ke liye Founder &amp; CEO <strong>Waqas Gill</strong> ki authorization zaroori hai.
+                Aapka account abhi dedicated proxies purchase karne ke liye authorized nahi hai. Dedicated IP purchase karne ke liye Founder &amp; CEO <strong>Waqas Gill</strong> ki authorization zaroori hai.
               </p>
               <p className="text-xs text-slate-400">
                 Baraye meherbani authorization ke liye Waqas Gill se official WhatsApp par rabta karein:
@@ -315,13 +315,13 @@ export const ProxiesManager: React.FC = () => {
         {/* Connected Provider */}
         <div className="glass-panel p-4 rounded-xl">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400">Proxy Provider</span>
+            <span className="text-xs font-semibold text-slate-400">Network Route</span>
             <div className="p-2 rounded-lg bg-purple-500/10 text-purple-400">
               <Shield className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-lg font-bold text-white">Proxy6.net</span>
+            <span className="text-lg font-bold text-white">Private Datacenter</span>
             <span className="text-xs text-emerald-400 font-semibold">• Active</span>
           </div>
           <p className="text-[11px] text-slate-400 mt-1">High-Speed Static IPv4 Route</p>
@@ -688,7 +688,7 @@ export const ProxiesManager: React.FC = () => {
                         <button
                           onClick={() => handleRenew(proxy.id)}
                           className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 transition"
-                          title="Renew Proxy on Proxy6 (+30 Days)"
+                          title="Renew Dedicated IP (+30 Days)"
                         >
                           Renew (+30d)
                         </button>

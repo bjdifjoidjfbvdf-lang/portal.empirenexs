@@ -12,10 +12,13 @@ import {
   RefreshCw,
   Sparkles,
   Globe,
+  Lock,
 } from 'lucide-react';
 
 export const SettingsView: React.FC = () => {
-  const { settings, updateSettings, triggerGoogleSheetSync, isSyncingSheets } = useApp();
+  const { settings, updateSettings, triggerGoogleSheetSync, isSyncingSheets, currentUser } = useApp();
+
+  const isPrivileged = currentUser?.role === 'SUPER_ADMIN' || currentUser?.id === 'user-waqas';
 
   const [channelsUrl, setChannelsUrl] = useState(settings.googleSheetChannelsUrl);
   const [nichesUrl, setNichesUrl] = useState(settings.googleSheetNichesUrl);
@@ -25,6 +28,18 @@ export const SettingsView: React.FC = () => {
   const [testingProxy6, setTestingProxy6] = useState(false);
   const [proxy6Feedback, setProxy6Feedback] = useState<string | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  if (!isPrivileged) {
+    return (
+      <div className="p-8 text-center glass-panel rounded-2xl max-w-lg mx-auto my-12 space-y-3">
+        <Lock className="w-8 h-8 text-amber-400 mx-auto" />
+        <h2 className="text-lg font-bold text-white">Access Restricted</h2>
+        <p className="text-xs text-slate-400">
+          API configurations and system settings are strictly reserved for Founder &amp; CEO Waqas Gill.
+        </p>
+      </div>
+    );
+  }
 
   const handleTestProxy6 = async () => {
     setTestingProxy6(true);
@@ -36,10 +51,10 @@ export const SettingsView: React.FC = () => {
       const res = await fetch(`/api/proxy6?action=balance&apiKey=${encodeURIComponent(proxy6ApiKey.trim())}`);
       const data = await res.json();
       if (data.status === 'yes' || data.balance !== undefined) {
-        setProxy6Feedback(`Connected successfully! Current Proxy6 Balance: $${Number(data.balance || 0).toFixed(2)} USD`);
+        setProxy6Feedback(`Connected successfully! Current Dedicated IP Balance: $${Number(data.balance || 0).toFixed(2)} USD`);
         updateSettings({ proxyBalance: Number(data.balance || 0) });
       } else {
-        setProxy6Feedback(`Proxy6 Notice: ${data.error || 'Failed to connect. Check API key.'}`);
+        setProxy6Feedback(`Notice: ${data.error || 'Failed to connect. Check API key.'}`);
       }
     } catch (err: any) {
       setProxy6Feedback(`Connection failed: ${err.message}`);
@@ -193,12 +208,12 @@ export const SettingsView: React.FC = () => {
           </div>
         </div>
 
-        {/* Proxy6.net API Configuration */}
+        {/* Dedicated Proxy API Configuration */}
         <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Globe className="w-4 h-4 text-cyan-400" />
-              <h2 className="text-sm font-bold text-white">Proxy6.net Integration (Dedicated Proxies &amp; IPs)</h2>
+              <h2 className="text-sm font-bold text-white">Dedicated Proxy Provider API (Private Datacenter Network)</h2>
             </div>
             <button
               type="button"
@@ -211,7 +226,7 @@ export const SettingsView: React.FC = () => {
             </button>
           </div>
           <p className="text-slate-400 text-xs">
-            Enter your Proxy6.net API Key to enable automated provisioning of dedicated datacenter IPv4 proxies for team YouTube channels:
+            Enter your Private Datacenter Proxy Provider API Key to enable automated provisioning of dedicated IPv4 proxies for team YouTube channels:
           </p>
           <div>
             <input
@@ -222,7 +237,7 @@ export const SettingsView: React.FC = () => {
               className="w-full px-3 py-2.5 bg-slate-950 border border-slate-700/80 rounded-lg text-white font-mono text-xs focus:outline-none focus:border-cyan-500"
             />
             <p className="text-[10px] text-slate-400 mt-1">
-              API Documentation: <code>https://proxy6.net/en/developers</code> • Dedicated IPv4 proxies with HTTP/SOCKS5 authentication.
+              Automated 30-day dedicated IPv4 proxies with HTTP/SOCKS5 authentication. Zero provider branding visible to employees.
             </p>
           </div>
 

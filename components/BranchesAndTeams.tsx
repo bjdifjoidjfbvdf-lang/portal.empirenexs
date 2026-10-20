@@ -660,12 +660,12 @@ export const BranchesAndTeams: React.FC = () => {
                   )}
                 </div>
 
-                {/* Proxy6 Authorization Toggle (CEO only) or Member Status */}
+                {/* Proxy Authorization Toggle (CEO only) or Member Status */}
                 {isWaqasCeo ? (
                   <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
                     <span className="flex items-center gap-1.5 text-slate-400 font-medium text-[11px]">
                       <Globe className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Proxy Purchases:</span>
+                      <span>Dedicated IP Purchases:</span>
                     </span>
                     <button
                       type="button"
@@ -679,7 +679,7 @@ export const BranchesAndTeams: React.FC = () => {
                           ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 hover:bg-cyan-500/30'
                           : 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200 hover:bg-slate-800'
                       }`}
-                      title={user.canBuyProxies ? 'Click to revoke Proxy6 buying authorization' : 'Click to authorize Proxy6 buying access (1/day limit)'}
+                      title={user.canBuyProxies ? 'Click to revoke Dedicated IP authorization' : 'Click to authorize Dedicated IP access (1/day limit)'}
                     >
                       <ShieldCheck className="w-3 h-3" />
                       <span>{user.canBuyProxies ? '✓ Authorized' : '+ Authorize'}</span>
@@ -689,7 +689,7 @@ export const BranchesAndTeams: React.FC = () => {
                   <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
                     <span className="flex items-center gap-1.5 text-cyan-400 font-semibold text-[10px]">
                       <Globe className="w-3.5 h-3.5" />
-                      <span>Proxy6: Authorized (1/day)</span>
+                      <span>Dedicated IP: Authorized (1/day)</span>
                     </span>
                     <span className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-mono">
                       Dedicated IPs
@@ -877,7 +877,7 @@ export const BranchesAndTeams: React.FC = () => {
                 />
                 <span className="flex items-center gap-1.5 text-xs text-white">
                   <Globe className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Authorize Proxy Purchases (Proxy6.net - 1/day)</span>
+                  <span>Authorize Dedicated Proxy Purchases (1/day)</span>
                 </span>
               </label>
 

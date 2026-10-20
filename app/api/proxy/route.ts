@@ -82,13 +82,13 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Call Proxy6 API handler
+      // Call Proxy API handler
       const proxy6Res = await fetch(`${req.nextUrl.origin}/api/proxy6`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'buy',
-          apiKey: apiKey || db.settings?.proxy6ApiKey,
+          apiKey: apiKey || db.settings?.proxy6ApiKey || process.env.PROXY6_API_KEY,
           country,
           type,
           count: 1,
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
       if (!proxy6Data.success) {
         return NextResponse.json({
           success: false,
-          message: proxy6Data.message || 'Proxy purchase failed on Proxy6.',
+          message: proxy6Data.message || 'Dedicated proxy purchase failed. Please contact administrator.',
         }, { status: 400 });
       }
 
@@ -175,7 +175,7 @@ export async function POST(req: NextRequest) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'prolong',
-          apiKey: apiKey || db.settings?.proxy6ApiKey,
+          apiKey: apiKey || db.settings?.proxy6ApiKey || process.env.PROXY6_API_KEY,
           ids: targetProxy.proxy6Id || targetProxy.id,
           period: 30,
         }),
@@ -185,7 +185,7 @@ export async function POST(req: NextRequest) {
       if (!prolongData.success) {
         return NextResponse.json({
           success: false,
-          message: prolongData.message || 'Renewal failed on Proxy6.',
+          message: prolongData.message || 'Renewal failed. Please contact administrator.',
         }, { status: 400 });
       }
 

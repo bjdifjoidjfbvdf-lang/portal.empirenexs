@@ -14,12 +14,11 @@ export async function GET(req: NextRequest) {
       simulated: true,
       balance: 24.50,
       currency: 'USD',
-      message: 'Proxy6 API Key not configured in Settings. Running in test preview mode.',
+      message: 'Dedicated proxy API Key not configured. Running in preview mode.',
     });
   }
 
   try {
-    // Proxy6 official API endpoint: https://proxy6.net/api/{apiKey}/{action}
     const apiUrl = `https://proxy6.net/api/${apiKey}/getproxy`;
     const res = await fetch(apiUrl, { cache: 'no-store' });
     const data = await res.json();
@@ -37,13 +36,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       success: false,
       error: data.error_id || 'UNKNOWN_ERROR',
-      message: data.error || 'Failed to authenticate with Proxy6.net API',
+      message: data.error || 'Failed to authenticate with proxy provider API',
     });
   } catch (err: any) {
     return NextResponse.json({
       success: false,
       error: err.message,
-      message: 'Network error connecting to proxy6.net',
+      message: 'Network error connecting to proxy service',
     }, { status: 500 });
   }
 }
@@ -109,7 +108,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: false,
         error: data.error_id,
-        message: data.error || 'Proxy6 purchase declined. Please check your Proxy6 account balance.',
+        message: data.error || 'Proxy purchase declined. Please check account balance or contact CEO.',
       }, { status: 400 });
     }
 
@@ -139,7 +138,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: false,
         error: data.error_id,
-        message: data.error || 'Failed to prolong proxy on Proxy6.',
+        message: data.error || 'Failed to prolong proxy.',
       }, { status: 400 });
     }
 
