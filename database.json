@@ -1866,6 +1866,32 @@
       "timestamp": "08:39 PM",
       "createdAt": "2026-10-19T15:39:03.395Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792474295989",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "user",
+      "text": "Kitne channel sell huay? (Monthly Sales)",
+      "timestamp": "10:31 AM",
+      "createdAt": "2026-10-20T05:31:35.986Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-calc-ceo-1792474295989",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "userRole": "SUPER_ADMIN",
+      "branchId": "all",
+      "sender": "assistant",
+      "text": "📊 **CEO Executive Operations & Sales Summary (All-to-All):**\n\n**🌐 Global Network Totals:**\n- **Total Channels in Vault:** 14\n- **Currently Monetized Running:** 1\n- **Active Fleet:** 12\n- **Sold Channels:** 1\n- **Issues / Demonetized:** 0\n- **Total Revenue (PKR):** Rs. 24,000\n\n**🏢 Branch-by-Branch Breakdown:**\n- **Musafirkhana (HQ):** 1 Monetized | 1 Sold | Rev: Rs. 24,000\n- **Bahawalpur (Saim Chaudhry):** 0 Monetized | 0 Sold | Rev: Rs. 0\n- **Rahim Yar Khan (Zainab Athar):** 0 Monetized | 0 Sold | Rev: Rs. 0\n\n📈 *CEO Graphical View:* Aap **\"Branches & Teams\"** page par naya **'📊 Branches Graphical Comparison'** tab khol kar visual comparative bars, revenue distributions aur personal directives notes bhi dekh saktay hain!",
+      "timestamp": "10:31 AM",
+      "createdAt": "2026-10-20T05:31:35.986Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [],
@@ -1893,5 +1919,5 @@
     }
   ],
   "settings": {},
-  "updatedAt": "2026-10-20T05:27:16.325Z"
+  "updatedAt": "2026-10-20T05:31:37.204Z"
 }
