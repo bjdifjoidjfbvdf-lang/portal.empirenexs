@@ -380,6 +380,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-19",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792476518162",
+      "name": "Virtual Work",
+      "username": "chaudharytulaib",
+      "email": "vwork9838@gmail.com",
+      "password": "112233445566",
+      "phone": "03056363560",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "musafirkhana",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-20",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -1971,5 +1990,5 @@
     }
   ],
   "settings": {},
-  "updatedAt": "2026-10-20T05:32:46.751Z"
+  "updatedAt": "2026-10-20T06:08:38.162Z"
 }
