@@ -1892,6 +1892,32 @@
       "timestamp": "10:31 AM",
       "createdAt": "2026-10-20T05:31:35.986Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792474337763",
+      "userId": "user-1792214981688",
+      "userName": "Vikzai",
+      "userEmail": "softzune5@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Kitne channel sell huay? (Monthly Sales)",
+      "timestamp": "10:32 AM",
+      "createdAt": "2026-10-20T05:32:17.749Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-calc-restricted-1792474337763",
+      "userId": "user-1792214981688",
+      "userName": "Vikzai",
+      "userEmail": "softzune5@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "Mohtaram **Vikzai**, company ke monthly sales records, channel monetization totals aur financial revenue calculations confidential hain aur yeh sirf Executive Management (Waqas Gill & Branch Managers) ke liye hain.\n\nAap baraye meherbani apne assigned channels aur daily tasks par focus karein. Agar aapko apne kisi specific channel ke link ya verification number (OTP) mein madad chahiye to bila-jhijhak batayein!",
+      "timestamp": "10:32 AM",
+      "createdAt": "2026-10-20T05:32:17.749Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [],
@@ -1919,5 +1945,5 @@
     }
   ],
   "settings": {},
-  "updatedAt": "2026-10-20T05:31:37.204Z"
+  "updatedAt": "2026-10-20T05:32:18.975Z"
 }
