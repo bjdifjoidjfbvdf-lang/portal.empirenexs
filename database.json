@@ -2045,6 +2045,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1001599196",
+      "userId": "user-1792143539742",
+      "userName": "Atif M Altaf",
+      "userEmail": "atifmaltaf2004@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Круг Вечной Мудрости",
+      "channelUrl": "https://www.youtube.com/channel/UCx3rk30eX_yPRrd8Cj9dOzA",
+      "phoneNumber": "+639972779454",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-20 11:08:11",
+      "expiresAt": 1792494791783
+    },
+    {
       "id": "1001159649",
       "userId": "user-1792329257506",
       "userName": "Muhammad Ahmad",
@@ -2086,5 +2103,5 @@
     }
   ],
   "settings": {},
-  "updatedAt": "2026-10-20T09:08:44.781Z"
+  "updatedAt": "2026-10-20T11:08:12.274Z"
 }
