@@ -3538,6 +3538,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1005940161",
+      "userId": "user-1792570413971",
+      "userName": "anas",
+      "userEmail": "cashcowcashcow09@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Тайна Небес",
+      "channelUrl": "https://www.youtube.com/@%D0%A2%D0%B0%D0%B9%D0%BD%D0%B0%D0%9D%D0%B5%D0%B1%D0%B5%D1%81-%D1%844%D0%B9",
+      "phoneNumber": "+639972781699",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-21 08:41:42",
+      "expiresAt": 1792572402454
+    },
+    {
       "id": "1005924078",
       "userId": "user-1792570334661",
       "userName": "Muhammad MOusab",
@@ -3675,5 +3692,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T08:38:27.705Z"
+  "updatedAt": "2026-10-21T08:41:43.004Z"
 }
