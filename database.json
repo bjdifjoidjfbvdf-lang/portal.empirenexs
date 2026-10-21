@@ -231,26 +231,6 @@
       "emailVerified": true
     },
     {
-      "id": "user-1792222603334",
-      "name": "Hafsa Siddique",
-      "username": "hafsan",
-      "email": "hafsasiddique890@gmail.com",
-      "password": "hafsa@089",
-      "phone": "03036766114",
-      "address": "",
-      "role": "TEAM_MEMBER",
-      "designation": "Channel Operations Manager",
-      "branchId": "musafirkhana",
-      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
-      "canAccessAllBranches": false,
-      "status": "ACTIVE",
-      "joiningType": "PERCENTAGE",
-      "personalGoogleSheetUrl": "",
-      "joinedAt": "2026-10-17",
-      "emailVerified": true,
-      "canBuyProxies": false
-    },
-    {
       "id": "user-1792242533886",
       "name": "Faizan Zubair",
       "username": "faizan",
@@ -2151,5 +2131,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T02:06:48.688Z"
+  "updatedAt": "2026-10-21T02:06:52.991Z"
 }
