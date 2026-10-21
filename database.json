@@ -247,7 +247,8 @@
       "joiningType": "PERCENTAGE",
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-17",
-      "emailVerified": true
+      "emailVerified": true,
+      "canBuyProxies": true
     },
     {
       "id": "user-1792242533886",
@@ -2150,5 +2151,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T01:49:51.090Z"
+  "updatedAt": "2026-10-21T01:50:14.782Z"
 }
