@@ -437,10 +437,78 @@
       "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/1QqzApcw1rkI_BdHKUXdW3A7MhlUi0_6fm5DWZd4bswM/edit?gid=0#gid=0",
       "joinedAt": "2026-10-21",
       "emailVerified": true,
-      "personalGoogleSheetWebhookUrl": ""
+      "personalGoogleSheetWebhookUrl": "",
+      "lastSheetSync": "2026-10-21T08:27:04.856Z",
+      "syncedChannelsCount": 3
     }
   ],
   "channels": [
+    {
+      "id": "ch-user-1792570413971-1792571224856-0",
+      "nameAndLink": "Послания Свыше (Послания Свыше)",
+      "channelName": "Послания Свыше",
+      "channelUrl": "Послания Свыше",
+      "status": "Active",
+      "email": "automationyoutube875@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from anas's Google Sheet",
+      "managedBy": "anas",
+      "managerMail": "cashcowcashcow09@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792570413971",
+      "updatedAt": "2026-10-21T08:27:04.856Z"
+    },
+    {
+      "id": "ch-user-1792570413971-1792571224856-1",
+      "nameAndLink": "Fresh (No Link)",
+      "channelName": "Fresh",
+      "channelUrl": "https://youtube.com",
+      "status": "Active",
+      "email": "harryjames4043@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from anas's Google Sheet",
+      "managedBy": "anas",
+      "managerMail": "cashcowcashcow09@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792570413971",
+      "updatedAt": "2026-10-21T08:27:04.856Z"
+    },
+    {
+      "id": "ch-user-1792570413971-1792571224856-2",
+      "nameAndLink": "Fresh (No Link)",
+      "channelName": "Fresh",
+      "channelUrl": "https://youtube.com",
+      "status": "Active",
+      "email": "danielsams314@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from anas's Google Sheet",
+      "managedBy": "anas",
+      "managerMail": "cashcowcashcow09@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792570413971",
+      "updatedAt": "2026-10-21T08:27:04.856Z"
+    },
     {
       "id": "ch-user-1792570334661-1792571185932-0",
       "nameAndLink": "Рождённый во свете (Рождённый во свете)",
@@ -3590,5 +3658,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T08:27:02.293Z"
+  "updatedAt": "2026-10-21T08:27:04.856Z"
 }
