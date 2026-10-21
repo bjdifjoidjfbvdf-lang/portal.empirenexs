@@ -264,7 +264,9 @@
       "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/1gkyZXPuNefo6CqojFCdiwWChJO_NHzd1_FYJAlBlDIg/edit?usp=sharing",
       "joinedAt": "2026-10-17",
       "emailVerified": true,
-      "personalGoogleSheetWebhookUrl": ""
+      "personalGoogleSheetWebhookUrl": "",
+      "lastSheetSync": "2026-10-21T11:20:15.639Z",
+      "syncedChannelsCount": 4
     },
     {
       "id": "user-1792246485379",
@@ -448,6 +450,94 @@
     }
   ],
   "channels": [
+    {
+      "id": "ch-user-1792242533886-1792581615639-0",
+      "nameAndLink": "Divine Insight (Divine Insight)",
+      "channelName": "Divine Insight",
+      "channelUrl": "Divine Insight",
+      "status": "Active",
+      "email": "doraemon75534@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Faizan Zubair's Google Sheet",
+      "managedBy": "Faizan Zubair",
+      "managerMail": "faizanzubair7860@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792242533886",
+      "updatedAt": "2026-10-21T11:20:15.639Z"
+    },
+    {
+      "id": "ch-user-1792242533886-1792581615639-1",
+      "nameAndLink": "Ангельское Послание (Ангельское Послание)",
+      "channelName": "Ангельское Послание",
+      "channelUrl": "Ангельское Послание",
+      "status": "Active",
+      "email": "jamezbond1727@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Faizan Zubair's Google Sheet",
+      "managedBy": "Faizan Zubair",
+      "managerMail": "faizanzubair7860@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792242533886",
+      "updatedAt": "2026-10-21T11:20:15.639Z"
+    },
+    {
+      "id": "ch-user-1792242533886-1792581615639-2",
+      "nameAndLink": "The Grace Path (The Grace Path)",
+      "channelName": "The Grace Path",
+      "channelUrl": "The Grace Path",
+      "status": "Active",
+      "email": "jacksparrow17277@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Faizan Zubair's Google Sheet",
+      "managedBy": "Faizan Zubair",
+      "managerMail": "faizanzubair7860@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792242533886",
+      "updatedAt": "2026-10-21T11:20:15.639Z"
+    },
+    {
+      "id": "ch-user-1792242533886-1792581615639-3",
+      "nameAndLink": "Голос Небес (Голос Небес)",
+      "channelName": "Голос Небес",
+      "channelUrl": "Голос Небес",
+      "status": "Active",
+      "email": "ja0520879@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Faizan Zubair's Google Sheet",
+      "managedBy": "Faizan Zubair",
+      "managerMail": "faizanzubair7860@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792242533886",
+      "updatedAt": "2026-10-21T11:20:15.639Z"
+    },
     {
       "id": "ch-user-1792145642574-1792573001254-0",
       "nameAndLink": "new mail (new mail)",
@@ -3939,5 +4029,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T11:20:13.024Z"
+  "updatedAt": "2026-10-21T11:20:15.639Z"
 }
