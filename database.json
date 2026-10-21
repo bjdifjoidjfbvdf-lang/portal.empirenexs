@@ -3538,6 +3538,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1005924078",
+      "userId": "user-1792570334661",
+      "userName": "Muhammad MOusab",
+      "userEmail": "zyraaiservices@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Мудрость Тишины",
+      "channelUrl": "https://www.youtube.com/@%D0%9C%D1%83%D0%B4%D1%80%D0%BE%D1%81%D1%82%D1%8C%D0%A2%D0%B8%D1%88%D0%B8%D0%BD%D1%8B-%D1%821%D1%80",
+      "phoneNumber": "+639972781685",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-21 08:44:02",
+      "expiresAt": 1792572542328
+    },
+    {
       "id": "1005754281",
       "userId": "user-1792148780308",
       "userName": "Abdul Ahad",
@@ -3658,5 +3675,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T08:27:04.856Z"
+  "updatedAt": "2026-10-21T08:38:02.264Z"
 }
