@@ -466,10 +466,78 @@
       "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/1G9EgCbI0hG6Reu_SFvHIyCKakvzJIkkVBk4_ubt9VE8/edit?usp=sharing",
       "joinedAt": "2026-10-21",
       "emailVerified": true,
-      "personalGoogleSheetWebhookUrl": ""
+      "personalGoogleSheetWebhookUrl": "",
+      "lastSheetSync": "2026-10-21T12:12:34.259Z",
+      "syncedChannelsCount": 3
     }
   ],
   "channels": [
+    {
+      "id": "ch-user-1792584612677-1792584754258-0",
+      "nameAndLink": "Working (No Link)",
+      "channelName": "Working",
+      "channelUrl": "https://youtube.com",
+      "status": "Active",
+      "email": "saimdollar69@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Madih Ahmad's Google Sheet",
+      "managedBy": "Madih Ahmad",
+      "managerMail": "madihahmad27@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792584612677",
+      "updatedAt": "2026-10-21T12:12:34.258Z"
+    },
+    {
+      "id": "ch-user-1792584612677-1792584754258-1",
+      "nameAndLink": "Working (No Link)",
+      "channelName": "Working",
+      "channelUrl": "https://youtube.com",
+      "status": "Active",
+      "email": "jm5592904@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Madih Ahmad's Google Sheet",
+      "managedBy": "Madih Ahmad",
+      "managerMail": "madihahmad27@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792584612677",
+      "updatedAt": "2026-10-21T12:12:34.258Z"
+    },
+    {
+      "id": "ch-user-1792584612677-1792584754258-2",
+      "nameAndLink": "Working (No Link)",
+      "channelName": "Working",
+      "channelUrl": "https://youtube.com",
+      "status": "Active",
+      "email": "zapma2474@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Madih Ahmad's Google Sheet",
+      "managedBy": "Madih Ahmad",
+      "managerMail": "madihahmad27@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792584612677",
+      "updatedAt": "2026-10-21T12:12:34.258Z"
+    },
     {
       "id": "ch-user-1792242533886-1792581615639-0",
       "nameAndLink": "Divine Insight (Divine Insight)",
@@ -4066,5 +4134,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T12:12:31.484Z"
+  "updatedAt": "2026-10-21T12:12:34.259Z"
 }
