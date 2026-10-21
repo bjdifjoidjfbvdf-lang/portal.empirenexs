@@ -447,6 +447,25 @@
       "personalGoogleSheetWebhookUrl": "",
       "lastSheetSync": "2026-10-21T08:27:04.856Z",
       "syncedChannelsCount": 3
+    },
+    {
+      "id": "user-1792584612677",
+      "name": "Madih Ahmad",
+      "username": "madih",
+      "email": "madihahmad27@gmail.com",
+      "password": "madih2809",
+      "phone": "03276320649",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Channel Operations Manager",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-21",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -4046,5 +4065,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T11:50:48.418Z"
+  "updatedAt": "2026-10-21T12:10:12.677Z"
 }
