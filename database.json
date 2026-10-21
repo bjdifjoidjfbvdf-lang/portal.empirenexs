@@ -415,7 +415,9 @@
       "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/15XtcLhuEst5I2JB7OTj6AVfFzAe0taqxbswu--28edQ/edit?usp=sharing",
       "joinedAt": "2026-10-21",
       "emailVerified": true,
-      "personalGoogleSheetWebhookUrl": ""
+      "personalGoogleSheetWebhookUrl": "",
+      "lastSheetSync": "2026-10-21T08:26:25.932Z",
+      "syncedChannelsCount": 2
     },
     {
       "id": "user-1792570413971",
@@ -438,6 +440,50 @@
     }
   ],
   "channels": [
+    {
+      "id": "ch-user-1792570334661-1792571185932-0",
+      "nameAndLink": "Рождённый во свете (Рождённый во свете)",
+      "channelName": "Рождённый во свете",
+      "channelUrl": "Рождённый во свете",
+      "status": "Active",
+      "email": "deepnetwork01@gmail.om",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Muhammad MOusab's Google Sheet",
+      "managedBy": "Muhammad MOusab",
+      "managerMail": "zyraaiservices@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792570334661",
+      "updatedAt": "2026-10-21T08:26:25.932Z"
+    },
+    {
+      "id": "ch-user-1792570334661-1792571185932-1",
+      "nameAndLink": "Мудрость Тишины (Мудрость Тишины)",
+      "channelName": "Мудрость Тишины",
+      "channelUrl": "Мудрость Тишины",
+      "status": "Active",
+      "email": "deepnetwork02@gmail.om",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Muhammad MOusab's Google Sheet",
+      "managedBy": "Muhammad MOusab",
+      "managerMail": "zyraaiservices@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "bahawalpur",
+      "userId": "user-1792570334661",
+      "updatedAt": "2026-10-21T08:26:25.932Z"
+    },
     {
       "id": "ch-user-1792148780308-1792571103520-0",
       "nameAndLink": "Working (No Link)",
@@ -3543,5 +3589,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T08:26:23.680Z"
+  "updatedAt": "2026-10-21T08:26:25.932Z"
 }
