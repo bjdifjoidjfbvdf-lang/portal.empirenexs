@@ -398,7 +398,7 @@
       "nameAndLink": "Голос Света (Голос Света)",
       "channelName": "Голос Света",
       "channelUrl": "Голос Света",
-      "status": "Monetized",
+      "status": "Demonetized",
       "email": "atifmaltafmails02@gmail.com",
       "password": "",
       "twoFactor": "",
@@ -413,7 +413,7 @@
       "owner": "EmpireNexs",
       "branchId": "bahawalpur",
       "userId": "user-1792143539742",
-      "updatedAt": "2026-10-21T06:59:19.577Z"
+      "updatedAt": "2026-10-21T07:02:04.104Z"
     },
     {
       "id": "ch-user-1792143539742-1792565959577-1",
@@ -3591,5 +3591,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T06:59:19.577Z"
+  "updatedAt": "2026-10-21T07:02:04.104Z"
 }
