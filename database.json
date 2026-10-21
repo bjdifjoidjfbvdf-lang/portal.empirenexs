@@ -434,9 +434,10 @@
       "canAccessAllBranches": false,
       "status": "ACTIVE",
       "joiningType": "PERCENTAGE",
-      "personalGoogleSheetUrl": "",
+      "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/1QqzApcw1rkI_BdHKUXdW3A7MhlUi0_6fm5DWZd4bswM/edit?gid=0#gid=0",
       "joinedAt": "2026-10-21",
-      "emailVerified": true
+      "emailVerified": true,
+      "personalGoogleSheetWebhookUrl": ""
     }
   ],
   "channels": [
@@ -3589,5 +3590,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T08:26:25.932Z"
+  "updatedAt": "2026-10-21T08:27:02.293Z"
 }
