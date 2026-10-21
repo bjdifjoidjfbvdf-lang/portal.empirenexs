@@ -3875,6 +3875,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1006593738",
+      "userId": "user-1792147883748",
+      "userName": "Mehran Malik",
+      "userEmail": "mehran.myyt1@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Избранный Светом",
+      "channelUrl": "https://www.youtube.com/channel/UC74FKqNrgbtzRrfBuNQ9wBQ",
+      "phoneNumber": "+639950001804",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-21 11:50:47",
+      "expiresAt": 1792583747492
+    },
+    {
       "id": "1005940161",
       "userId": "user-1792570413971",
       "userName": "anas",
@@ -4029,5 +4046,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T11:20:15.639Z"
+  "updatedAt": "2026-10-21T11:50:48.418Z"
 }
