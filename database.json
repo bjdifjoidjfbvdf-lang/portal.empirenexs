@@ -402,8 +402,8 @@
     },
     {
       "id": "user-1792570334661",
-      "name": "Muhammad MOusab",
-      "username": "mousab",
+      "name": "Muhammad Mousab",
+      "username": "itsmousab",
       "email": "zyraaiservices@gmail.com",
       "password": "mousab2302",
       "phone": "03121683837",
@@ -415,12 +415,13 @@
       "canAccessAllBranches": false,
       "status": "ACTIVE",
       "joiningType": "PERCENTAGE",
-      "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/15XtcLhuEst5I2JB7OTj6AVfFzAe0taqxbswu--28edQ/edit?usp=sharing",
+      "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-21",
       "emailVerified": true,
       "personalGoogleSheetWebhookUrl": "",
       "lastSheetSync": "2026-10-21T08:26:25.932Z",
-      "syncedChannelsCount": 2
+      "syncedChannelsCount": 2,
+      "personalGoogleSheetApiKey": ""
     },
     {
       "id": "user-1792570413971",
@@ -3937,5 +3938,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T08:57:20.620Z"
+  "updatedAt": "2026-10-21T08:57:59.557Z"
 }
