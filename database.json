@@ -3488,6 +3488,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1005754281",
+      "userId": "user-1792148780308",
+      "userName": "Abdul Ahad",
+      "userEmail": "aaahadd456@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Голос Небес",
+      "channelUrl": "https://www.youtube.com/channel/UCS68BLZd6Ikqa5KWKEbZCkQ",
+      "phoneNumber": "+639950001512",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-21 07:52:15",
+      "expiresAt": 1792569435834
+    },
+    {
       "id": "1001599196",
       "userId": "user-1792143539742",
       "userName": "Atif M Altaf",
@@ -3591,5 +3608,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T07:02:04.104Z"
+  "updatedAt": "2026-10-21T07:52:16.478Z"
 }
