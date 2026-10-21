@@ -51,7 +51,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { action, apiKey: rawKey, country = 'us', period = 30, count = 1, version = '4', type = 'http', ids } = body;
+    // Strictly enforce version '4' (Proxy6 IPv4 Dedicated - Individual use. In one hand. Suitable for all sites)
+    const { action, apiKey: rawKey, country = 'us', period = 30, count = 1, type = 'http', ids } = body;
+    const version = '4'; // STRICT: Always IPv4 Proxy (Individual use / In one hand)
     const apiKey = (rawKey || process.env.PROXY6_API_KEY || '31e70f0958-42f8755ad4-890c13f45a').trim();
 
     // 1. Buy Proxy on Proxy6

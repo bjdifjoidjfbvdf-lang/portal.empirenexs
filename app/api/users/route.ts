@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
       if (user.status === 'RESTRICTED' || user.status === 'SUSPENDED') {
         return NextResponse.json({
           success: false,
-          message: '🚫 Account Restricted: Aapka access Founder & CEO (Waqas Gill) ki taraf se suspend kar diya gaya hai. Security reasons ki wajah se access blocked hai.',
+          message: '🚫 Account Restricted: Your account access has been suspended by Founder & CEO Waqas Gill for security reasons.',
           restricted: true,
         }, { status: 403 });
       }

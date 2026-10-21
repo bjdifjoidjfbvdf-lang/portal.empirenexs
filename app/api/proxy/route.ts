@@ -196,6 +196,7 @@ export async function POST(req: NextRequest) {
           apiKey: apiKey || db.settings?.proxy6ApiKey || process.env.PROXY6_API_KEY,
           country,
           type,
+          version: '4', // Enforce IPv4 Dedicated (Individual use)
           count: 1,
           period: days,
         }),
@@ -409,7 +410,7 @@ export async function POST(req: NextRequest) {
       if (admin?.role !== 'SUPER_ADMIN' && adminUserId !== 'user-waqas') {
         return NextResponse.json({
           success: false,
-          message: 'Access Denied: Only Founder & CEO Waqas Gill can record payments and manage khata.',
+          message: 'Access Denied: Only Founder & CEO Waqas Gill can record payments and manage the ledger.',
         }, { status: 403 });
       }
 
@@ -440,7 +441,7 @@ export async function POST(req: NextRequest) {
         netChange,
         description: isAdjustment
           ? `Manual Adjustment (${isDebit ? '+ Charge Added' : '- Balance Deducted'}) - $${numAmount.toFixed(2)}`
-          : `Payment Received (Jama Shuda Raqam): $${numAmount.toFixed(2)} [${paymentMethod}]`,
+          : `Payment Received: $${numAmount.toFixed(2)} [${paymentMethod}]`,
         paymentMethod,
         notes,
         recordedBy: 'Waqas Gill (CEO)',
@@ -453,7 +454,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: true,
         transaction: paymentTx,
-        message: `✅ Khata updated for "${targetUser.name}": $${numAmount.toFixed(2)} recorded successfully!`,
+        message: `✅ Billing ledger updated for "${targetUser.name}": $${numAmount.toFixed(2)} recorded successfully!`,
       });
     }
 

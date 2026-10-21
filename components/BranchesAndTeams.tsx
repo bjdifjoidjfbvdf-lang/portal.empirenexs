@@ -490,7 +490,7 @@ export const BranchesAndTeams: React.FC = () => {
                   <button
                     onClick={() => {
                       if (!isWaqasCeo) {
-                        alert('Unauthorized: Sirf Founder & CEO Waqas Gill account decline kar sakty hain.');
+                        alert('Unauthorized: Only Founder & CEO Waqas Gill can decline accounts.');
                         return;
                       }
                       rejectUser(pending.id);
@@ -502,7 +502,7 @@ export const BranchesAndTeams: React.FC = () => {
                   <button
                     onClick={() => {
                       if (!isWaqasCeo) {
-                        alert('Unauthorized: Sirf Founder & CEO Waqas Gill account approve kar sakty hain.');
+                        alert('Unauthorized: Only Founder & CEO Waqas Gill can approve accounts.');
                         return;
                       }
                       approveUser(pending.id);
@@ -716,7 +716,7 @@ export const BranchesAndTeams: React.FC = () => {
                     ) : (
                       <button
                         onClick={() => {
-                          if (confirm(`Aap ${user.name} ki access RESTRICT karna chahte hain?\n\nInka login foran block ho jayega aur yeh portal ya sheets access nahi kar sakein ge.`)) {
+                          if (confirm(`Are you sure you want to RESTRICT access for ${user.name}?\n\nTheir login session will be immediately blocked and access to all portal modules will be revoked.`)) {
                             restrictUser(user.id);
                           }
                         }}
@@ -731,7 +731,7 @@ export const BranchesAndTeams: React.FC = () => {
                     {/* Delete Permanently Button */}
                     <button
                       onClick={() => {
-                        if (confirm(`DANGER: Kya aap ${user.name} (@${user.username}) ko permanently DELETE karna chahte hain?\n\nInka account system aur cloud se mukammal remove ho jayega aur access foran terminate ho jayegi.`)) {
+                        if (confirm(`DANGER: Are you sure you want to permanently DELETE ${user.name} (@${user.username})?\n\nTheir account will be completely removed from the system and cloud database, and all access immediately terminated.`)) {
                           const res = deleteUser(user.id);
                           alert(res.message);
                         }

@@ -292,7 +292,7 @@ export const ProxiesManager: React.FC = () => {
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-1">
-            Dedicated static IPv4 datacenter proxies for YouTube channel operations with duration plans, renew extensions, and complete per-user billing ledger (Khata).
+            Dedicated static IPv4 datacenter proxies for YouTube channel operations with duration plans, renew extensions, and complete per-user billing ledger.
           </p>
         </div>
 
@@ -364,16 +364,16 @@ export const ProxiesManager: React.FC = () => {
                 Proxy Purchase Authorization Required
               </h2>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Aapka account abhi dedicated proxies purchase karne ke liye authorized nahi hai. Dedicated IP purchase karne ke liye Founder &amp; CEO <strong>Waqas Gill</strong> ki authorization zaroori hai.
+                Your account is currently not authorized to purchase dedicated proxies. Authorization from Founder &amp; CEO <strong>Waqas Gill</strong> is required to purchase dedicated IPs.
               </p>
               <p className="text-xs text-slate-400">
-                Baraye meherbani authorization ke liye Waqas Gill se official WhatsApp par rabta karein:
+                Please contact Waqas Gill on official WhatsApp to request authorization:
               </p>
             </div>
           </div>
           <div className="pt-2 flex items-center gap-3">
             <a
-              href="https://wa.me/923075203713?text=Salam%20Waqas%20bhai,%20mujhe%20portal%20par%20proxy%20purchase%20ki%20authorization%20chahiye."
+              href="https://wa.me/923075203713?text=Hello%20Waqas,%20I%20would%20like%20to%20request%20proxy%20purchase%20authorization%20on%20the%20portal."
               target="_blank"
               rel="noreferrer"
               className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition flex items-center gap-2 shadow-md shadow-emerald-500/20"
@@ -385,20 +385,20 @@ export const ProxiesManager: React.FC = () => {
         </div>
       )}
 
-      {/* USER'S PERSONAL BILLING & KHATA CARD (Visible to regular members) */}
+      {/* USER'S PERSONAL BILLING & LEDGER CARD (Visible to regular members) */}
       {!isPrivilegedOwner && isAuthorized && (
         <div className="rounded-2xl border border-[#232732] bg-[#161820] p-5 shadow-xl">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#c4f042] flex items-center gap-1.5">
                 <Wallet className="w-3.5 h-3.5" />
-                <span>My Account Khata / Balance Ledger</span>
+                <span>My Billing Account &amp; Ledger</span>
               </span>
               <h3 className="text-base font-bold text-white mt-0.5">
                 Billing &amp; Payment Statement for {currentUser?.name}
               </h3>
               <p className="text-xs text-slate-400">
-                Har proxy khareedne ya renew karne par payment aapke khata mein jama hoti hai. Waqas Gill ko raqam ada karne par hisab update ho jata hai.
+                Proxy purchases and renewals are charged directly to your account. Payments submitted to management update your balance automatically.
               </p>
             </div>
 
@@ -408,7 +408,7 @@ export const ProxiesManager: React.FC = () => {
                 className="px-4 py-2 rounded-xl text-xs font-bold bg-[#1e222c] hover:bg-[#282d3b] text-slate-200 border border-[#2f3545] transition flex items-center gap-1.5"
               >
                 <Receipt className="w-4 h-4 text-[#c4f042]" />
-                <span>View Khata Statement</span>
+                <span>View Account Statement</span>
               </button>
             </div>
           </div>
@@ -421,13 +421,13 @@ export const ProxiesManager: React.FC = () => {
             </div>
 
             <div className="bg-[#111317] p-3 rounded-xl border border-[#232732]">
-              <span className="text-[10px] font-semibold text-slate-400 block">Total Kharidari (Charges)</span>
+              <span className="text-[10px] font-semibold text-slate-400 block">Total Charges</span>
               <span className="text-lg font-bold text-white font-mono">${myKhata.totalCharged.toFixed(2)}</span>
               <span className="text-[10px] text-slate-500 block">Purchases &amp; Renewals</span>
             </div>
 
             <div className="bg-[#111317] p-3 rounded-xl border border-[#232732]">
-              <span className="text-[10px] font-semibold text-slate-400 block">Jama Shuda (Paid)</span>
+              <span className="text-[10px] font-semibold text-slate-400 block">Total Paid</span>
               <span className="text-lg font-bold text-emerald-400 font-mono">${myKhata.totalPaid.toFixed(2)}</span>
               <span className="text-[10px] text-emerald-500/70 block">Received by Waqas</span>
             </div>
@@ -440,13 +440,13 @@ export const ProxiesManager: React.FC = () => {
                 : 'bg-emerald-950/20 border-emerald-500/40 text-emerald-300'
             }`}>
               <span className="text-[10px] font-semibold block opacity-80">
-                {myKhata.balanceDue > 0 ? 'Baqaya Raqam (Due)' : myKhata.balanceDue < 0 ? 'Advance Credit' : 'Hisab Clear'}
+                {myKhata.balanceDue > 0 ? 'Outstanding Due' : myKhata.balanceDue < 0 ? 'Advance Credit' : 'Account Settled'}
               </span>
               <span className="text-lg font-black font-mono">
                 ${Math.abs(myKhata.balanceDue).toFixed(2)}
               </span>
               <span className="text-[10px] block opacity-80">
-                {myKhata.balanceDue > 0 ? 'To pay Waqas Gill' : myKhata.balanceDue < 0 ? 'Waqas ke pas jama hai' : 'Sab Barabar'}
+                {myKhata.balanceDue > 0 ? 'Due to Management' : myKhata.balanceDue < 0 ? 'Credit with Management' : 'Fully Settled ($0.00)'}
               </span>
             </div>
           </div>
@@ -477,7 +477,7 @@ export const ProxiesManager: React.FC = () => {
             }`}
           >
             <Wallet className="w-3.5 h-3.5" />
-            <span>Team Proxy Khata &amp; Balance Ledger ({userKhatas.length} Members)</span>
+            <span>Team Billing &amp; Balance Ledger ({userKhatas.length} Members)</span>
             {totalTeamBalanceDue > 0 && (
               <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-amber-400 text-slate-950">
                 ${totalTeamBalanceDue.toFixed(2)} Due
@@ -822,7 +822,7 @@ export const ProxiesManager: React.FC = () => {
       )}
 
       {/* =========================================================================
-          VIEW 2: CEO KHATA & BALANCE LEDGER (Hisab Kitab)
+          VIEW 2: CEO BILLING & BALANCE LEDGER
          ========================================================================= */}
       {isPrivilegedOwner && activeSubTab === 'khata' && (
         <div className="space-y-6">
@@ -844,7 +844,7 @@ export const ProxiesManager: React.FC = () => {
 
             <div className="rounded-2xl border border-[#232732] bg-[#161820] p-5 shadow-xl">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-400">Total Payments Received (Jama)</span>
+                <span className="text-xs font-semibold text-slate-400">Total Payments Received</span>
                 <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
                   <ArrowDownRight className="w-4 h-4" />
                 </div>
@@ -862,7 +862,7 @@ export const ProxiesManager: React.FC = () => {
                 : 'bg-emerald-950/20 border-emerald-500/40 text-emerald-300'
             }`}>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold opacity-80">Outstanding Balance (Baqaya)</span>
+                <span className="text-xs font-semibold opacity-80">Total Outstanding Dues</span>
                 <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400">
                   <Wallet className="w-4 h-4" />
                 </div>
@@ -879,13 +879,13 @@ export const ProxiesManager: React.FC = () => {
             </div>
           </div>
 
-          {/* Members Khata Table */}
+          {/* Members Billing Table */}
           <div className="rounded-2xl border border-[#232732] bg-[#161820] shadow-xl overflow-hidden">
             <div className="p-4 border-b border-[#232732] flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-bold text-white flex items-center gap-2">
                   <Users className="w-4 h-4 text-[#c4f042]" />
-                  <span>Team Members Proxy Khata &amp; Balance Accounts</span>
+                  <span>Team Member Billing Accounts &amp; Ledgers</span>
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Record cash/online payments received from employees, make balance adjustments (+ / -), and audit individual statements.
@@ -901,10 +901,10 @@ export const ProxiesManager: React.FC = () => {
                     <th className="py-3 px-3 font-bold">Branch &amp; Role</th>
                     <th className="py-3 px-3 font-bold">Proxy Access</th>
                     <th className="py-3 px-3 font-bold">Total Proxies</th>
-                    <th className="py-3 px-3 font-bold">Kharidari (Charges)</th>
-                    <th className="py-3 px-3 font-bold">Jama Shuda (Paid)</th>
-                    <th className="py-3 px-3 font-bold">Net Baqaya (Due)</th>
-                    <th className="py-3 px-3 font-bold text-right">Khata Actions</th>
+                    <th className="py-3 px-3 font-bold">Total Charges</th>
+                    <th className="py-3 px-3 font-bold">Total Paid</th>
+                    <th className="py-3 px-3 font-bold">Balance Due</th>
+                    <th className="py-3 px-3 font-bold text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60 font-sans">
@@ -965,17 +965,17 @@ export const ProxiesManager: React.FC = () => {
                           <span className="text-[10px] text-slate-400 ml-1">({khata.activeProxiesCount} active)</span>
                         </td>
 
-                        {/* Kharidari */}
+                        {/* Total Charges */}
                         <td className="py-3 px-3 whitespace-nowrap font-mono text-xs text-white">
                           ${khata.totalCharged.toFixed(2)}
                         </td>
 
-                        {/* Jama Shuda */}
+                        {/* Total Paid */}
                         <td className="py-3 px-3 whitespace-nowrap font-mono text-xs text-emerald-400 font-bold">
                           ${khata.totalPaid.toFixed(2)}
                         </td>
 
-                        {/* Net Baqaya */}
+                        {/* Net Balance Due */}
                         <td className="py-3 px-3 whitespace-nowrap font-mono text-xs">
                           <span
                             className={`px-2.5 py-1 rounded-lg font-black inline-block ${
@@ -987,9 +987,9 @@ export const ProxiesManager: React.FC = () => {
                             }`}
                           >
                             {isDue
-                              ? `Baqaya: $${khata.balanceDue.toFixed(2)}`
+                              ? `Due: $${khata.balanceDue.toFixed(2)}`
                               : isAdvance
-                              ? `Advance: +$${Math.abs(khata.balanceDue).toFixed(2)}`
+                              ? `Credit: +$${Math.abs(khata.balanceDue).toFixed(2)}`
                               : 'Settled ($0.00)'}
                           </span>
                         </td>
@@ -1011,14 +1011,14 @@ export const ProxiesManager: React.FC = () => {
                             className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition"
                             title="Record Payment from Employee"
                           >
-                            + Add Payment / Hisab
+                            + Record Payment
                           </button>
 
                           {/* View Statement Button */}
                           <button
                             onClick={() => setStatementUserId(khata.userId)}
                             className="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
-                            title="View Full Khata Statement"
+                            title="View Account Statement"
                           >
                             Statement →
                           </button>
@@ -1092,7 +1092,7 @@ export const ProxiesManager: React.FC = () => {
               <div>
                 <label className="block font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
                   <span>Select Proxy Duration &amp; Plan:</span>
-                  <span className="text-[10px] text-[#c4f042] font-mono">Billed to your Khata</span>
+                  <span className="text-[10px] text-[#c4f042] font-mono">Billed to your Account</span>
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {PROXY_PERIOD_OPTIONS.map((opt) => {
@@ -1173,7 +1173,7 @@ export const ProxiesManager: React.FC = () => {
                   <span className="text-white font-bold">{selectedPeriod} Days</span>
                 </div>
                 <div className="flex justify-between text-slate-400">
-                  <span>Total Rate (Khata Bill):</span>
+                  <span>Total Price (Account Billing):</span>
                   <span className="text-[#c4f042] font-black text-xs font-mono">
                     ${(PROXY_PERIOD_OPTIONS.find((p) => p.days === selectedPeriod)?.priceUsd || 2.00).toFixed(2)} USD
                   </span>
@@ -1251,7 +1251,7 @@ export const ProxiesManager: React.FC = () => {
               <div>
                 <label className="block font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
                   <span>Choose Extension Period:</span>
-                  <span className="text-[10px] text-[#c4f042] font-mono">Billed to your Khata</span>
+                  <span className="text-[10px] text-[#c4f042] font-mono">Billed to your Account</span>
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {PROXY_PERIOD_OPTIONS.map((opt) => {
@@ -1313,7 +1313,7 @@ export const ProxiesManager: React.FC = () => {
       )}
 
       {/* =========================================================================
-          MODAL 3: CEO RECORD PAYMENT MODAL (Jama Shuda Raqam & Manual Adjustments)
+          MODAL 3: CEO RECORD PAYMENT MODAL (Payments & Manual Adjustments)
          ========================================================================= */}
       {paymentModalUser && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -1324,7 +1324,7 @@ export const ProxiesManager: React.FC = () => {
                   <Wallet className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Record Payment / Khata Adjustment</h3>
+                  <h3 className="text-base font-bold text-white">Record Member Payment / Ledger Adjustment</h3>
                   <p className="text-[11px] text-slate-400">{paymentModalUser.name} ({paymentModalUser.email})</p>
                 </div>
               </div>
@@ -1354,7 +1354,7 @@ export const ProxiesManager: React.FC = () => {
                         : 'bg-slate-950 text-slate-400 border-slate-800'
                     }`}
                   >
-                    Payment Received (Jama)
+                    Payment Received
                   </button>
                   <button
                     type="button"
@@ -1384,7 +1384,7 @@ export const ProxiesManager: React.FC = () => {
                           : 'bg-slate-950 text-slate-400 border-slate-800'
                       }`}
                     >
-                      + Add Charge (Baqaya Barhao)
+                      + Add Charge (Increase Dues)
                     </button>
                     <button
                       type="button"
@@ -1395,7 +1395,7 @@ export const ProxiesManager: React.FC = () => {
                           : 'bg-slate-950 text-slate-400 border-slate-800'
                       }`}
                     >
-                      - Deduct Balance (Raqam Kam Karo)
+                      - Credit Balance (Reduce Dues)
                     </button>
                   </div>
                 </div>
@@ -1465,7 +1465,7 @@ export const ProxiesManager: React.FC = () => {
                   className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-slate-950 font-bold transition shadow-md shadow-emerald-500/20 flex items-center gap-2"
                 >
                   {isRecordingPayment && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
-                  <span>Save Khata Entry</span>
+                  <span>Save Payment Entry</span>
                 </button>
               </div>
             </form>
@@ -1485,7 +1485,7 @@ export const ProxiesManager: React.FC = () => {
                   <Receipt className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Khata Statement &amp; Transaction History</h3>
+                  <h3 className="text-base font-bold text-white">Account Statement &amp; Transaction Ledger</h3>
                   <p className="text-[11px] text-slate-400">{activeStatementUser.name} • {activeStatementUser.branchId.toUpperCase()}</p>
                 </div>
               </div>
@@ -1498,14 +1498,14 @@ export const ProxiesManager: React.FC = () => {
               </button>
             </div>
 
-            {/* Khata Summary Banner */}
+            {/* Account Summary Banner */}
             <div className="grid grid-cols-3 gap-2.5 mb-4">
               <div className="bg-[#111317] p-2.5 rounded-xl border border-[#232732]">
-                <span className="text-[10px] text-slate-400 block">Total Kharidari</span>
+                <span className="text-[10px] text-slate-400 block">Total Charges</span>
                 <span className="text-base font-bold text-white font-mono">${activeStatementKhata.totalCharged.toFixed(2)}</span>
               </div>
               <div className="bg-[#111317] p-2.5 rounded-xl border border-[#232732]">
-                <span className="text-[10px] text-slate-400 block">Jama Shuda (Paid)</span>
+                <span className="text-[10px] text-slate-400 block">Total Paid</span>
                 <span className="text-base font-bold text-emerald-400 font-mono">${activeStatementKhata.totalPaid.toFixed(2)}</span>
               </div>
               <div className={`p-2.5 rounded-xl border font-mono ${
@@ -1514,7 +1514,7 @@ export const ProxiesManager: React.FC = () => {
                   : 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300'
               }`}>
                 <span className="text-[10px] block opacity-80">
-                  {activeStatementKhata.balanceDue > 0 ? 'Baqaya Dues' : 'Hisab Clear'}
+                  {activeStatementKhata.balanceDue > 0 ? 'Balance Due' : 'Fully Settled'}
                 </span>
                 <span className="text-base font-black">${Math.abs(activeStatementKhata.balanceDue).toFixed(2)}</span>
               </div>
@@ -1588,7 +1588,7 @@ export const ProxiesManager: React.FC = () => {
                           <button
                             type="button"
                             onClick={async () => {
-                              if (confirm('Kya aap yeh transaction ledger se delete karna chahte hain?')) {
+                              if (confirm('Are you sure you want to remove this transaction from the ledger?')) {
                                 await deleteProxyTransaction(tx.id);
                               }
                             }}

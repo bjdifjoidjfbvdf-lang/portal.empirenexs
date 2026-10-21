@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const storeKey = `${cleanEmail}:${cleanPurpose}`;
 
     if (!cleanEmail) {
-      return NextResponse.json({ success: false, message: 'Gmail address zaroori hai.' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Gmail address is required.' }, { status: 400 });
     }
 
     // ACTION: VERIFY OTP
@@ -27,25 +27,25 @@ export async function POST(req: NextRequest) {
       const stored = otpStore.get(storeKey);
       if (!stored) {
         return NextResponse.json(
-          { success: false, message: 'OTP expire ho chuka hai ya generate nahi kiya gaya. Dobara OTP mangwayen.' },
+          { success: false, message: 'OTP has expired or was not requested. Please request a new OTP.' },
           { status: 400 }
         );
       }
 
       if (Date.now() > stored.expiresAt) {
         otpStore.delete(storeKey);
-        return NextResponse.json({ success: false, message: 'OTP expire ho chuka hai (10 minute limit).' }, { status: 400 });
+        return NextResponse.json({ success: false, message: 'OTP has expired (10-minute limit).' }, { status: 400 });
       }
 
       if (stored.code !== (otp || '').trim()) {
-        return NextResponse.json({ success: false, message: 'Ghalat OTP code enter kiya hai. Baraye meherbani sahi 6-digit code enter karein.' }, { status: 400 });
+        return NextResponse.json({ success: false, message: 'Invalid OTP code entered. Please enter the correct 6-digit code.' }, { status: 400 });
       }
 
       // Valid OTP
       otpStore.delete(storeKey);
       return NextResponse.json({
         success: true,
-        message: 'Gmail successfully verify ho chuki hai!',
+        message: 'Gmail has been successfully verified!',
       });
     }
 
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: `6-digit OTP verification code aapki Gmail (${cleanEmail}) par bhej diya gaya hai.`,
+      message: `A 6-digit OTP verification code has been dispatched to your Gmail (${cleanEmail}).`,
       otp: generatedOtp, // Returned so UI can show in dev / modal if SMTP not configured
       emailSent,
     });
