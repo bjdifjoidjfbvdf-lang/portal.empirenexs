@@ -2082,6 +2082,29 @@
   ],
   "proxies": [
     {
+      "id": "px-1792547074403",
+      "proxy6Id": "42317039",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "branchId": "all",
+      "ip": "172.245.192.215",
+      "port": "8000",
+      "user": "vzQdPt",
+      "pass": "LT5dye",
+      "type": "auto",
+      "country": "US",
+      "version": "ipv4",
+      "assignedChannelName": "ds",
+      "assignedChannelUrl": "",
+      "costUsd": 1,
+      "periodDays": 14,
+      "renewCount": 0,
+      "status": "ACTIVE",
+      "createdAt": "2026-10-21T01:44:34.403Z",
+      "expiresAt": "2026-11-04 04:44:34"
+    },
+    {
       "id": "px-1792474036325",
       "proxy6Id": "sim-px-1792474036317",
       "userId": "user-waqas",
@@ -2103,6 +2126,28 @@
       "expiresAt": "2026-11-19T05:27:16.317Z"
     }
   ],
-  "settings": {},
-  "updatedAt": "2026-10-20T17:05:12.936Z"
+  "proxyTransactions": [
+    {
+      "id": "tx-1792547074404-659",
+      "userId": "user-waqas",
+      "userName": "Waqas Gill",
+      "userEmail": "muhammadwaqasmwg@gmail.com",
+      "branchId": "all",
+      "type": "PROXY_PURCHASE",
+      "chargeAmount": 1,
+      "paidAmount": 0,
+      "netChange": 1,
+      "description": "Dedicated IP Purchase (14 Days - $1.00) • ds",
+      "channelName": "ds",
+      "proxyId": "px-1792547074403",
+      "proxyIp": "172.245.192.215",
+      "periodDays": 14,
+      "recordedBy": "System (Auto)",
+      "createdAt": "2026-10-21T01:44:34.404Z"
+    }
+  ],
+  "settings": {
+    "proxyBalance": 4.1
+  },
+  "updatedAt": "2026-10-21T01:44:34.708Z"
 }
