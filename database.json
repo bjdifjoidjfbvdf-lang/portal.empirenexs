@@ -390,6 +390,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-20",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792570334661",
+      "name": "Muhammad MOusab",
+      "username": "mousab",
+      "email": "zyraaiservices@gmail.com",
+      "password": "mousab2302",
+      "phone": "03121683837",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Channel Operations Manager",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-21",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -3608,5 +3627,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T07:57:17.140Z"
+  "updatedAt": "2026-10-21T08:12:14.661Z"
 }
