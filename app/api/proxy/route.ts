@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ProxyRecord } from '@/types';
+import { ProxyRecord, ProxyLedgerTransaction, UserProxyKhata, PROXY_PERIOD_OPTIONS } from '@/types';
 import { getCloudDatabase, saveCloudDatabase } from '@/lib/cloudDb';
 
 export const dynamic = 'force-dynamic';
+
+function getPeriodRate(days: number): { priceUsd: number; days: number } {
+  const match = PROXY_PERIOD_OPTIONS.find((p) => p.days === days);
+  if (match) return { priceUsd: match.priceUsd, days: match.days };
+  if (days <= 3) return { priceUsd: 0.25, days: 3 };
+  if (days <= 7) return { priceUsd: 0.50, days: 7 };
+  if (days <= 14) return { priceUsd: 1.00, days: 14 };
+  return { priceUsd: 2.00, days: 28 };
+}
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,6 +21,7 @@ export async function GET(req: NextRequest) {
 
     const db = await getCloudDatabase();
     let allProxies = db.proxies || [];
+    let allTransactions = db.proxyTransactions || [];
 
     // Auto-sync active proxies from provider if empty or requested
     const apiKey = (process.env.PROXY6_API_KEY || db.settings?.proxy6ApiKey || '31e70f0958-42f8755ad4-890c13f45a').trim();
@@ -40,10 +50,11 @@ export async function GET(req: NextRequest) {
                 version: 'ipv4',
                 assignedChannelName: 'HQ Reserved',
                 assignedChannelUrl: '',
-                costUsd: 1.50,
+                costUsd: 2.00,
+                periodDays: 28,
                 status: 'ACTIVE',
                 createdAt: item.date ? new Date(item.date).toISOString() : new Date().toISOString(),
-                expiresAt: item.date_end ? new Date(item.date_end).toISOString() : new Date(Date.now() + 30 * 86400000).toISOString(),
+                expiresAt: item.date_end ? new Date(item.date_end).toISOString() : new Date(Date.now() + 28 * 86400000).toISOString(),
               });
             }
           });
@@ -61,15 +72,54 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // If Waqas (CEO), return ALL proxies across all branches & members
-    // If regular team member, return ONLY their own purchased proxies
+    // Compute Khatas for users
+    const userKhatas: UserProxyKhata[] = (db.users || []).map((u) => {
+      const userTx = allTransactions.filter((t) => t.userId === u.id);
+      const userPx = allProxies.filter((p) => p.userId === u.id);
+      const activePx = userPx.filter((p) => p.status === 'ACTIVE');
+
+      const totalCharged = userTx.reduce((sum, t) => sum + (t.chargeAmount || 0), 0);
+      const totalPaid = userTx.reduce((sum, t) => sum + (t.paidAmount || 0), 0);
+      const balanceDue = Math.round((totalCharged - totalPaid) * 100) / 100;
+
+      const lastPayment = userTx.find((t) => t.type === 'PAYMENT_RECEIVED');
+      const lastTx = userTx[0];
+
+      return {
+        userId: u.id,
+        userName: u.name,
+        userEmail: u.email,
+        branchId: u.branchId,
+        totalCharged,
+        totalPaid,
+        balanceDue,
+        totalProxiesBought: userPx.length,
+        activeProxiesCount: activePx.length,
+        lastPaymentDate: lastPayment?.createdAt,
+        lastTransactionDate: lastTx?.createdAt,
+      };
+    });
+
+    // Visible proxies based on permissions
     const visibleProxies = isWaqas
       ? allProxies
       : allProxies.filter((p) => p.userId === userId);
 
+    // Visible transactions based on permissions
+    const visibleTransactions = isWaqas
+      ? allTransactions
+      : allTransactions.filter((t) => t.userId === userId);
+
+    // Visible khatas based on permissions
+    const visibleKhatas = isWaqas
+      ? userKhatas
+      : userKhatas.filter((k) => k.userId === userId);
+
     return NextResponse.json({
       success: true,
       proxies: visibleProxies,
+      transactions: visibleTransactions,
+      khatas: visibleKhatas,
       totalCount: allProxies.length,
       userCount: visibleProxies.length,
       settings: db.settings || {},
@@ -85,9 +135,12 @@ export async function POST(req: NextRequest) {
     const { action } = body;
     const db = await getCloudDatabase();
     let currentProxies = [...(db.proxies || [])];
+    let currentTransactions = [...(db.proxyTransactions || [])];
     let users = [...db.users];
 
+    // =========================================================================
     // 1. BUY PROXY
+    // =========================================================================
     if (action === 'buy') {
       const {
         userId,
@@ -98,6 +151,7 @@ export async function POST(req: NextRequest) {
         channelUrl,
         country = 'us',
         type = 'http',
+        period: requestedPeriod = 28,
         apiKey,
       } = body;
 
@@ -130,6 +184,9 @@ export async function POST(req: NextRequest) {
         }
       }
 
+      // Determine period and rate
+      const { priceUsd, days } = getPeriodRate(Number(requestedPeriod));
+
       // Call Proxy API handler
       const proxy6Res = await fetch(`${req.nextUrl.origin}/api/proxy6`, {
         method: 'POST',
@@ -140,7 +197,7 @@ export async function POST(req: NextRequest) {
           country,
           type,
           count: 1,
-          period: 30,
+          period: days,
         }),
       });
 
@@ -169,23 +226,58 @@ export async function POST(req: NextRequest) {
         version: pData.version || 'ipv4',
         assignedChannelName: channelName || 'Unassigned',
         assignedChannelUrl: channelUrl || '',
-        costUsd: pData.costUsd || 1.77,
+        costUsd: priceUsd,
+        periodDays: days,
+        renewCount: 0,
         status: 'ACTIVE',
         createdAt: new Date().toISOString(),
-        expiresAt: pData.expiresAt || new Date(Date.now() + 30 * 86400000).toISOString(),
+        expiresAt: pData.expiresAt || new Date(Date.now() + days * 86400000).toISOString(),
       };
 
       currentProxies = [newProxy, ...currentProxies];
-      await saveCloudDatabase({ proxies: currentProxies });
+
+      // Record transaction in ledger
+      const purchaseTx: ProxyLedgerTransaction = {
+        id: `tx-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        userId,
+        userName: newProxy.userName,
+        userEmail: newProxy.userEmail,
+        branchId: newProxy.branchId,
+        type: 'PROXY_PURCHASE',
+        chargeAmount: priceUsd,
+        paidAmount: 0,
+        netChange: priceUsd,
+        description: `Dedicated IP Purchase (${days} Days - $${priceUsd.toFixed(2)}) • ${channelName || 'Unassigned'}`,
+        channelName: channelName || '',
+        proxyId: newProxy.id,
+        proxyIp: newProxy.ip,
+        periodDays: days,
+        recordedBy: 'System (Auto)',
+        createdAt: new Date().toISOString(),
+      };
+
+      currentTransactions = [purchaseTx, ...currentTransactions];
+
+      await saveCloudDatabase({
+        proxies: currentProxies,
+        proxyTransactions: currentTransactions,
+        settings: {
+          ...(db.settings || {}),
+          proxyBalance: proxy6Data.balance !== undefined ? proxy6Data.balance : db.settings?.proxyBalance,
+        },
+      });
 
       return NextResponse.json({
         success: true,
         proxy: newProxy,
-        message: `✅ Dedicated ${newProxy.country} Proxy Purchased Successfully! IP: ${newProxy.ip}`,
+        transaction: purchaseTx,
+        message: `✅ Dedicated ${newProxy.country} Proxy (${days} Days - $${priceUsd.toFixed(2)}) Purchased Successfully! IP: ${newProxy.ip}`,
       });
     }
 
+    // =========================================================================
     // 2. TOGGLE PROXY AUTHORIZATION (WAQAS GILL ONLY)
+    // =========================================================================
     if (action === 'toggleAuthorization') {
       const { targetUserId, authorized, adminUserId } = body;
       const admin = users.find((u) => u.id === adminUserId);
@@ -210,13 +302,17 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // 3. RENEW PROXY
+    // =========================================================================
+    // 3. RENEW PROXY (WITH CUSTOM DURATION & RATE)
+    // =========================================================================
     if (action === 'renew') {
-      const { proxyId, userId, apiKey } = body;
+      const { proxyId, userId, period: requestedPeriod = 28, apiKey } = body;
       const targetProxy = currentProxies.find((p) => p.id === proxyId);
       if (!targetProxy) {
         return NextResponse.json({ success: false, message: 'Proxy not found.' }, { status: 404 });
       }
+
+      const { priceUsd, days } = getPeriodRate(Number(requestedPeriod));
 
       const proxy6Res = await fetch(`${req.nextUrl.origin}/api/proxy6`, {
         method: 'POST',
@@ -225,7 +321,7 @@ export async function POST(req: NextRequest) {
           action: 'prolong',
           apiKey: apiKey || db.settings?.proxy6ApiKey || process.env.PROXY6_API_KEY,
           ids: targetProxy.proxy6Id || targetProxy.id,
-          period: 30,
+          period: days,
         }),
       });
 
@@ -237,18 +333,149 @@ export async function POST(req: NextRequest) {
         }, { status: 400 });
       }
 
-      const newExpiry = new Date(Date.now() + 30 * 86400000).toISOString();
+      // Calculate new expiry date
+      const currentExpiryMs = new Date(targetProxy.expiresAt).getTime();
+      const baseMs = currentExpiryMs > Date.now() ? currentExpiryMs : Date.now();
+      const newExpiry = prolongData.newExpiry || new Date(baseMs + days * 86400000).toISOString();
+
       currentProxies = currentProxies.map((p) =>
         p.id === proxyId
-          ? { ...p, expiresAt: newExpiry, status: 'ACTIVE' }
+          ? {
+              ...p,
+              expiresAt: newExpiry,
+              status: 'ACTIVE',
+              costUsd: (p.costUsd || 0) + priceUsd,
+              periodDays: days,
+              renewCount: (p.renewCount || 0) + 1,
+              lastRenewedAt: new Date().toISOString(),
+            }
           : p
       );
-      await saveCloudDatabase({ proxies: currentProxies });
+
+      // Record transaction in ledger
+      const renewalTx: ProxyLedgerTransaction = {
+        id: `tx-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        userId: targetProxy.userId,
+        userName: targetProxy.userName,
+        userEmail: targetProxy.userEmail,
+        branchId: targetProxy.branchId,
+        type: 'PROXY_RENEWAL',
+        chargeAmount: priceUsd,
+        paidAmount: 0,
+        netChange: priceUsd,
+        description: `Dedicated IP Renewal (${days} Days - $${priceUsd.toFixed(2)}) • ${targetProxy.assignedChannelName}`,
+        channelName: targetProxy.assignedChannelName,
+        proxyId: targetProxy.id,
+        proxyIp: targetProxy.ip,
+        periodDays: days,
+        recordedBy: 'System (Auto)',
+        createdAt: new Date().toISOString(),
+      };
+
+      currentTransactions = [renewalTx, ...currentTransactions];
+
+      await saveCloudDatabase({
+        proxies: currentProxies,
+        proxyTransactions: currentTransactions,
+        settings: {
+          ...(db.settings || {}),
+          proxyBalance: prolongData.balance !== undefined ? prolongData.balance : db.settings?.proxyBalance,
+        },
+      });
 
       return NextResponse.json({
         success: true,
-        message: `✅ Proxy ${targetProxy.ip} extended by 30 days!`,
+        message: `✅ Proxy ${targetProxy.ip} extended by ${days} days for $${priceUsd.toFixed(2)}!`,
         expiresAt: newExpiry,
+        transaction: renewalTx,
+      });
+    }
+
+    // =========================================================================
+    // 4. RECORD PAYMENT / KHATA SETTLEMENT (CEO ONLY)
+    // =========================================================================
+    if (action === 'recordPayment') {
+      const {
+        adminUserId,
+        targetUserId,
+        amount,
+        type = 'PAYMENT_RECEIVED',
+        paymentMethod = 'CASH',
+        notes = '',
+        isDebit = false, // If true, manual adjustment adds a charge (+); else reduces dues (-)
+      } = body;
+
+      const admin = users.find((u) => u.id === adminUserId);
+      if (admin?.role !== 'SUPER_ADMIN' && adminUserId !== 'user-waqas') {
+        return NextResponse.json({
+          success: false,
+          message: 'Access Denied: Only Founder & CEO Waqas Gill can record payments and manage khata.',
+        }, { status: 403 });
+      }
+
+      const targetUser = users.find((u) => u.id === targetUserId);
+      if (!targetUser) {
+        return NextResponse.json({ success: false, message: 'Member not found.' }, { status: 404 });
+      }
+
+      const numAmount = Math.abs(Number(amount) || 0);
+      if (numAmount <= 0) {
+        return NextResponse.json({ success: false, message: 'Amount must be greater than zero.' }, { status: 400 });
+      }
+
+      const isAdjustment = type === 'MANUAL_ADJUSTMENT';
+      const chargeAmount = isAdjustment ? (isDebit ? numAmount : 0) : 0;
+      const paidAmount = isAdjustment ? (isDebit ? 0 : numAmount) : numAmount;
+      const netChange = chargeAmount - paidAmount;
+
+      const paymentTx: ProxyLedgerTransaction = {
+        id: `tx-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        userId: targetUserId,
+        userName: targetUser.name,
+        userEmail: targetUser.email,
+        branchId: targetUser.branchId,
+        type: isAdjustment ? 'MANUAL_ADJUSTMENT' : 'PAYMENT_RECEIVED',
+        chargeAmount,
+        paidAmount,
+        netChange,
+        description: isAdjustment
+          ? `Manual Adjustment (${isDebit ? '+ Charge Added' : '- Balance Deducted'}) - $${numAmount.toFixed(2)}`
+          : `Payment Received (Jama Shuda Raqam): $${numAmount.toFixed(2)} [${paymentMethod}]`,
+        paymentMethod,
+        notes,
+        recordedBy: 'Waqas Gill (CEO)',
+        createdAt: new Date().toISOString(),
+      };
+
+      currentTransactions = [paymentTx, ...currentTransactions];
+      await saveCloudDatabase({ proxyTransactions: currentTransactions });
+
+      return NextResponse.json({
+        success: true,
+        transaction: paymentTx,
+        message: `✅ Khata updated for "${targetUser.name}": $${numAmount.toFixed(2)} recorded successfully!`,
+      });
+    }
+
+    // =========================================================================
+    // 5. DELETE TRANSACTION (CEO ONLY - FOR CORRECTIONS)
+    // =========================================================================
+    if (action === 'deleteTransaction') {
+      const { transactionId, adminUserId } = body;
+      const admin = users.find((u) => u.id === adminUserId);
+      if (admin?.role !== 'SUPER_ADMIN' && adminUserId !== 'user-waqas') {
+        return NextResponse.json({
+          success: false,
+          message: 'Access Denied: Only CEO Waqas Gill can modify transaction history.',
+        }, { status: 403 });
+      }
+
+      currentTransactions = currentTransactions.filter((t) => t.id !== transactionId);
+      await saveCloudDatabase({ proxyTransactions: currentTransactions });
+
+      return NextResponse.json({
+        success: true,
+        message: 'Transaction removed from ledger.',
       });
     }
 

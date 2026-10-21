@@ -187,9 +187,68 @@ export interface ProxyRecord {
   assignedChannelName: string;
   assignedChannelUrl?: string;
   costUsd: number;
+  periodDays?: number;
+  renewCount?: number;
+  lastRenewedAt?: string;
   status: 'ACTIVE' | 'EXPIRED' | 'RENEWED';
   createdAt: string;
   expiresAt: string;
+}
+
+export interface ProxyPeriodOption {
+  days: number;
+  label: string;
+  priceUsd: number;
+  baseCostUsd: number;
+}
+
+export const PROXY_PERIOD_OPTIONS: ProxyPeriodOption[] = [
+  { days: 3, label: '3 Days', priceUsd: 0.25, baseCostUsd: 0.15 },
+  { days: 7, label: '7 Days', priceUsd: 0.50, baseCostUsd: 0.35 },
+  { days: 14, label: '14 Days', priceUsd: 1.00, baseCostUsd: 0.70 },
+  { days: 28, label: '28 Days', priceUsd: 2.00, baseCostUsd: 1.40 },
+];
+
+export type ProxyTransactionType =
+  | 'PROXY_PURCHASE'
+  | 'PROXY_RENEWAL'
+  | 'PAYMENT_RECEIVED'
+  | 'MANUAL_ADJUSTMENT';
+
+export interface ProxyLedgerTransaction {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  branchId: BranchId;
+  type: ProxyTransactionType;
+  chargeAmount: number; // Amount billed to member (e.g. 0.50, 1.00, 2.00)
+  paidAmount: number;   // Amount paid by member to Waqas (reduces dues)
+  netChange: number;    // chargeAmount - paidAmount (+ increases due, - decreases due)
+  balanceAfter?: number;
+  description: string;
+  channelName?: string;
+  proxyId?: string;
+  proxyIp?: string;
+  periodDays?: number;
+  paymentMethod?: 'CASH' | 'EASYPAISA' | 'JAZZCASH' | 'BANK_TRANSFER' | 'OTHER';
+  notes?: string;
+  recordedBy: string;   // 'Waqas Gill (CEO)' or 'System (Auto)'
+  createdAt: string;
+}
+
+export interface UserProxyKhata {
+  userId: string;
+  userName: string;
+  userEmail: string;
+  branchId: BranchId;
+  totalCharged: number;
+  totalPaid: number;
+  balanceDue: number; // totalCharged - totalPaid. >0 = Unpaid Dues, <0 = Advance, 0 = Settled
+  totalProxiesBought: number;
+  activeProxiesCount: number;
+  lastPaymentDate?: string;
+  lastTransactionDate?: string;
 }
 
 export interface SystemSettings {

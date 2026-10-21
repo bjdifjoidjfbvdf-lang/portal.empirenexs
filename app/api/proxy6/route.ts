@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { action, apiKey: rawKey, country = 'us', period = 30, count = 1, version = '4', type = 'http', ids } = body;
-    const apiKey = (rawKey || process.env.PROXY6_API_KEY || '').trim();
+    const apiKey = (rawKey || process.env.PROXY6_API_KEY || '31e70f0958-42f8755ad4-890c13f45a').trim();
 
     // 1. Buy Proxy on Proxy6
     if (action === 'buy') {
@@ -129,9 +129,18 @@ export async function POST(req: NextRequest) {
       const data = await res.json();
 
       if (data.status === 'yes') {
+        let newExpiry = new Date(Date.now() + period * 86400000).toISOString();
+        if (data.list && typeof data.list === 'object') {
+          const firstId = Object.keys(data.list)[0];
+          if (firstId && data.list[firstId]?.date_end) {
+            newExpiry = new Date(data.list[firstId].date_end).toISOString();
+          }
+        }
         return NextResponse.json({
           success: true,
           balance: parseFloat(data.balance || '0'),
+          newExpiry,
+          price: parseFloat(data.price || '0'),
           data,
         });
       }

@@ -12,6 +12,8 @@ import {
   SystemSettings,
   OTPOrderRecord,
   ProxyRecord,
+  ProxyLedgerTransaction,
+  UserProxyKhata,
   ChatLogEntry,
   NicheSheetItem,
 } from '@/types';
@@ -135,18 +137,32 @@ interface AppContextType {
 
   // Proxies & Dedicated IPs (Proxy6.net)
   proxies: ProxyRecord[];
+  proxyTransactions: ProxyLedgerTransaction[];
+  userKhatas: UserProxyKhata[];
   refreshProxies: () => Promise<void>;
   requestProxy: (
     channelName: string,
     channelUrl?: string,
     country?: string,
-    type?: 'http' | 'socks'
+    type?: 'http' | 'socks',
+    period?: number
   ) => Promise<{ success: boolean; message: string; proxy?: ProxyRecord }>;
-  renewProxy: (proxyId: string) => Promise<{ success: boolean; message: string }>;
+  renewProxy: (proxyId: string, period?: number) => Promise<{ success: boolean; message: string }>;
   toggleUserProxyAuthorization: (targetUserId: string, authorized: boolean) => Promise<{ success: boolean; message: string }>;
+  recordUserProxyPayment: (
+    targetUserId: string,
+    amount: number,
+    type?: 'PAYMENT_RECEIVED' | 'MANUAL_ADJUSTMENT',
+    paymentMethod?: string,
+    notes?: string,
+    isDebit?: boolean
+  ) => Promise<{ success: boolean; message: string }>;
+  deleteProxyTransaction: (transactionId: string) => Promise<{ success: boolean; message: string }>;
   getUserTodayProxyCount: (userId: string) => number;
   getUserTotalProxyCount: (userId: string) => number;
   getUserProxySpend: (userId: string) => number;
+  getUserProxyKhata: (userId: string) => UserProxyKhata;
+  getUserTransactions: (userId: string) => ProxyLedgerTransaction[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -1114,6 +1130,7 @@ Instructions:
 
   // Proxies & Dedicated IPs state
   const [proxies, setProxies] = useState<ProxyRecord[]>([]);
+  const [proxyTransactions, setProxyTransactions] = useState<ProxyLedgerTransaction[]>([]);
 
   const [isSyncingSheets, setIsSyncingSheets] = useState<boolean>(false);
   const [isSyncModalOpen, setIsSyncModalOpen] = useState<boolean>(false);
@@ -1167,6 +1184,12 @@ Instructions:
         if (savedProxies) {
           const parsed = JSON.parse(savedProxies);
           if (Array.isArray(parsed)) setProxies(parsed);
+        }
+
+        const savedTx = localStorage.getItem('empirenexs_proxy_tx_prod');
+        if (savedTx) {
+          const parsed = JSON.parse(savedTx);
+          if (Array.isArray(parsed)) setProxyTransactions(parsed);
         }
 
         const savedSessionId = localStorage.getItem('empirenexs_session_user_prod');
@@ -1241,8 +1264,9 @@ Instructions:
         fetch(`/api/proxy?userId=${savedSessionId || ''}&isWaqas=${savedSessionId === 'user-waqas' ? 'true' : 'false'}`)
           .then((res) => res.json())
           .then((data) => {
-            if (data.success && Array.isArray(data.proxies)) {
-              setProxies(data.proxies);
+            if (data.success) {
+              if (Array.isArray(data.proxies)) setProxies(data.proxies);
+              if (Array.isArray(data.transactions)) setProxyTransactions(data.transactions);
             }
           })
           .catch(() => null);
@@ -2053,7 +2077,8 @@ Instructions:
     channelName: string,
     channelUrl: string = '',
     country: string = 'us',
-    type: 'http' | 'socks' = 'http'
+    type: 'http' | 'socks' = 'http',
+    period: number = 28
   ): Promise<{ success: boolean; message: string; proxy?: ProxyRecord }> => {
     if (!currentUser) return { success: false, message: 'Please login first.' };
 
@@ -2071,6 +2096,7 @@ Instructions:
           channelUrl: channelUrl.trim(),
           country,
           type,
+          period,
           apiKey: settings.proxy6ApiKey,
         }),
       });
@@ -2078,6 +2104,9 @@ Instructions:
       const data = await res.json();
       if (data.success && data.proxy) {
         setProxies((prev) => [data.proxy, ...prev]);
+        if (data.transaction) {
+          setProxyTransactions((prev) => [data.transaction, ...prev]);
+        }
         return { success: true, message: data.message, proxy: data.proxy };
       }
       return { success: false, message: data.message || 'Failed to purchase proxy.' };
@@ -2086,7 +2115,10 @@ Instructions:
     }
   };
 
-  const renewProxy = async (proxyId: string): Promise<{ success: boolean; message: string }> => {
+  const renewProxy = async (
+    proxyId: string,
+    period: number = 28
+  ): Promise<{ success: boolean; message: string }> => {
     try {
       const res = await fetch('/api/proxy', {
         method: 'POST',
@@ -2095,15 +2127,32 @@ Instructions:
           action: 'renew',
           proxyId,
           userId: currentUser?.id,
+          period,
           apiKey: settings.proxy6ApiKey,
         }),
       });
 
       const data = await res.json();
       if (data.success) {
+        const addedCost = period === 3 ? 0.25 : period === 7 ? 0.50 : period === 14 ? 1.00 : 2.00;
         setProxies((prev) =>
-          prev.map((p) => (p.id === proxyId ? { ...p, expiresAt: data.expiresAt, status: 'ACTIVE' } : p))
+          prev.map((p) =>
+            p.id === proxyId
+              ? {
+                  ...p,
+                  expiresAt: data.expiresAt || p.expiresAt,
+                  status: 'ACTIVE',
+                  costUsd: (p.costUsd || 0) + addedCost,
+                  periodDays: period,
+                  renewCount: (p.renewCount || 0) + 1,
+                  lastRenewedAt: new Date().toISOString(),
+                }
+              : p
+          )
         );
+        if (data.transaction) {
+          setProxyTransactions((prev) => [data.transaction, ...prev]);
+        }
         return { success: true, message: data.message };
       }
       return { success: false, message: data.message || 'Failed to renew proxy.' };
@@ -2117,10 +2166,18 @@ Instructions:
       const isWaqas = currentUser?.role === 'SUPER_ADMIN' || currentUser?.id === 'user-waqas';
       const res = await fetch(`/api/proxy?userId=${currentUser?.id || ''}&isWaqas=${isWaqas ? 'true' : 'false'}`);
       const data = await res.json();
-      if (data.success && Array.isArray(data.proxies)) {
-        setProxies(data.proxies);
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('empirenexs_proxies_prod', JSON.stringify(data.proxies));
+      if (data.success) {
+        if (Array.isArray(data.proxies)) {
+          setProxies(data.proxies);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('empirenexs_proxies_prod', JSON.stringify(data.proxies));
+          }
+        }
+        if (Array.isArray(data.transactions)) {
+          setProxyTransactions(data.transactions);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('empirenexs_proxy_tx_prod', JSON.stringify(data.transactions));
+          }
         }
       }
       if (data.settings?.proxyBalance !== undefined) {
@@ -2130,6 +2187,101 @@ Instructions:
       console.warn('Failed to refresh proxies:', e);
     }
   };
+
+  const recordUserProxyPayment = async (
+    targetUserId: string,
+    amount: number,
+    type: 'PAYMENT_RECEIVED' | 'MANUAL_ADJUSTMENT' = 'PAYMENT_RECEIVED',
+    paymentMethod: string = 'CASH',
+    notes: string = '',
+    isDebit: boolean = false
+  ): Promise<{ success: boolean; message: string }> => {
+    try {
+      const res = await fetch('/api/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'recordPayment',
+          adminUserId: currentUser?.id,
+          targetUserId,
+          amount,
+          type,
+          paymentMethod,
+          notes,
+          isDebit,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success && data.transaction) {
+        setProxyTransactions((prev) => [data.transaction, ...prev]);
+        if (typeof window !== 'undefined') {
+          const updated = [data.transaction, ...proxyTransactions];
+          localStorage.setItem('empirenexs_proxy_tx_prod', JSON.stringify(updated));
+        }
+        return { success: true, message: data.message };
+      }
+      return { success: false, message: data.message || 'Failed to record payment.' };
+    } catch (e: any) {
+      return { success: false, message: e.message || 'Network error' };
+    }
+  };
+
+  const deleteProxyTransaction = async (transactionId: string): Promise<{ success: boolean; message: string }> => {
+    try {
+      const res = await fetch('/api/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'deleteTransaction',
+          transactionId,
+          adminUserId: currentUser?.id,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setProxyTransactions((prev) => prev.filter((t) => t.id !== transactionId));
+        return { success: true, message: data.message };
+      }
+      return { success: false, message: data.message || 'Failed to delete transaction.' };
+    } catch (e: any) {
+      return { success: false, message: e.message || 'Network error' };
+    }
+  };
+
+  const getUserProxyKhata = (userId: string): UserProxyKhata => {
+    const target = users.find((u) => u.id === userId);
+    const userTx = proxyTransactions.filter((t) => t.userId === userId);
+    const userPx = proxies.filter((p) => p.userId === userId);
+    const activePx = userPx.filter((p) => p.status === 'ACTIVE');
+
+    const totalCharged = Math.round(userTx.reduce((sum, t) => sum + (t.chargeAmount || 0), 0) * 100) / 100;
+    const totalPaid = Math.round(userTx.reduce((sum, t) => sum + (t.paidAmount || 0), 0) * 100) / 100;
+    const balanceDue = Math.round((totalCharged - totalPaid) * 100) / 100;
+    const lastPayment = userTx.find((t) => t.type === 'PAYMENT_RECEIVED');
+    const lastTx = userTx[0];
+
+    return {
+      userId,
+      userName: target?.name || 'Member',
+      userEmail: target?.email || '',
+      branchId: target?.branchId || 'musafirkhana',
+      totalCharged,
+      totalPaid,
+      balanceDue,
+      totalProxiesBought: userPx.length,
+      activeProxiesCount: activePx.length,
+      lastPaymentDate: lastPayment?.createdAt,
+      lastTransactionDate: lastTx?.createdAt,
+    };
+  };
+
+  const getUserTransactions = (userId: string): ProxyLedgerTransaction[] => {
+    return proxyTransactions.filter((t) => t.userId === userId);
+  };
+
+  const userKhatas = users.map((u) => getUserProxyKhata(u.id));
 
   const toggleUserProxyAuthorization = async (
     targetUserId: string,
@@ -3111,13 +3263,19 @@ Instructions:
         getUserTotalOTPCount,
         getChannelExistingNumber,
         proxies,
+        proxyTransactions,
+        userKhatas,
         refreshProxies,
         requestProxy,
         renewProxy,
         toggleUserProxyAuthorization,
+        recordUserProxyPayment,
+        deleteProxyTransaction,
         getUserTodayProxyCount,
         getUserTotalProxyCount,
         getUserProxySpend,
+        getUserProxyKhata,
+        getUserTransactions,
       }}
     >
       {children}
