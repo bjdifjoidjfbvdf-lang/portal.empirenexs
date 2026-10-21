@@ -3548,8 +3548,8 @@
       "phoneNumber": "+639972781685",
       "provider": "Hero-SMS",
       "country": "Philippines (+63)",
-      "otpCode": null,
-      "status": "PENDING_OTP",
+      "otpCode": "957204",
+      "status": "COMPLETED",
       "cost": "",
       "createdAt": "2026-10-21 08:44:02",
       "expiresAt": 1792572542328
@@ -3675,5 +3675,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T08:38:02.264Z"
+  "updatedAt": "2026-10-21T08:38:27.705Z"
 }
