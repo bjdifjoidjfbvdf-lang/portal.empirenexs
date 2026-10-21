@@ -32,7 +32,9 @@
       "canAccessAllBranches": false,
       "status": "ACTIVE",
       "joinedAt": "2026-01-15",
-      "emailVerified": true
+      "emailVerified": true,
+      "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/1ZTtICrZftt27yagGrDSbqs6z08fIUpaXmjj_4FG2IJw/edit?pli=1&gid=0#gid=0",
+      "personalGoogleSheetWebhookUrl": ""
     },
     {
       "id": "user-waqas",
@@ -2132,5 +2134,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T02:07:03.830Z"
+  "updatedAt": "2026-10-21T06:56:24.667Z"
 }
