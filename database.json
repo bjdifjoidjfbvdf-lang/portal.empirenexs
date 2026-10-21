@@ -409,6 +409,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-21",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792570413971",
+      "name": "anas",
+      "username": "anas_4043",
+      "email": "cashcowcashcow09@gmail.com",
+      "password": "anas4043",
+      "phone": "03150434043",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-21",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -3627,5 +3646,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T08:13:05.331Z"
+  "updatedAt": "2026-10-21T08:13:33.971Z"
 }
