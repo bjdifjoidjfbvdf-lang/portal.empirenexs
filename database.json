@@ -267,7 +267,8 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-17",
       "emailVerified": true,
-      "personalGoogleSheetApiKey": ""
+      "personalGoogleSheetApiKey": "",
+      "canBuyProxies": true
     },
     {
       "id": "user-1792329110698",
@@ -2131,5 +2132,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-21T02:06:52.991Z"
+  "updatedAt": "2026-10-21T02:07:03.830Z"
 }
