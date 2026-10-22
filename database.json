@@ -472,6 +472,25 @@
       "personalGoogleSheetWebhookUrl": "",
       "lastSheetSync": "2026-10-21T12:12:34.259Z",
       "syncedChannelsCount": 3
+    },
+    {
+      "id": "user-1792665217736",
+      "name": "Haider Ali",
+      "username": "haiderali",
+      "email": "ha0876495@gmail.com",
+      "password": "Haider Ali",
+      "phone": "03066704848",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "bahawalpur",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-22",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -4511,5 +4530,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-22T10:30:05.076Z"
+  "updatedAt": "2026-10-22T10:33:37.736Z"
 }
