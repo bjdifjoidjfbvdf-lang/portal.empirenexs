@@ -78,6 +78,29 @@
   "otpOrders": [],
   "proxies": [
     {
+      "id": "px-1792685937309",
+      "proxy6Id": "42348261",
+      "userId": "user-1792685496532",
+      "userName": "Alishba qadri",
+      "userEmail": "alishbaqadri34@gmail.com",
+      "branchId": "musafirkhana",
+      "ip": "45.147.100.118",
+      "port": "8000",
+      "user": "w6091E",
+      "pass": "jHJp9y",
+      "type": "auto",
+      "country": "US",
+      "version": "ipv4",
+      "assignedChannelName": "Ellon muss",
+      "assignedChannelUrl": "",
+      "costUsd": 1,
+      "periodDays": 14,
+      "renewCount": 0,
+      "status": "ACTIVE",
+      "createdAt": "2026-10-22T16:18:57.309Z",
+      "expiresAt": "2026-11-05 19:18:57"
+    },
+    {
       "id": "px-41712499",
       "proxy6Id": "41712499",
       "userId": "user-waqas",
@@ -298,10 +321,29 @@
       "expiresAt": "2026-11-04T12:44:34.000Z"
     }
   ],
-  "proxyTransactions": [],
+  "proxyTransactions": [
+    {
+      "id": "tx-1792685937309-816",
+      "userId": "user-1792685496532",
+      "userName": "Alishba qadri",
+      "userEmail": "alishbaqadri34@gmail.com",
+      "branchId": "musafirkhana",
+      "type": "PROXY_PURCHASE",
+      "chargeAmount": 1,
+      "paidAmount": 0,
+      "netChange": 1,
+      "description": "Dedicated IP Purchase (14 Days - $1.00) • Ellon muss",
+      "channelName": "Ellon muss",
+      "proxyId": "px-1792685937309",
+      "proxyIp": "45.147.100.118",
+      "periodDays": 14,
+      "recordedBy": "System (Auto)",
+      "createdAt": "2026-10-22T16:18:57.309Z"
+    }
+  ],
   "settings": {
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-22T16:17:13.730Z"
+  "updatedAt": "2026-10-22T16:18:57.496Z"
 }
