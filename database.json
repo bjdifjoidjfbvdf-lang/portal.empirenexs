@@ -4272,6 +4272,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1010897759",
+      "userId": "user-1792570413971",
+      "userName": "anas",
+      "userEmail": "cashcowcashcow09@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Тайны Священного Писания",
+      "channelUrl": "https://www.youtube.com/channel/UCd2QojfiregEF0A9PzplGSQ",
+      "phoneNumber": "+639272916793",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-22 10:21:35",
+      "expiresAt": 1792664795445
+    },
+    {
       "id": "1010766099",
       "userId": "user-1792570334661",
       "userName": "Muhammad Mousab",
@@ -4477,5 +4494,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-22T09:44:13.654Z"
+  "updatedAt": "2026-10-22T10:21:36.267Z"
 }
