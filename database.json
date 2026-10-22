@@ -4272,6 +4272,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1010922743",
+      "userId": "user-1792143539742",
+      "userName": "Atif M Altaf",
+      "userEmail": "atifmaltaf2004@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Шёпот Небес",
+      "channelUrl": "https://www.youtube.com/channel/UChSjXiy-5aSzBUugcLGseVg",
+      "phoneNumber": "+639272975816",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-22 10:30:04",
+      "expiresAt": 1792665304345
+    },
+    {
       "id": "1010897759",
       "userId": "user-1792570413971",
       "userName": "anas",
@@ -4494,5 +4511,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-22T10:26:37.370Z"
+  "updatedAt": "2026-10-22T10:30:05.076Z"
 }
