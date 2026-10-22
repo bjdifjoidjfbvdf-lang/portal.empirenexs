@@ -51,6 +51,25 @@
       "status": "ACTIVE",
       "joinedAt": "2026-01-20",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792685496532",
+      "name": "Alishba qadri",
+      "username": "alishba",
+      "email": "alishbaqadri34@gmail.com",
+      "password": "170804",
+      "phone": "03037095533",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "musafirkhana",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-22",
+      "emailVerified": true
     }
   ],
   "channels": [],
@@ -283,5 +302,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-22T14:44:26.437Z"
+  "updatedAt": "2026-10-22T16:11:36.532Z"
 }
