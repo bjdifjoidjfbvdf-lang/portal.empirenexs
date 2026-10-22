@@ -71,6 +71,25 @@
       "joinedAt": "2026-10-22",
       "emailVerified": true,
       "canBuyProxies": true
+    },
+    {
+      "id": "user-1792689941143",
+      "name": "Tulaib Usman",
+      "username": "chaudharytulaib",
+      "email": "tulaibusman2924@gmail.com",
+      "password": "112233445566",
+      "phone": "03056363560",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "musafirkhana",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-22",
+      "emailVerified": true
     }
   ],
   "channels": [],
@@ -345,5 +364,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-22T16:18:57.496Z"
+  "updatedAt": "2026-10-22T17:25:41.143Z"
 }
