@@ -65,7 +65,7 @@
       "branchId": "musafirkhana",
       "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
       "canAccessAllBranches": false,
-      "status": "PENDING",
+      "status": "ACTIVE",
       "joiningType": "PERCENTAGE",
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-22",
@@ -302,5 +302,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-22T16:11:36.532Z"
+  "updatedAt": "2026-10-22T16:11:59.139Z"
 }
