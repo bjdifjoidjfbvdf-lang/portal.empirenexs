@@ -4272,6 +4272,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1010766099",
+      "userId": "user-1792570334661",
+      "userName": "Muhammad Mousab",
+      "userEmail": "zyraaiservices@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Библия: Тайны и Скрытые Истины",
+      "channelUrl": "https://www.youtube.com/channel/UC5QyjNlVcza_PEeZLddkhxA",
+      "phoneNumber": "+639272912334",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-22 09:45:13",
+      "expiresAt": 1792662613971
+    },
+    {
       "id": "1010594605",
       "userId": "user-1792140055584",
       "userName": "Nisha",
@@ -4460,5 +4477,5 @@
   "settings": {
     "proxyBalance": 4.1
   },
-  "updatedAt": "2026-10-22T08:44:04.288Z"
+  "updatedAt": "2026-10-22T09:39:12.671Z"
 }
