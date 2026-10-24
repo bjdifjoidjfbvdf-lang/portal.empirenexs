@@ -138,22 +138,7 @@ export async function getCloudDatabase(): Promise<CloudDatabase> {
 
 export async function saveCloudDatabase(data: Partial<CloudDatabase>): Promise<boolean> {
   try {
-    const current = await getCloudDatabase();
-    const updated: CloudDatabase = {
-      users: data.users || current.users,
-      channels: data.channels !== undefined ? data.channels : current.channels,
-      chatLogs: data.chatLogs !== undefined ? data.chatLogs : (current.chatLogs || []),
-      otpOrders: data.otpOrders !== undefined ? data.otpOrders : (current.otpOrders || []),
-      proxies: data.proxies !== undefined ? data.proxies : (current.proxies || []),
-      proxyTransactions: data.proxyTransactions !== undefined ? data.proxyTransactions : (current.proxyTransactions || []),
-      settings: data.settings !== undefined ? { ...(current.settings || {}), ...data.settings } : (current.settings || {}),
-      updatedAt: new Date().toISOString(),
-    };
-
-    memoryCache = updated;
-    lastFetchTime = Date.now();
-
-    // 1. Get current file SHA to update
+    // 1. Fetch live database state & SHA directly from GitHub to guarantee atomicity and freshness
     const getShaRes = await fetch(
       `https://api.github.com/repos/${GITHUB_REPO}/contents/${DB_FILE}?ref=${DB_BRANCH}`,
       {
@@ -166,13 +151,62 @@ export async function saveCloudDatabase(data: Partial<CloudDatabase>): Promise<b
       }
     );
 
-    let sha: string | undefined = undefined;
-    if (getShaRes.ok) {
-      const fileData = await getShaRes.json();
-      sha = fileData.sha;
+    if (!getShaRes.ok) {
+      console.error('[CloudDB] Cannot reach GitHub to verify database state. Aborting save to protect data integrity.');
+      return false;
     }
 
-    // 2. Put file with commit
+    const fileMeta = await getShaRes.json();
+    const sha = fileMeta.sha;
+    let liveDb: CloudDatabase | null = null;
+    if (fileMeta.content) {
+      try {
+        const rawJson = Buffer.from(fileMeta.content, 'base64').toString('utf-8');
+        liveDb = JSON.parse(rawJson);
+      } catch (e) {
+        console.warn('[CloudDB] Error parsing live content:', e);
+      }
+    }
+
+    const baseDb: CloudDatabase = liveDb || (await getCloudDatabase());
+
+    // 2. Safe merge of users so no registered employee or manager is ever lost
+    let mergedUsers = baseDb.users || [];
+    if (data.users && Array.isArray(data.users)) {
+      const userMap = new Map<string, UserProfile>();
+      mergedUsers.forEach((u) => userMap.set(u.id, u));
+      data.users.forEach((u) => {
+        const existing = userMap.get(u.id);
+        userMap.set(u.id, existing ? { ...existing, ...u } : u);
+      });
+      mergedUsers = Array.from(userMap.values());
+    }
+
+    // 3. Channels safety shield: NEVER allow accidental zeroing if channels exist in database
+    let mergedChannels = baseDb.channels || [];
+    if (data.channels !== undefined) {
+      if (data.channels.length === 0 && mergedChannels.length > 0) {
+        console.warn('[CloudDB Safety] Blocked attempt to wipe existing channels to 0! Retaining', mergedChannels.length, 'channels.');
+      } else {
+        mergedChannels = data.channels;
+      }
+    }
+
+    const updated: CloudDatabase = {
+      users: mergedUsers,
+      channels: mergedChannels,
+      chatLogs: data.chatLogs !== undefined ? data.chatLogs : (baseDb.chatLogs || []),
+      otpOrders: data.otpOrders !== undefined ? data.otpOrders : (baseDb.otpOrders || []),
+      proxies: data.proxies !== undefined ? data.proxies : (baseDb.proxies || []),
+      proxyTransactions: data.proxyTransactions !== undefined ? data.proxyTransactions : (baseDb.proxyTransactions || []),
+      settings: data.settings !== undefined ? { ...(baseDb.settings || {}), ...data.settings } : (baseDb.settings || {}),
+      updatedAt: new Date().toISOString(),
+    };
+
+    memoryCache = updated;
+    lastFetchTime = Date.now();
+
+    // 4. Put file with commit
     const base64Content = Buffer.from(JSON.stringify(updated, null, 2)).toString('base64');
     const putRes = await fetch(
       `https://api.github.com/repos/${GITHUB_REPO}/contents/${DB_FILE}`,
