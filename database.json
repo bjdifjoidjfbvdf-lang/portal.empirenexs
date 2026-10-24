@@ -3144,7 +3144,25 @@
       "month": "2026-10"
     }
   ],
-  "otpOrders": [],
+  "otpOrders": [
+    {
+      "id": "1021713359",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "branchId": "rahim-yar-khan",
+      "channelName": "Deep Love Secrets",
+      "channelUrl": "https://www.youtube.com/@DeepLoveSecrets-o9i",
+      "phoneNumber": "+639553503701",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-24 18:31:22",
+      "expiresAt": 1792866982315
+    }
+  ],
   "proxies": [
     {
       "id": "px-1792685937309",
@@ -3414,5 +3432,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-24T18:30:49.741Z"
+  "updatedAt": "2026-10-24T18:31:22.431Z"
 }
