@@ -3394,6 +3394,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1025358824",
+      "userId": "user-1792584612677",
+      "userName": "Madih Ahmad",
+      "userEmail": "madihahmad27@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Тихий Голос Бога",
+      "channelUrl": "https://www.youtube.com/channel/UCRDFwNpeNeUjXAk_u9_DGvw",
+      "phoneNumber": "+639950001974",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-25 12:53:24",
+      "expiresAt": 1792933104869
+    },
+    {
       "id": "1025340886",
       "userId": "user-1792242533886",
       "userName": "Faizan Zubair",
@@ -3748,5 +3765,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T14:55:05.631Z"
+  "updatedAt": "2026-10-25T14:59:39.470Z"
 }
