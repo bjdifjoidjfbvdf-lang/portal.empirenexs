@@ -3494,6 +3494,32 @@
       "timestamp": "08:46 AM",
       "createdAt": "2026-10-25T15:46:26.347Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792943218859",
+      "userId": "user-1792092595203",
+      "userName": "Khansa Saddique",
+      "userEmail": "khansasaddique061@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Channel name meny send kia hy phly",
+      "timestamp": "08:46 AM",
+      "createdAt": "2026-10-25T15:46:58.858Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-err-1792943218887",
+      "userId": "user-1792092595203",
+      "userName": "Khansa Saddique",
+      "userEmail": "khansasaddique061@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⚠️ **Duplicate Channel Blocked:** Channel \"meny send kia hy phly\" (https://www.youtube.com/channel/UCwY30FEcjKpDb7K29skEp2Q) has already received a verified phone number (+639950002203 - Status: Active). Multiple numbers for the same channel are strictly prohibited.",
+      "timestamp": "08:46 AM",
+      "createdAt": "2026-10-25T15:46:58.858Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [
@@ -3886,5 +3912,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T15:46:28.534Z"
+  "updatedAt": "2026-10-25T15:47:00.928Z"
 }
