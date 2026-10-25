@@ -552,6 +552,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-24",
       "emailVerified": true
+    },
+    {
+      "id": "user-1792922769967",
+      "name": "Shahzaman",
+      "username": "javed",
+      "email": "shahzamaann21@gmail.com",
+      "password": "mnampa252",
+      "phone": "03478452957",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "musafirkhana",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-25",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -3449,5 +3468,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T10:02:53.360Z"
+  "updatedAt": "2026-10-25T10:06:10.248Z"
 }
