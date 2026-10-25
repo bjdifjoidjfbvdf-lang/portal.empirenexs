@@ -93,9 +93,10 @@
       "canAccessAllBranches": false,
       "status": "ACTIVE",
       "joiningType": "PERCENTAGE",
-      "personalGoogleSheetUrl": "",
+      "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/1QnH5jpoRBJ29VJZx383udVvizA22KPZ8SuyQmEFTweU/edit?gid=0#gid=0",
       "joinedAt": "2026-10-16",
-      "emailVerified": true
+      "emailVerified": true,
+      "personalGoogleSheetWebhookUrl": ""
     },
     {
       "id": "user-1792143539742",
@@ -3667,5 +3668,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T10:26:33.610Z"
+  "updatedAt": "2026-10-25T11:20:41.970Z"
 }
