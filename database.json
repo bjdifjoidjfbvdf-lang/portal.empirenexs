@@ -3146,6 +3146,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1024350504",
+      "userId": "user-1792143539742",
+      "userName": "Atif M Altaf",
+      "userEmail": "atifmaltaf2004@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Quantum Decode",
+      "channelUrl": "https://www.youtube.com/channel/UCSCX0n_5-JrpuYig4SbcIMw",
+      "phoneNumber": "+639950008627",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-25 10:02:52",
+      "expiresAt": 1792922872674
+    },
+    {
       "id": "1021713359",
       "userId": "user-1792140055584",
       "userName": "Nisha",
@@ -3432,5 +3449,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-24T18:33:16.336Z"
+  "updatedAt": "2026-10-25T10:02:53.360Z"
 }
