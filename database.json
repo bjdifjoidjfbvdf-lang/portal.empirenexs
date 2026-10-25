@@ -3405,7 +3405,7 @@
       "provider": "Hero-SMS",
       "country": "Philippines (+63)",
       "otpCode": null,
-      "status": "PENDING_OTP",
+      "status": "CANCELLED",
       "cost": "",
       "createdAt": "2026-10-25 12:53:24",
       "expiresAt": 1792933104869
@@ -3765,5 +3765,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T14:59:39.470Z"
+  "updatedAt": "2026-10-25T15:04:40.212Z"
 }
