@@ -3347,6 +3347,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1024413211",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "Secretos del Corazóns",
+      "channelUrl": "https://www.youtube.com/@SecretosdelCoraz%C3%B3ns",
+      "phoneNumber": "+639950001909",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-25 10:21:31",
+      "expiresAt": 1792923991863
+    },
+    {
       "id": "1024350504",
       "userId": "user-1792143539742",
       "userName": "Atif M Altaf",
@@ -3650,5 +3667,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T10:19:24.335Z"
+  "updatedAt": "2026-10-25T10:21:33.128Z"
 }
