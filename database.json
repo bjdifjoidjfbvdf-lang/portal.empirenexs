@@ -96,7 +96,9 @@
       "personalGoogleSheetUrl": "https://docs.google.com/spreadsheets/d/1QnH5jpoRBJ29VJZx383udVvizA22KPZ8SuyQmEFTweU/edit?gid=0#gid=0",
       "joinedAt": "2026-10-16",
       "emailVerified": true,
-      "personalGoogleSheetWebhookUrl": ""
+      "personalGoogleSheetWebhookUrl": "",
+      "lastSheetSync": "2026-10-25T11:20:43.485Z",
+      "syncedChannelsCount": 2
     },
     {
       "id": "user-1792143539742",
@@ -575,6 +577,50 @@
     }
   ],
   "channels": [
+    {
+      "id": "ch-user-1792140055584-1792927243485-0",
+      "nameAndLink": "Fresh (No Link)",
+      "channelName": "Fresh",
+      "channelUrl": "https://youtube.com",
+      "status": "Active",
+      "email": "nasrullahmalakzai2@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Nisha's Google Sheet",
+      "managedBy": "Nisha",
+      "managerMail": "nishwork234@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "rahim-yar-khan",
+      "userId": "user-1792140055584",
+      "updatedAt": "2026-10-25T11:20:43.485Z"
+    },
+    {
+      "id": "ch-user-1792140055584-1792927243485-1",
+      "nameAndLink": "Fresh (No Link)",
+      "channelName": "Fresh",
+      "channelUrl": "https://youtube.com",
+      "status": "Active",
+      "email": "imran.ali.baloch.quetta@gmail.com",
+      "password": "",
+      "twoFactor": "",
+      "backupCodes": "",
+      "createdNumber": "",
+      "pubId": "",
+      "ip": "",
+      "niche": "YouTube Automation",
+      "notes": "Synced from Nisha's Google Sheet",
+      "managedBy": "Nisha",
+      "managerMail": "nishwork234@gmail.com",
+      "owner": "EmpireNexs",
+      "branchId": "rahim-yar-khan",
+      "userId": "user-1792140055584",
+      "updatedAt": "2026-10-25T11:20:43.485Z"
+    },
     {
       "id": "ch-user-1792665217736-1792665501766-0",
       "nameAndLink": "Свет Небес (Свет Небес)",
@@ -3668,5 +3714,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T11:20:41.970Z"
+  "updatedAt": "2026-10-25T11:20:43.658Z"
 }
