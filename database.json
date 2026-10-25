@@ -3468,6 +3468,32 @@
       "timestamp": "08:44 AM",
       "createdAt": "2026-10-25T15:44:13.486Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792943186348",
+      "userId": "user-1792092595203",
+      "userName": "Khansa Saddique",
+      "userEmail": "khansasaddique061@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Mujy OTP do",
+      "timestamp": "08:46 AM",
+      "createdAt": "2026-10-25T15:46:26.347Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-askname-1792943186349",
+      "userId": "user-1792092595203",
+      "userName": "Khansa Saddique",
+      "userEmail": "khansasaddique061@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "Link `https://www.youtube.com/channel/UCwY30FEcjKpDb7K29skEp2Q` ke liye please **Channel Name** specify karein taake verification number order ho sake.",
+      "timestamp": "08:46 AM",
+      "createdAt": "2026-10-25T15:46:26.347Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [
@@ -3860,5 +3886,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T15:44:16.337Z"
+  "updatedAt": "2026-10-25T15:46:28.534Z"
 }
