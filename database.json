@@ -3291,6 +3291,32 @@
       "timestamp": "03:17 AM",
       "createdAt": "2026-10-25T10:17:08.885Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792923435578",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "code",
+      "timestamp": "03:17 AM",
+      "createdAt": "2026-10-25T10:17:15.577Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-askname-1792923435578",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "Link `https://www.youtube.com/@SecretosdelCoraz%C3%B3ns` ke liye please **Channel Name** specify karein taake verification number order ho sake.",
+      "timestamp": "03:17 AM",
+      "createdAt": "2026-10-25T10:17:15.577Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [
@@ -3598,5 +3624,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T10:17:10.137Z"
+  "updatedAt": "2026-10-25T10:17:16.814Z"
 }
