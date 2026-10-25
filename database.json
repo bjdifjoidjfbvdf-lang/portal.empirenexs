@@ -3213,6 +3213,32 @@
       "timestamp": "03:13 AM",
       "createdAt": "2026-10-25T10:13:11.778Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1792923261750",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "https://www.youtube.com/@SecretosdelCoraz%C3%B3ns",
+      "timestamp": "03:14 AM",
+      "createdAt": "2026-10-25T10:14:21.750Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-wait-1792923262579",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **SecretosdelCoraz**\n- **Link:** https://www.youtube.com/@SecretosdelCoraz%C3%B3ns\n- **Phone (Philippines):** `+639950002701`\n- **Purchased By:** Shahzaman\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "03:14 AM",
+      "createdAt": "2026-10-25T10:14:21.750Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [
@@ -3520,5 +3546,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-25T10:13:13.024Z"
+  "updatedAt": "2026-10-25T10:14:23.797Z"
 }
