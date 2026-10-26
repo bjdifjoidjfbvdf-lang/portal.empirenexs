@@ -3628,6 +3628,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1029594827",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "branchId": "rahim-yar-khan",
+      "channelName": "SecretsoftheHeart-d6r",
+      "channelUrl": "https://www.youtube.com/@SecretsoftheHeart-d6r",
+      "phoneNumber": "+639272911551",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": "144514",
+      "status": "COMPLETED",
+      "cost": "",
+      "createdAt": "2026-10-26 13:03:30",
+      "expiresAt": 1793020110708
+    },
+    {
       "id": "1025446287",
       "userId": "user-1792092595203",
       "userName": "Khansa Saddique",
@@ -4016,5 +4033,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-26T13:03:30.273Z"
+  "updatedAt": "2026-10-26T13:04:56.737Z"
 }
