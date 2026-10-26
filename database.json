@@ -3598,6 +3598,32 @@
       "timestamp": "06:02 PM",
       "createdAt": "2026-10-26T13:02:47.952Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1793019809778",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "link:https://www.youtube.com/@SecretsoftheHeart-d6r",
+      "timestamp": "06:03 PM",
+      "createdAt": "2026-10-26T13:03:29.778Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-wait-1793019810709",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **SecretsoftheHeart-d6r**\n- **Link:** https://www.youtube.com/@SecretsoftheHeart-d6r\n- **Phone (Philippines):** `+639272911551`\n- **Purchased By:** Nisha\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "06:03 PM",
+      "createdAt": "2026-10-26T13:03:29.778Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [
@@ -3990,5 +4016,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-26T13:02:47.633Z"
+  "updatedAt": "2026-10-26T13:03:30.273Z"
 }
