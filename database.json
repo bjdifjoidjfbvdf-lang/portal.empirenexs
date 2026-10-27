@@ -3628,6 +3628,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1033709510",
+      "userId": "user-1792329257506",
+      "userName": "Muhammad Ahmad",
+      "userEmail": "ahmaddnb00@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Quantum Ascend",
+      "channelUrl": "https://youtube.com/@quantumascend-l9x?si=wXSpodHAzn1Z6Ukb",
+      "phoneNumber": "+639974294091",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-27 09:24:26",
+      "expiresAt": 1793093366097
+    },
+    {
       "id": "1029594827",
       "userId": "user-1792140055584",
       "userName": "Nisha",
@@ -4033,5 +4050,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-26T13:04:56.737Z"
+  "updatedAt": "2026-10-27T09:24:26.202Z"
 }
