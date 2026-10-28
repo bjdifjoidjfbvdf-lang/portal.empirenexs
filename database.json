@@ -3810,6 +3810,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1039316597",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "Psalms",
+      "channelUrl": "http://www.youtube.com/@PsalmsfortheChosen-u7c",
+      "phoneNumber": "+639354747635",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-28 13:35:05",
+      "expiresAt": 1793194805390
+    },
+    {
       "id": "1039140782",
       "userId": "user-1792242533886",
       "userName": "Faizan Zubair",
@@ -4266,5 +4283,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-28T13:34:23.061Z"
+  "updatedAt": "2026-10-28T13:35:08.295Z"
 }
