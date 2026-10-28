@@ -3628,6 +3628,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1039140782",
+      "userId": "user-1792242533886",
+      "userName": "Faizan Zubair",
+      "userEmail": "faizanzubair7860@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Послания Бога",
+      "channelUrl": "https://www.youtube.com/channel/UCPZwPPPg1PKKiwbXRYc8_FQ",
+      "phoneNumber": "+639975905519",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-28 12:44:35",
+      "expiresAt": 1793191775652
+    },
+    {
       "id": "1034108792",
       "userId": "user-1792143539742",
       "userName": "Atif M Altaf",
@@ -4067,5 +4084,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-27T11:25:24.612Z"
+  "updatedAt": "2026-10-28T12:44:36.722Z"
 }
