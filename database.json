@@ -3676,6 +3676,32 @@
       "timestamp": "06:32 AM",
       "createdAt": "2026-10-28T13:32:51.038Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1793194388030",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "www.youtube.com/@PsalmsfortheChosen-u7c",
+      "timestamp": "06:33 AM",
+      "createdAt": "2026-10-28T13:33:08.030Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-niche-1793194388031",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "🎯 **Google Sheet Competitor Links: [✝️ youngi cho]**\n\nAap ke kehne ke mutabiq Google Sheet ke **\"youngi cho\"** tab (#gid=1218222988) se **2 competitor channels** nikaal kar bhej diye hain:\n\n1. **[David Yonggi Cho Teachings](https://www.youtube.com/@YonngiChoTeachings-j2c)**\n   - **Channel / Handle:** `@YonngiChoTeachings-j2c`\n   - **YouTube Link:** https://www.youtube.com/@YonngiChoTeachings-j2c\n   - **Content Overview:** Competitor resource in \"youngi cho\" niche from Google Sheets tab #1218222988.\n\n2. **[YonggiChoSermons Official](https://www.youtube.com/@YonggiChoSermons-Official)**\n   - **Channel / Handle:** `@YonggiChoSermons-Official`\n   - **YouTube Link:** https://www.youtube.com/@YonggiChoSermons-Official\n   - **Content Overview:** Competitor resource in \"youngi cho\" niche from Google Sheets tab #1218222988.\n\n---\n🔗 **Direct Tab Link:** [Open \"youngi cho\" Tab in Google Sheet](https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit#gid=1218222988)\n📊 **Master Connected Sheet:** [Google Sheets Niches Hub](https://docs.google.com/spreadsheets/d/1p_3ENMU4jL3BzqOk2bekdPc_l-x6sxaFnQ1moaJ4UGs/edit?usp=sharing)\n💡 *Aap in links par click kar ke competitor channels analyze kar saktay hain ya neechay clickable badges se direct open kar saktay hain.*",
+      "timestamp": "06:33 AM",
+      "createdAt": "2026-10-28T13:33:08.030Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [
@@ -4136,5 +4162,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-28T13:32:53.968Z"
+  "updatedAt": "2026-10-28T13:33:11.416Z"
 }
