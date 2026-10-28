@@ -3820,8 +3820,8 @@
       "phoneNumber": "+639354747635",
       "provider": "Hero-SMS",
       "country": "Philippines (+63)",
-      "otpCode": null,
-      "status": "PENDING_OTP",
+      "otpCode": "364310",
+      "status": "COMPLETED",
       "cost": "",
       "createdAt": "2026-10-28 13:35:05",
       "expiresAt": 1793194805390
@@ -4283,5 +4283,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-28T13:35:08.295Z"
+  "updatedAt": "2026-10-28T13:35:57.540Z"
 }
