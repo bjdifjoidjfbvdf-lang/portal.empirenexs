@@ -1763,7 +1763,7 @@ Instructions:
         channelUrl: channelMatch.channelUrl,
         phoneNumber: channelMatch.createdNumber,
         provider: 'Hero-SMS',
-        country: 'Philippines (+63)',
+        country: 'Indonesia (+62)',
         otpCode: 'Active',
         status: 'COMPLETED',
         cost: '',
@@ -1781,7 +1781,7 @@ Instructions:
   const requestPhoneOTP = async (
     channelName: string,
     channelUrl: string,
-    _userRequestedCountry: string = 'Philippines (+63)',
+    _userRequestedCountry: string = 'Indonesia (+62)',
     _userProvider: string = 'Hero-SMS'
   ): Promise<{ success: boolean; message: string; order?: OTPOrderRecord }> => {
     const trimmedChannel = channelName.trim();
@@ -1842,7 +1842,7 @@ Instructions:
       }
     }
 
-    // REAL API Call to Hero-SMS (Country 4 = Philippines Google/YouTube $0.024)
+    // REAL API Call to Hero-SMS (Country 6 = Indonesia Google/YouTube ~$0.036, Budget Cap: $0.040)
     try {
       const res = await fetch('/api/hero-sms', {
         method: 'POST',
@@ -1860,6 +1860,8 @@ Instructions:
 
       const orderId = data.orderId;
       const phoneNumber = data.phoneNumber;
+      const orderCost = data.cost || '$0.036';
+      const costAmount = typeof data.costNum === 'number' ? data.costNum : 0.036;
 
       // 5 Minutes (300 seconds / 300,000 ms) Countdown Window
       const newOrder: OTPOrderRecord = {
@@ -1872,10 +1874,10 @@ Instructions:
         channelUrl: trimmedUrl,
         phoneNumber,
         provider: 'Hero-SMS',
-        country: 'Philippines (+63)',
+        country: data.country || 'Indonesia (+62)',
         otpCode: null,
         status: 'PENDING_OTP',
-        cost: '',
+        cost: orderCost,
         createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
         expiresAt: Date.now() + 300000, // 5 minutes
       };
@@ -1889,8 +1891,8 @@ Instructions:
         body: JSON.stringify({ action: 'saveOrder', order: newOrder }),
       }).catch(() => null);
 
-      // Deduct balance locally by 0.024
-      setSettings((prev) => ({ ...prev, smsBalance: Math.max(0, prev.smsBalance - 0.024) }));
+      // Deduct balance locally by actual number cost ($0.036)
+      setSettings((prev) => ({ ...prev, smsBalance: Math.max(0, prev.smsBalance - costAmount) }));
 
       // REAL HERO-SMS POLLING LOOP FOR REAL OTP (5 minutes timeout)
       const pollIntervalMs = 4000;
@@ -1913,7 +1915,7 @@ Instructions:
           setOtpOrders((prev) =>
             prev.map((o) => (o.id === orderId && o.status === 'PENDING_OTP' ? { ...o, status: 'EXPIRED' } : o))
           );
-          setSettings((prev) => ({ ...prev, smsBalance: prev.smsBalance + 0.024 }));
+          setSettings((prev) => ({ ...prev, smsBalance: prev.smsBalance + costAmount }));
 
           fetch('/api/otp', {
             method: 'POST',
@@ -2010,7 +2012,7 @@ Instructions:
               id: `msg-otp-${Date.now()}`,
               sender: 'assistant',
               senderName: 'Nexs AI Assistant',
-              text: `🎉 **Hero-SMS Real YouTube OTP Code Received!**\n- **Channel:** ${trimmedChannel}\n- **Link:** ${trimmedUrl}\n- **Phone (Philippines):** \`${phoneNumber}\`\n- **Live OTP Code:** \`${realOtp}\`\n- **Hero-SMS Order ID:** \`#${orderId}\`\n\n(This number and verified code have been synchronized into Channels Vault. Your daily 1-number limit is now recorded).`,
+              text: `🎉 **Hero-SMS Real YouTube OTP Code Received!**\n- **Channel:** ${trimmedChannel}\n- **Link:** ${trimmedUrl}\n- **Phone (Indonesia):** \`${phoneNumber}\`\n- **Live OTP Code:** \`${realOtp}\`\n- **Hero-SMS Order ID:** \`#${orderId}\`\n\n(This number and verified code have been synchronized into Channels Vault. Your daily 1-number limit is now recorded).`,
               timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               fetchedItems: [
                 {
@@ -2060,9 +2062,10 @@ Instructions:
       prev.map((o) => (o.id === orderId ? { ...o, status: 'CANCELLED' } : o))
     );
 
-    // If cancelled while pending, refund the $0.024 back to smsBalance
+    // If cancelled while pending, refund the cost back to smsBalance
     if (wasPending) {
-      setSettings((prev) => ({ ...prev, smsBalance: prev.smsBalance + 0.024 }));
+      const refundAmount = targetOrder?.cost ? (parseFloat(targetOrder.cost.replace(/[^0-9.]/g, '')) || 0.036) : 0.036;
+      setSettings((prev) => ({ ...prev, smsBalance: prev.smsBalance + refundAmount }));
     }
 
     fetch('/api/otp', {
@@ -2653,7 +2656,7 @@ Instructions:
         id: `msg-sop-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `🏢 **EmpireNexs Management & Contact Info:**\n- **Founder & CEO:** Waqas Gill (Musafirkhana HQ)\n- **Official WhatsApp:** \`+923075203713\` (https://wa.me/923075203713)\n- **Email:** \`muhammadwaqasmwg@gmail.com\`\n- **Co-Founder:** Saim Chaudhry (Bahawalpur)\n- **Branch Head:** Zainab Athar (Rahim Yar Khan)\n- **Daily Niche Quota:** Max 2 script topics per team member per 24 hours.\n- **Phone Verification:** 1 number per user per day via Philippines Hero-SMS numbers. Zero duplicate numbers.\n- **Data Isolation:** Students aur creators ka Google Sheet data strictly private aur isolated rehta hai.`,
+        text: `🏢 **EmpireNexs Management & Contact Info:**\n- **Founder & CEO:** Waqas Gill (Musafirkhana HQ)\n- **Official WhatsApp:** \`+923075203713\` (https://wa.me/923075203713)\n- **Email:** \`muhammadwaqasmwg@gmail.com\`\n- **Co-Founder:** Saim Chaudhry (Bahawalpur)\n- **Branch Head:** Zainab Athar (Rahim Yar Khan)\n- **Daily Niche Quota:** Max 2 script topics per team member per 24 hours.\n- **Phone Verification:** 1 number per user per day via Indonesia Hero-SMS numbers ($0.036). Zero duplicate numbers.\n- **Data Isolation:** Students aur creators ka Google Sheet data strictly private aur isolated rehta hai.`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
       };
@@ -2814,7 +2817,7 @@ Instructions:
         id: `msg-wait-${Date.now()}`,
         sender: 'assistant',
         senderName: 'Nexs AI Assistant',
-        text: `⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **${extractedChannel}**\n- **Link:** ${extractedUrl}\n- **Phone (Philippines):** \`${otpResult.order?.phoneNumber}\`\n- **Purchased By:** ${currentUser?.name || 'Creator'}\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!`,
+        text: `⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **${extractedChannel}**\n- **Link:** ${extractedUrl}\n- **Phone (Indonesia):** \`${otpResult.order?.phoneNumber}\`\n- **Purchased By:** ${currentUser?.name || 'Creator'}\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!`,
         timestamp: timeStr,
         createdAt: now.toISOString(),
       };

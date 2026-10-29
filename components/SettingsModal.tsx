@@ -188,7 +188,7 @@ export const SettingsView: React.FC = () => {
               <h2 className="text-sm font-bold text-white">Hero-SMS Integration (hero-sms.com)</h2>
             </div>
             <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              Philippines (+63) Direct Carrier Route
+              Indonesia (+62) Direct Carrier Route
             </span>
           </div>
           <p className="text-slate-400 text-xs">
@@ -203,7 +203,7 @@ export const SettingsView: React.FC = () => {
               className="w-full px-3 py-2.5 bg-slate-950 border border-slate-700/80 rounded-lg text-white font-mono text-xs focus:outline-none focus:border-emerald-500"
             />
             <p className="text-[10px] text-slate-400 mt-1">
-              Endpoint: <code>https://hero-sms.com/stubs/handler_api.php</code> • Service: <code>go</code> (Google/YouTube) • Country: <code>4</code> (Philippines)
+              Endpoint: <code>https://hero-sms.com/stubs/handler_api.php</code> • Service: <code>go</code> (Google/YouTube) • Country: <code>6</code> (Indonesia) • Rate: ~$0.036
             </p>
           </div>
         </div>

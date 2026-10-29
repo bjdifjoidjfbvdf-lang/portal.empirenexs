@@ -69,6 +69,21 @@ export async function GET(req: NextRequest) {
     }
   }
 
+  // 3. Check Current Live Rate for Indonesia (service: go)
+  if (action === 'getPrice') {
+    try {
+      const res = await fetch(`${HERO_SMS_API}?api_key=${apiKey}&action=getPrices&service=go&country=6`, {
+        cache: 'no-store',
+      });
+      const data = await res.json();
+      const cost = data?.['6']?.['go']?.cost || 0.036;
+      const count = data?.['6']?.['go']?.count || 0;
+      return NextResponse.json({ success: true, country: 'Indonesia (+62)', countryId: 6, service: 'go', cost, count });
+    } catch (e: any) {
+      return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    }
+  }
+
   return NextResponse.json({ success: false, error: 'Unknown action' }, { status: 400 });
 }
 
@@ -86,12 +101,36 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
 
-    // Action 1: Buy Real Google/YouTube Philippines number ($0.024)
+    // Action 1: Buy Real Google/YouTube Indonesia number (Always Indonesia, Budget Cap: $0.040)
     if (action === 'buyNumber') {
       const service = 'go'; // Google / YouTube / Gmail
-      const country = '4'; // Philippines ID in Hero-SMS
+      const country = '6';  // Indonesia ID in Hero-SMS (Country code +62)
+      const MAX_ALLOWED_PRICE = 0.040; // Strict budget limit: $0.03 - $0.04 (Reject purchase if rate is higher)
 
-      const buyUrl = `${HERO_SMS_API}?api_key=${apiKey}&action=getNumber&service=${service}&country=${country}`;
+      // Step A: Real-time price check for Indonesia
+      let currentRate = 0.036;
+      try {
+        const priceCheckUrl = `${HERO_SMS_API}?api_key=${apiKey}&action=getPrices&service=${service}&country=${country}`;
+        const pRes = await fetch(priceCheckUrl, { cache: 'no-store' });
+        const pText = await pRes.text();
+        const pData = JSON.parse(pText);
+        const fetchedCost = pData?.[country]?.[service]?.cost;
+        if (typeof fetchedCost === 'number') {
+          currentRate = fetchedCost;
+          if (fetchedCost > MAX_ALLOWED_PRICE) {
+            return NextResponse.json({
+              success: false,
+              error: 'PRICE_EXCEEDED',
+              message: `Price Limit Exceeded: Indonesia number rate is currently $${fetchedCost.toFixed(3)}, which exceeds the maximum allowed budget limit ($0.03 - $0.04). Purchase stopped to prevent extra charges.`,
+            }, { status: 400 });
+          }
+        }
+      } catch (priceErr) {
+        console.warn('Hero-SMS price check warning:', priceErr);
+      }
+
+      // Step B: Purchase number with maxPrice safeguard
+      const buyUrl = `${HERO_SMS_API}?api_key=${apiKey}&action=getNumber&service=${service}&country=${country}&maxPrice=${MAX_ALLOWED_PRICE}`;
       const res = await fetch(buyUrl, { cache: 'no-store' });
       const text = await res.text();
 
@@ -109,8 +148,9 @@ export async function POST(req: NextRequest) {
           orderId: heroOrderId,
           phoneNumber: number,
           service: 'Google / YouTube / Gmail',
-          country: 'Philippines (+63)',
-          cost: '',
+          country: 'Indonesia (+62)',
+          cost: `$${currentRate.toFixed(3)}`,
+          costNum: currentRate,
           provider: 'Hero-SMS (hero-sms.com)',
           expiresInSeconds: 300, // 5 minutes
         });
@@ -121,7 +161,7 @@ export async function POST(req: NextRequest) {
       if (text.includes('NO_BALANCE')) {
         friendlyError = 'Hero-SMS account has insufficient balance. Please top up your account at hero-sms.com.';
       } else if (text.includes('NO_NUMBERS')) {
-        friendlyError = 'No numbers are currently available on Hero-SMS for Google/YouTube in this region. Please try again shortly or choose another country.';
+        friendlyError = `No Indonesia numbers are currently available at the budget rate ($0.036) on Hero-SMS. Please try again shortly.`;
       } else if (text.includes('BAD_KEY')) {
         friendlyError = 'Hero-SMS API Key is invalid. Please copy the correct API Key from hero-sms.com and update Settings.';
       }

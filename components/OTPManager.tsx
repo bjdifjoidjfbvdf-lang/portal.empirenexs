@@ -40,7 +40,7 @@ export const OTPManager: React.FC = () => {
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [selectedChannel, setSelectedChannel] = useState('');
   const [selectedChannelUrl, setSelectedChannelUrl] = useState('');
-  const [selectedCountry, setSelectedCountry] = useState('Philippines (+63)');
+  const [selectedCountry, setSelectedCountry] = useState('Indonesia (+62)');
   const [selectedProvider, setSelectedProvider] = useState<'Hero-SMS'>('Hero-SMS');
   const [requestError, setRequestError] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -117,7 +117,7 @@ export const OTPManager: React.FC = () => {
       return;
     }
 
-    const res = await requestPhoneOTP(selectedChannel, selectedChannelUrl, 'Philippines (+63)', 'Hero-SMS');
+    const res = await requestPhoneOTP(selectedChannel, selectedChannelUrl, 'Indonesia (+62)', 'Hero-SMS');
     if (!res.success) {
       setRequestError(res.message);
     } else {
@@ -710,14 +710,14 @@ export const OTPManager: React.FC = () => {
                 <div className="w-full px-3 py-2 bg-slate-950 border border-slate-700/80 rounded-lg text-white text-xs flex items-center justify-between">
                   <div>
                     <span className="font-bold text-slate-100">Hero-SMS (hero-sms.com)</span>
-                    <span className="text-slate-400 text-[11px] block">Country: Philippines (+63)</span>
+                    <span className="text-slate-400 text-[11px] block">Country: Indonesia (+62)</span>
                   </div>
                   <span className="px-2 py-0.5 rounded font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 text-xs">
-                    Active
+                    ~$0.036 USD
                   </span>
                 </div>
                 <p className="text-[10px] text-emerald-400 mt-1">
-                  ✓ Rule: Automatically selecting Philippines (+63) for optimal YouTube verification delivery.
+                  ✓ Rule: Locked to Indonesia (+62) at budget rate ($0.036). Purchases above $0.040 are automatically blocked.
                 </p>
               </div>
 
