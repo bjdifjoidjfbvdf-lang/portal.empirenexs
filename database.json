@@ -3866,6 +3866,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1046697113",
+      "userId": "user-1792242533886",
+      "userName": "Faizan Zubair",
+      "userEmail": "faizanzubair7860@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Слово Надежды",
+      "channelUrl": "https://www.youtube.com/channel/UCPsbiER7Mu-FLHoi3us9D1w",
+      "phoneNumber": "+6283184841199",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-30 10:14:47",
+      "expiresAt": 1793355587908
+    },
+    {
       "id": "1046691348",
       "userId": "user-1792143539742",
       "userName": "Atif M Altaf",
@@ -4373,5 +4390,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-30T10:13:13.636Z"
+  "updatedAt": "2026-10-30T10:14:47.681Z"
 }
