@@ -344,7 +344,7 @@
       "role": "TEAM_MEMBER",
       "designation": "Senior Video Editor",
       "branchId": "rahim-yar-khan",
-      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "avatar": "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=200&auto=format&fit=crop&q=80",
       "canAccessAllBranches": false,
       "status": "ACTIVE",
       "joiningType": "PERCENTAGE",
@@ -4485,5 +4485,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-30T17:37:41.626Z"
+  "updatedAt": "2026-10-30T18:22:10.941Z"
 }
