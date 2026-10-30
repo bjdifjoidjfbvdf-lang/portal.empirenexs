@@ -3914,6 +3914,32 @@
       "timestamp": "10:36 PM",
       "createdAt": "2026-10-30T17:36:08.241Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1793381779986",
+      "userId": "user-1792419178041",
+      "userName": "Maha Ch",
+      "userEmail": "mahachudary31@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "link:https://www.youtube.com/@mahabrand-u4c",
+      "timestamp": "10:36 PM",
+      "createdAt": "2026-10-30T17:36:19.986Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-wait-1793381781028",
+      "userId": "user-1792419178041",
+      "userName": "Maha Ch",
+      "userEmail": "mahachudary31@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **mahabrand-u4c**\n- **Link:** https://www.youtube.com/@mahabrand-u4c\n- **Phone (Indonesia):** `+6283846405444`\n- **Purchased By:** Maha Ch\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "10:36 PM",
+      "createdAt": "2026-10-30T17:36:19.986Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [
@@ -4442,5 +4468,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-30T17:36:08.088Z"
+  "updatedAt": "2026-10-30T17:36:20.760Z"
 }
