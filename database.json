@@ -3876,8 +3876,8 @@
       "phoneNumber": "+6283184841199",
       "provider": "Hero-SMS",
       "country": "Philippines (+63)",
-      "otpCode": null,
-      "status": "PENDING_OTP",
+      "otpCode": "885591",
+      "status": "COMPLETED",
       "cost": "",
       "createdAt": "2026-10-30 10:14:47",
       "expiresAt": 1793355587908
@@ -4390,5 +4390,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-30T10:14:47.681Z"
+  "updatedAt": "2026-10-30T10:15:41.428Z"
 }
