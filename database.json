@@ -3944,6 +3944,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1048265343",
+      "userId": "user-1792419178041",
+      "userName": "Maha Ch",
+      "userEmail": "mahachudary31@gmail.com",
+      "branchId": "rahim-yar-khan",
+      "channelName": "mahabrand-u4c",
+      "channelUrl": "https://www.youtube.com/@mahabrand-u4c",
+      "phoneNumber": "+6283846405444",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "398797",
+      "status": "COMPLETED",
+      "cost": "$0.036",
+      "createdAt": "2026-10-30 17:36:21",
+      "expiresAt": 1793382081027
+    },
+    {
       "id": "1046697113",
       "userId": "user-1792242533886",
       "userName": "Faizan Zubair",
@@ -4468,5 +4485,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-30T17:36:20.760Z"
+  "updatedAt": "2026-10-30T17:37:41.626Z"
 }
