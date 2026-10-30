@@ -3866,6 +3866,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1046581709",
+      "userId": "user-1792145642574",
+      "userName": "Muhammad Nadeem",
+      "userEmail": "nadeemkhanofficial747@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Энергия Перемен",
+      "channelUrl": "https://www.youtube.com/channel/UCNLkYx3HZTnFZLW12bWhGhw",
+      "phoneNumber": "+6283193460798",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-10-30 09:41:14",
+      "expiresAt": 1793353575001
+    },
+    {
       "id": "1039316597",
       "userId": "user-1792159465593",
       "userName": "Abid K.",
@@ -4339,5 +4356,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-29T14:53:05.602Z"
+  "updatedAt": "2026-10-30T09:41:15.995Z"
 }
