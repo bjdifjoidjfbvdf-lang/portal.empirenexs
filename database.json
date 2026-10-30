@@ -3866,6 +3866,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1046691348",
+      "userId": "user-1792143539742",
+      "userName": "Atif M Altaf",
+      "userEmail": "atifmaltaf2004@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Свет Православия",
+      "channelUrl": "https://www.youtube.com/channel/UC5IeSH05P597IW91__UJ6tg",
+      "phoneNumber": "+6283155683451",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.036",
+      "createdAt": "2026-10-30 10:12:51",
+      "expiresAt": 1793355471274
+    },
+    {
       "id": "1046581709",
       "userId": "user-1792145642574",
       "userName": "Muhammad Nadeem",
@@ -4356,5 +4373,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-30T09:46:16.875Z"
+  "updatedAt": "2026-10-30T10:12:52.668Z"
 }
