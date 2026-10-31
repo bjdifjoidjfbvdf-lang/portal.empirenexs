@@ -342,7 +342,7 @@
       "phone": "",
       "address": "",
       "role": "TEAM_MEMBER",
-      "designation": "",
+      "designation": "Team Member",
       "branchId": "rahim-yar-khan",
       "avatar": "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=200&auto=format&fit=crop&q=80",
       "canAccessAllBranches": false,
@@ -574,6 +574,25 @@
       "joiningType": "PERCENTAGE",
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-25",
+      "emailVerified": true
+    },
+    {
+      "id": "user-1793449879923",
+      "name": "Mohsin Chattha",
+      "username": "mohsin",
+      "email": "chatthamohsin603@gmail.com",
+      "password": "Mohsin King",
+      "phone": "03010008538",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "musafirkhana",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-10-31",
       "emailVerified": true
     }
   ],
@@ -4486,5 +4505,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-30T18:22:42.840Z"
+  "updatedAt": "2026-10-31T12:31:20.127Z"
 }
