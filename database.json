@@ -3986,6 +3986,32 @@
       "timestamp": "06:08 PM",
       "createdAt": "2026-10-31T13:08:42.759Z",
       "month": "2026-10"
+    },
+    {
+      "id": "log-msg-1793452179226",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "name: The Hidden Wisdom link: www.youtube.com/@TheHiddenWisdom-k9i",
+      "timestamp": "06:09 PM",
+      "createdAt": "2026-10-31T13:09:39.225Z",
+      "month": "2026-10"
+    },
+    {
+      "id": "log-msg-asklink-1793452179226",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "Channel **\"The Hidden Wisdom\"** ke liye please **YouTube Channel Link (URL)** provide karein taake duplicate check kar ke number book kiya ja sake.",
+      "timestamp": "06:09 PM",
+      "createdAt": "2026-10-31T13:09:39.225Z",
+      "month": "2026-10"
     }
   ],
   "otpOrders": [
@@ -4531,5 +4557,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-10-31T13:08:43.433Z"
+  "updatedAt": "2026-10-31T13:09:39.896Z"
 }
