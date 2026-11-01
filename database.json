@@ -4172,6 +4172,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1056808036",
+      "userId": "user-1792242533886",
+      "userName": "Faizan Zubair",
+      "userEmail": "faizanzubair7860@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Amor profundo",
+      "channelUrl": "https://www.youtube.com/channel/UCqjoNZNxbIH6mIFeQ3LwpHQ",
+      "phoneNumber": "+6285143834966",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-11-01 13:13:30",
+      "expiresAt": 1793539110248
+    },
+    {
       "id": "1056311380",
       "userId": "user-1792159465593",
       "userName": "Abid K.",
@@ -4730,5 +4747,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-01T10:53:44.312Z"
+  "updatedAt": "2026-11-01T13:13:30.310Z"
 }
