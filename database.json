@@ -4280,6 +4280,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1061406657",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Billy Graham Sermons channel",
+      "channelUrl": "http://www.youtube.com/@BillyGrahamSermons-d7b",
+      "phoneNumber": "+6283168134309",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "158235",
+      "status": "COMPLETED",
+      "cost": "$0.024",
+      "createdAt": "2026-11-02 12:41:20",
+      "expiresAt": 1793623580759
+    },
+    {
       "id": "1056808036",
       "userId": "user-1792242533886",
       "userName": "Faizan Zubair",
@@ -4855,5 +4872,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-02T12:41:56.629Z"
+  "updatedAt": "2026-11-02T12:42:12.630Z"
 }
