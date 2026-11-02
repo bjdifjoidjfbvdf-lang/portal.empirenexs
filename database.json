@@ -4250,6 +4250,32 @@
       "timestamp": "04:41 AM",
       "createdAt": "2026-11-02T12:41:20.013Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1793623317773",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "user",
+      "text": "otp",
+      "timestamp": "04:41 AM",
+      "createdAt": "2026-11-02T12:41:57.773Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-err-1793623317776",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "assistant",
+      "text": "⚠️ **Duplicate Channel Blocked:** Channel \"Billy Graham Sermons channel\" (http://www.youtube.com/@BillyGrahamSermons-d7b) has already received a verified phone number (+6283168134309 - Status: Active). Multiple numbers for the same channel are strictly prohibited.",
+      "timestamp": "04:41 AM",
+      "createdAt": "2026-11-02T12:41:57.773Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -4829,5 +4855,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-02T12:41:19.764Z"
+  "updatedAt": "2026-11-02T12:41:56.629Z"
 }
