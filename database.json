@@ -4224,6 +4224,32 @@
       "timestamp": "04:37 AM",
       "createdAt": "2026-11-02T12:37:57.793Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1793623280014",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "user",
+      "text": "Name Billy Graham Sermons channel url http://www.youtube.com/@BillyGrahamSermons-d7b",
+      "timestamp": "04:41 AM",
+      "createdAt": "2026-11-02T12:41:20.013Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-wait-1793623280761",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **Billy Graham Sermons channel**\n- **Link:** http://www.youtube.com/@BillyGrahamSermons-d7b\n- **Phone (Indonesia):** `+6283168134309`\n- **Purchased By:** Hassan\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "04:41 AM",
+      "createdAt": "2026-11-02T12:41:20.013Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -4803,5 +4829,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-02T12:37:56.729Z"
+  "updatedAt": "2026-11-02T12:41:19.764Z"
 }
