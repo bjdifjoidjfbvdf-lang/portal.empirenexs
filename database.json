@@ -3188,7 +3188,7 @@
       "nameAndLink": "Beyond Space & Mind (No Link)",
       "channelName": "Beyond Space & Mind",
       "channelUrl": "https://youtube.com",
-      "status": "Active",
+      "status": "Sold",
       "email": "mumusa6345@gmail.com",
       "password": "",
       "twoFactor": "",
@@ -3203,7 +3203,11 @@
       "owner": "EmpireNexs",
       "branchId": "musafirkhana",
       "userId": "user-1792159465593",
-      "updatedAt": "2026-10-17T08:04:27.029Z"
+      "updatedAt": "2026-11-02T08:16:30.212Z",
+      "salePrice": 18000,
+      "soldTo": "Direct Client",
+      "soldAt": "2026-11-02",
+      "saleCurrency": "PKR"
     }
   ],
   "chatLogs": [
@@ -4747,5 +4751,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-02T08:14:55.397Z"
+  "updatedAt": "2026-11-02T08:16:30.400Z"
 }
