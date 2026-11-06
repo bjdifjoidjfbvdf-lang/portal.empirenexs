@@ -4514,6 +4514,32 @@
       "timestamp": "03:23 AM",
       "createdAt": "2026-11-06T11:23:31.614Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1793964289483",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "code",
+      "timestamp": "03:24 AM",
+      "createdAt": "2026-11-06T11:24:49.483Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-asklink-1793964289484",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "Channel **\"Ecos del Alma\"** ke liye please **YouTube Channel Link (URL)** provide karein taake duplicate check kar ke number book kiya ja sake.",
+      "timestamp": "03:24 AM",
+      "createdAt": "2026-11-06T11:24:49.483Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -5161,5 +5187,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-06T11:23:32.236Z"
+  "updatedAt": "2026-11-06T11:24:49.934Z"
 }
