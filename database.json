@@ -4414,6 +4414,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1081469820",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Susuros del Corazón ya h .",
+      "channelUrl": "http://www.youtube.com/@SusurosdelCoraz%C3%B3n-p9o",
+      "phoneNumber": "+6283821266124",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.024",
+      "createdAt": "2026-11-06 10:05:12",
+      "expiresAt": 1793959812239
+    },
+    {
       "id": "1066390483",
       "userId": "user-1792329257506",
       "userName": "Muhammad Ahmad",
@@ -5023,5 +5040,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-06T10:04:13.282Z"
+  "updatedAt": "2026-11-06T10:05:12.024Z"
 }
