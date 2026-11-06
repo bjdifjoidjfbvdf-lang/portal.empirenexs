@@ -4466,6 +4466,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1081765339",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "Ecos del Alma",
+      "channelUrl": "https://www.youtube.com/@SecretosdelCoraz%C3%B3ns",
+      "phoneNumber": "+6283873858457",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.024",
+      "createdAt": "2026-11-06 11:21:53",
+      "expiresAt": 1793964413009
+    },
+    {
       "id": "1081469820",
       "userId": "user-1792158192310",
       "userName": "Hassan",
@@ -5092,5 +5109,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-06T11:20:21.025Z"
+  "updatedAt": "2026-11-06T11:21:53.428Z"
 }
