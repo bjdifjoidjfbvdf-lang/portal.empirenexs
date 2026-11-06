@@ -4581,7 +4581,7 @@
       "provider": "Hero-SMS",
       "country": "Indonesia (+62)",
       "otpCode": null,
-      "status": "PENDING_OTP",
+      "status": "CANCELLED",
       "cost": "$0.024",
       "createdAt": "2026-11-06 11:21:53",
       "expiresAt": 1793964413009
@@ -5213,5 +5213,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-06T11:25:49.953Z"
+  "updatedAt": "2026-11-06T11:26:54.232Z"
 }
