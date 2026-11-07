@@ -4580,8 +4580,8 @@
       "phoneNumber": "+6283161687650",
       "provider": "Hero-SMS",
       "country": "Philippines (+63)",
-      "otpCode": null,
-      "status": "PENDING_OTP",
+      "otpCode": "162861",
+      "status": "COMPLETED",
       "cost": "",
       "createdAt": "2026-11-07 15:49:46",
       "expiresAt": 1794066886187
@@ -5230,5 +5230,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-07T15:49:47.569Z"
+  "updatedAt": "2026-11-07T15:50:25.203Z"
 }
