@@ -4570,6 +4570,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1087679391",
+      "userId": "user-1792242533886",
+      "userName": "Faizan Zubair",
+      "userEmail": "faizanzubair7860@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "복음의 빛",
+      "channelUrl": "https://www.youtube.com/channel/UCb1G-bQ51OSvjlH9ZK62jyQ",
+      "phoneNumber": "+6283161687650",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-11-07 15:49:46",
+      "expiresAt": 1794066886187
+    },
+    {
       "id": "1081765339",
       "userId": "user-1792922769967",
       "userName": "Shahzaman",
@@ -5213,5 +5230,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-06T11:26:54.232Z"
+  "updatedAt": "2026-11-07T15:49:47.569Z"
 }
