@@ -4622,6 +4622,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1091074344",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "Ecos del Alma",
+      "channelUrl": "http://www.youtube.com/@EcosdelAlma-k2h",
+      "phoneNumber": "+6283185592976",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "786047",
+      "status": "COMPLETED",
+      "cost": "$0.024",
+      "createdAt": "2026-11-08 09:38:52",
+      "expiresAt": 1794131032637
+    },
+    {
       "id": "1090972322",
       "userId": "user-saim",
       "userName": "Saim Chaudhry",
@@ -5299,5 +5316,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-08T09:38:53.378Z"
+  "updatedAt": "2026-11-08T09:39:38.671Z"
 }
