@@ -4570,6 +4570,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1090972322",
+      "userId": "user-saim",
+      "userName": "Saim Chaudhry",
+      "userEmail": "saim@empirenexs.com",
+      "branchId": "bahawalpur",
+      "channelName": "Слово Веры",
+      "channelUrl": "https://studio.youtube.com/channel/UCzxLSgbDe0aoY7dzMeVKmBg/editing/profile",
+      "phoneNumber": "+6283836392675",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.024",
+      "createdAt": "2026-11-08 09:05:08",
+      "expiresAt": 1794129008928
+    },
+    {
       "id": "1087679391",
       "userId": "user-1792242533886",
       "userName": "Faizan Zubair",
@@ -5230,5 +5247,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-07T15:50:25.203Z"
+  "updatedAt": "2026-11-08T09:05:14.824Z"
 }
