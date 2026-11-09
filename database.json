@@ -4778,6 +4778,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1096083034",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "JOKERVEX",
+      "channelUrl": "https://www.youtube.com/channel/UCFmbP9bE-YSqoX8EP5qcEjg",
+      "phoneNumber": "+6283822333876",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "638090",
+      "status": "COMPLETED",
+      "cost": "$0.024",
+      "createdAt": "2026-11-09 11:51:28",
+      "expiresAt": 1794225388419
+    },
+    {
       "id": "1095597443",
       "userId": "user-1792148780308",
       "userName": "Abdul Ahad",
@@ -5489,5 +5506,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-09T11:51:34.097Z"
+  "updatedAt": "2026-11-09T11:52:15.109Z"
 }
