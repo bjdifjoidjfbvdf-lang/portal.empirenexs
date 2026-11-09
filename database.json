@@ -4804,6 +4804,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1096107058",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "Sycho Phantom",
+      "channelUrl": "https://www.youtube.com/channel/UCXL7S8tjuWsCyRnBcwkaWeg",
+      "phoneNumber": "+6283895142513",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.024",
+      "createdAt": "2026-11-09 11:58:46",
+      "expiresAt": 1794225826401
+    },
+    {
       "id": "1096083034",
       "userId": "user-1792159465593",
       "userName": "Abid K.",
@@ -5532,5 +5549,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-09T11:58:00.385Z"
+  "updatedAt": "2026-11-09T11:58:47.127Z"
 }
