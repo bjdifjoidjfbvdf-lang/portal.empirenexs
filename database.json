@@ -4622,6 +4622,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1095597443",
+      "userId": "user-1792148780308",
+      "userName": "Abdul Ahad",
+      "userEmail": "aaahadd456@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "ECHOES OF DIVINITY",
+      "channelUrl": "https://youtube.com/@echoesofdivinity-n9e?si=IOTsqkPQpxee65f3",
+      "phoneNumber": "+6283187123562",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.024",
+      "createdAt": "2026-11-09 09:28:15",
+      "expiresAt": 1794216795471
+    },
+    {
       "id": "1091074344",
       "userId": "user-1792922769967",
       "userName": "Shahzaman",
@@ -5316,5 +5333,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-08T09:39:38.671Z"
+  "updatedAt": "2026-11-09T09:28:17.947Z"
 }
