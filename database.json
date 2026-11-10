@@ -594,6 +594,25 @@
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-31",
       "emailVerified": true
+    },
+    {
+      "id": "user-1794329648927",
+      "name": "Hareem",
+      "username": "hareem12",
+      "email": "hareemathar04@gmail.com",
+      "password": "IIFF1122",
+      "phone": "",
+      "address": "",
+      "role": "TEAM_MEMBER",
+      "designation": "Senior Video Editor",
+      "branchId": "rahim-yar-khan",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "canAccessAllBranches": false,
+      "status": "PENDING",
+      "joiningType": "PERCENTAGE",
+      "personalGoogleSheetUrl": "",
+      "joinedAt": "2026-11-10",
+      "emailVerified": true
     }
   ],
   "channels": [
@@ -5575,5 +5594,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-09T15:54:17.826Z"
+  "updatedAt": "2026-11-10T16:54:09.286Z"
 }
