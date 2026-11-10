@@ -4901,6 +4901,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1102230311",
+      "userId": "user-1794329648927",
+      "userName": "Hareem",
+      "userEmail": "hareemathar04@gmail.com",
+      "branchId": "rahim-yar-khan",
+      "channelName": "Latidos del Destino",
+      "channelUrl": "https://www.youtube.com/@LatidosdelDestino-o7c",
+      "phoneNumber": "+6285135912565",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "183601",
+      "status": "COMPLETED",
+      "cost": "$0.026",
+      "createdAt": "2026-11-10 17:07:59",
+      "expiresAt": 1794330779268
+    },
+    {
       "id": "1096107058",
       "userId": "user-1793449879923",
       "userName": "Mohsin Chattha",
@@ -5646,5 +5663,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-10T17:08:00.037Z"
+  "updatedAt": "2026-11-10T17:08:49.037Z"
 }
