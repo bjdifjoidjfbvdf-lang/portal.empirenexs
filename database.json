@@ -4901,6 +4901,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1107338106",
+      "userId": "user-1792242533886",
+      "userName": "Faizan Zubair",
+      "userEmail": "faizanzubair7860@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Sentimientos Eternos",
+      "channelUrl": "https://www.youtube.com/channel/UCyrOjYFPLn6kfVwzhxm2B0Q",
+      "phoneNumber": "+6287836945003",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-11-11 18:14:52",
+      "expiresAt": 1794421192205
+    },
+    {
       "id": "1105997343",
       "userId": "user-1792329257506",
       "userName": "Muhammad Ahmad",
@@ -5680,5 +5697,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-11T12:31:05.245Z"
+  "updatedAt": "2026-11-11T18:14:53.758Z"
 }
