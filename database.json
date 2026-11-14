@@ -4979,6 +4979,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1120333013",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "Female Mindset | Mia Khalifa",
+      "channelUrl": "https://www.youtube.com/channel/UCa3zSDdJ4R-zl_jlEQLfyiA",
+      "phoneNumber": "+6285198353023",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "375608",
+      "status": "COMPLETED",
+      "cost": "$0.026",
+      "createdAt": "2026-11-14 11:34:06",
+      "expiresAt": 1794656346879
+    },
+    {
       "id": "1107338106",
       "userId": "user-1792242533886",
       "userName": "Faizan Zubair",
@@ -5775,5 +5792,5 @@
     "proxyBalance": 3.4,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-14T11:34:03.094Z"
+  "updatedAt": "2026-11-14T11:35:04.091Z"
 }
