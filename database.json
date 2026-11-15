@@ -5027,6 +5027,32 @@
       "timestamp": "05:55 AM",
       "createdAt": "2026-11-15T13:55:46.505Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1794752031324",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "user",
+      "text": "EmpireNexs branches hierarchy & SOPs",
+      "timestamp": "06:13 AM",
+      "createdAt": "2026-11-15T14:13:51.309Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-sop-1794752031334",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "bahawalpur",
+      "sender": "assistant",
+      "text": "🏢 **EmpireNexs Management & Contact Info:**\n- **Founder & CEO:** Waqas Gill (Musafirkhana HQ)\n- **Official WhatsApp:** `+923075203713` (https://wa.me/923075203713)\n- **Email:** `muhammadwaqasmwg@gmail.com`\n- **Co-Founder:** Saim Chaudhry (Bahawalpur)\n- **Branch Head:** Zainab Athar (Rahim Yar Khan)\n- **Daily Niche Quota:** Max 2 script topics per team member per 24 hours.\n- **Phone Verification:** 1 number per user per day via Indonesia Hero-SMS numbers ($0.036). Zero duplicate numbers.\n- **Data Isolation:** Students aur creators ka Google Sheet data strictly private aur isolated rehta hai.",
+      "timestamp": "06:13 AM",
+      "createdAt": "2026-11-15T14:13:51.309Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -5943,5 +5969,5 @@
     "proxyBalance": 7.99,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-15T14:05:32.470Z"
+  "updatedAt": "2026-11-15T14:13:49.888Z"
 }
