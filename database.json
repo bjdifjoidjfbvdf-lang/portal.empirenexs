@@ -5005,6 +5005,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1125553007",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "MINDVORTEX.",
+      "channelUrl": "https://www.youtube.com/channel/UCYlE4dnOtXsVTeaAE25o5bA",
+      "phoneNumber": "+6285134176969",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "556004",
+      "status": "COMPLETED",
+      "cost": "$0.026",
+      "createdAt": "2026-11-15 13:53:10",
+      "expiresAt": 1794751090303
+    },
+    {
       "id": "1120333013",
       "userId": "user-1792159465593",
       "userName": "Abid K.",
@@ -5859,5 +5876,5 @@
     "proxyBalance": 8.69,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-15T13:53:10.290Z"
+  "updatedAt": "2026-11-15T13:53:59.175Z"
 }
