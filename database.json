@@ -205,7 +205,8 @@
       "joiningType": "PERCENTAGE",
       "personalGoogleSheetUrl": "",
       "joinedAt": "2026-10-16",
-      "emailVerified": true
+      "emailVerified": true,
+      "canBuyProxies": true
     },
     {
       "id": "user-1792159465593",
@@ -5969,5 +5970,5 @@
     "proxyBalance": 7.99,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-15T14:13:49.888Z"
+  "updatedAt": "2026-11-15T14:22:48.435Z"
 }
