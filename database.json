@@ -5525,6 +5525,29 @@
   ],
   "proxies": [
     {
+      "id": "px-1794749152437",
+      "proxy6Id": "42803691",
+      "userId": "user-1792092595203",
+      "userName": "Khansa Saddique",
+      "userEmail": "khansasaddique061@gmail.com",
+      "branchId": "musafirkhana",
+      "ip": "196.19.156.192",
+      "port": "8000",
+      "user": "hgxe66",
+      "pass": "JubpW5",
+      "type": "auto",
+      "country": "US",
+      "version": "ipv4",
+      "assignedChannelName": "Grace Unveiled Eternal Light",
+      "assignedChannelUrl": "",
+      "costUsd": 1,
+      "periodDays": 14,
+      "renewCount": 0,
+      "status": "ACTIVE",
+      "createdAt": "2026-11-15T13:25:52.437Z",
+      "expiresAt": "2026-11-29 16:25:52"
+    },
+    {
       "id": "px-1792685937309",
       "proxy6Id": "42348261",
       "userId": "user-1792685496532",
@@ -5770,6 +5793,24 @@
   ],
   "proxyTransactions": [
     {
+      "id": "tx-1794749152437-505",
+      "userId": "user-1792092595203",
+      "userName": "Khansa Saddique",
+      "userEmail": "khansasaddique061@gmail.com",
+      "branchId": "musafirkhana",
+      "type": "PROXY_PURCHASE",
+      "chargeAmount": 1,
+      "paidAmount": 0,
+      "netChange": 1,
+      "description": "Dedicated IP Purchase (14 Days - $1.00) • Grace Unveiled Eternal Light",
+      "channelName": "Grace Unveiled Eternal Light",
+      "proxyId": "px-1794749152437",
+      "proxyIp": "196.19.156.192",
+      "periodDays": 14,
+      "recordedBy": "System (Auto)",
+      "createdAt": "2026-11-15T13:25:52.437Z"
+    },
+    {
       "id": "tx-1792685937309-816",
       "userId": "user-1792685496532",
       "userName": "Alishba qadri",
@@ -5789,8 +5830,8 @@
     }
   ],
   "settings": {
-    "proxyBalance": 3.4,
+    "proxyBalance": 8.69,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-14T11:35:04.091Z"
+  "updatedAt": "2026-11-15T13:25:52.602Z"
 }
