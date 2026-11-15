@@ -5594,6 +5594,29 @@
   ],
   "proxies": [
     {
+      "id": "px-1794751532320",
+      "proxy6Id": "42804206",
+      "userId": "user-1792246485379",
+      "userName": "hafsa",
+      "userEmail": "hafsasiddique9191@gmail.com",
+      "branchId": "musafirkhana",
+      "ip": "186.65.119.64",
+      "port": "8000",
+      "user": "ZQgZYU",
+      "pass": "vbvqnk",
+      "type": "auto",
+      "country": "US",
+      "version": "ipv4",
+      "assignedChannelName": "Grace Unveiled Evermore",
+      "assignedChannelUrl": "",
+      "costUsd": 1,
+      "periodDays": 14,
+      "renewCount": 0,
+      "status": "ACTIVE",
+      "createdAt": "2026-11-15T14:05:32.320Z",
+      "expiresAt": "2026-11-29 17:05:32"
+    },
+    {
       "id": "px-1794749152437",
       "proxy6Id": "42803691",
       "userId": "user-1792092595203",
@@ -5862,6 +5885,24 @@
   ],
   "proxyTransactions": [
     {
+      "id": "tx-1794751532320-650",
+      "userId": "user-1792246485379",
+      "userName": "hafsa",
+      "userEmail": "hafsasiddique9191@gmail.com",
+      "branchId": "musafirkhana",
+      "type": "PROXY_PURCHASE",
+      "chargeAmount": 1,
+      "paidAmount": 0,
+      "netChange": 1,
+      "description": "Dedicated IP Purchase (14 Days - $1.00) • Grace Unveiled Evermore",
+      "channelName": "Grace Unveiled Evermore",
+      "proxyId": "px-1794751532320",
+      "proxyIp": "186.65.119.64",
+      "periodDays": 14,
+      "recordedBy": "System (Auto)",
+      "createdAt": "2026-11-15T14:05:32.320Z"
+    },
+    {
       "id": "tx-1794749152437-505",
       "userId": "user-1792092595203",
       "userName": "Khansa Saddique",
@@ -5899,8 +5940,8 @@
     }
   ],
   "settings": {
-    "proxyBalance": 8.69,
+    "proxyBalance": 7.99,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-15T13:55:44.880Z"
+  "updatedAt": "2026-11-15T14:05:32.470Z"
 }
