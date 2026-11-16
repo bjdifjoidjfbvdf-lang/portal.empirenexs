@@ -5085,6 +5085,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1131383022",
+      "userId": "user-1792329257506",
+      "userName": "Muhammad Ahmad",
+      "userEmail": "ahmaddnb00@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "ЗА ГРАНЬЮ ВИДИМОГО",
+      "channelUrl": "https://youtube.com/channel/UCQsPZsy8BAn_POm_cbVPClA?si=Oz5XttmaM9AN2r2E",
+      "phoneNumber": "+6285119116977",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-16 17:47:21",
+      "expiresAt": 1794851541615
+    },
+    {
       "id": "1129949382",
       "userId": "user-1792159465593",
       "userName": "Abid K.",
@@ -6055,5 +6072,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-16T12:05:59.989Z"
+  "updatedAt": "2026-11-16T17:47:22.519Z"
 }
