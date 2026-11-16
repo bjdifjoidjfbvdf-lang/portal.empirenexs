@@ -5085,6 +5085,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1129949382",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "The Relationship Code",
+      "channelUrl": "https://www.youtube.com/channel/UC4FfEFWjU26tm4GajyyE7vg",
+      "phoneNumber": "+6285150228806",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-16 12:05:22",
+      "expiresAt": 1794831022062
+    },
+    {
       "id": "1125553007",
       "userId": "user-1793449879923",
       "userName": "Mohsin Chattha",
@@ -6038,5 +6055,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-16T12:05:00.894Z"
+  "updatedAt": "2026-11-16T12:05:21.715Z"
 }
