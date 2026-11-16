@@ -5622,6 +5622,29 @@
   ],
   "proxies": [
     {
+      "id": "px-1794809767913",
+      "proxy6Id": "42814075",
+      "userId": "user-1792845249533",
+      "userName": "Ayesha Munir",
+      "userEmail": "ayeshamunir7645@gmail.com",
+      "branchId": "bahawalpur",
+      "ip": "186.179.50.244",
+      "port": "8000",
+      "user": "khZNFE",
+      "pass": "wCuQ73",
+      "type": "auto",
+      "country": "US",
+      "version": "ipv4",
+      "assignedChannelName": "Grace Unveiled Eternally",
+      "assignedChannelUrl": "",
+      "costUsd": 1,
+      "periodDays": 14,
+      "renewCount": 0,
+      "status": "ACTIVE",
+      "createdAt": "2026-11-16T06:16:07.913Z",
+      "expiresAt": "2026-11-30 09:16:07"
+    },
+    {
       "id": "px-1794751532320",
       "proxy6Id": "42804206",
       "userId": "user-1792246485379",
@@ -5913,6 +5936,24 @@
   ],
   "proxyTransactions": [
     {
+      "id": "tx-1794809767913-264",
+      "userId": "user-1792845249533",
+      "userName": "Ayesha Munir",
+      "userEmail": "ayeshamunir7645@gmail.com",
+      "branchId": "bahawalpur",
+      "type": "PROXY_PURCHASE",
+      "chargeAmount": 1,
+      "paidAmount": 0,
+      "netChange": 1,
+      "description": "Dedicated IP Purchase (14 Days - $1.00) • Grace Unveiled Eternally",
+      "channelName": "Grace Unveiled Eternally",
+      "proxyId": "px-1794809767913",
+      "proxyIp": "186.179.50.244",
+      "periodDays": 14,
+      "recordedBy": "System (Auto)",
+      "createdAt": "2026-11-16T06:16:07.913Z"
+    },
+    {
       "id": "tx-1794751532320-650",
       "userId": "user-1792246485379",
       "userName": "hafsa",
@@ -5968,8 +6009,8 @@
     }
   ],
   "settings": {
-    "proxyBalance": 7.99,
+    "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-15T15:51:12.956Z"
+  "updatedAt": "2026-11-16T06:16:08.079Z"
 }
