@@ -5137,6 +5137,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1135702165",
+      "userId": "user-1792242533886",
+      "userName": "Faizan Zubair",
+      "userEmail": "faizanzubair7860@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Скрытая Реальность",
+      "channelUrl": "https://www.youtube.com/channel/UCrugj2iNESl9LOyThCaraRQ",
+      "phoneNumber": "+6285725391105",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-17 14:19:02",
+      "expiresAt": 1794925442731
+    },
+    {
       "id": "1135364424",
       "userId": "user-1792159465593",
       "userName": "Abid K.",
@@ -6141,5 +6158,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-17T12:48:36.690Z"
+  "updatedAt": "2026-11-17T14:19:04.541Z"
 }
