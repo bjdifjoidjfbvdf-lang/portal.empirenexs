@@ -5107,6 +5107,32 @@
       "timestamp": "05:44 PM",
       "createdAt": "2026-11-17T12:44:37.604Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1794919656835",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Name : From Heart To Heart Link : https://www.youtube.com/channel/UCMfw-cAb074heoaWf0U-86g",
+      "timestamp": "05:47 PM",
+      "createdAt": "2026-11-17T12:47:36.835Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-wait-1794919657920",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **From Heart To Heart**\n- **Link:** https://www.youtube.com/channel/UCMfw-cAb074heoaWf0U-86g\n- **Phone (Indonesia):** `+6285198480957`\n- **Purchased By:** Abid K.\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "05:47 PM",
+      "createdAt": "2026-11-17T12:47:36.835Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -6098,5 +6124,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-17T12:44:39.104Z"
+  "updatedAt": "2026-11-17T12:47:39.428Z"
 }
