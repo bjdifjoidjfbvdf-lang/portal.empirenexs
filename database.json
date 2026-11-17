@@ -5163,6 +5163,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1135907942",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Susurros del Corazón.",
+      "channelUrl": "https://www.youtube.com/channel/UCD_xXvr5RU-tFNho3K4llPg",
+      "phoneNumber": "+6285753587609",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-17 15:13:05",
+      "expiresAt": 1794928685759
+    },
+    {
       "id": "1135702165",
       "userId": "user-1792242533886",
       "userName": "Faizan Zubair",
@@ -6184,5 +6201,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-17T15:12:49.135Z"
+  "updatedAt": "2026-11-17T15:13:05.693Z"
 }
