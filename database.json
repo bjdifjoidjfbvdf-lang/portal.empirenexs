@@ -5433,8 +5433,8 @@
       "phoneNumber": "+6285729481259",
       "provider": "Hero-SMS",
       "country": "Indonesia (+62)",
-      "otpCode": null,
-      "status": "PENDING_OTP",
+      "otpCode": "280809",
+      "status": "COMPLETED",
       "cost": "$0.026",
       "createdAt": "2026-11-18 16:54:42",
       "expiresAt": 1795021182313
@@ -6512,5 +6512,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-18T16:53:36.364Z"
+  "updatedAt": "2026-11-18T16:54:34.045Z"
 }
