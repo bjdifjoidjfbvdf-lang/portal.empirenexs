@@ -5189,6 +5189,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1140061954",
+      "userId": "user-1792143539742",
+      "userName": "Atif M Altaf",
+      "userEmail": "atifmaltaf2004@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "The Resonance Code",
+      "channelUrl": "https://www.youtube.com/channel/UCvYBhb-B0mYONWq4QyFg3JQ",
+      "phoneNumber": "+6285701587367",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-18 11:01:31",
+      "expiresAt": 1794999991274
+    },
+    {
       "id": "1135907942",
       "userId": "user-1792158192310",
       "userName": "Hassan",
@@ -6227,5 +6244,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-17T15:15:27.429Z"
+  "updatedAt": "2026-11-18T11:01:31.857Z"
 }
