@@ -5367,6 +5367,32 @@
       "timestamp": "06:06 PM",
       "createdAt": "2026-11-18T13:06:05.776Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795007367118",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "SECRETO DEE LA VIDA.https://www.youtube.com/channel/UC-di7q2l1JYNra_SJwE0ftA",
+      "timestamp": "06:09 PM",
+      "createdAt": "2026-11-18T13:09:27.117Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-wait-1795007369336",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **SECRETO DEE LA VIDA.**\n- **Link:** https://www.youtube.com/channel/UC-di7q2l1JYNra_SJwE0ftA\n- **Phone (Indonesia):** `+6285833546734`\n- **Purchased By:** Mohsin Chattha\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "06:09 PM",
+      "createdAt": "2026-11-18T13:09:27.117Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -6426,5 +6452,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-18T13:06:06.544Z"
+  "updatedAt": "2026-11-18T13:09:30.036Z"
 }
