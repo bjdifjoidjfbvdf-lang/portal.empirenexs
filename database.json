@@ -5423,6 +5423,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1141470270",
+      "userId": "user-1792242533886",
+      "userName": "Faizan Zubair",
+      "userEmail": "faizanzubair7860@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Almas de Cristal",
+      "channelUrl": "https://www.youtube.com/channel/UChRT0PIg_KqapyMNvQGfICg",
+      "phoneNumber": "+6285716365013",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-18 16:29:11",
+      "expiresAt": 1795019651098
+    },
+    {
       "id": "1140061954",
       "userId": "user-1792143539742",
       "userName": "Atif M Altaf",
@@ -6478,5 +6495,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-18T13:10:44.112Z"
+  "updatedAt": "2026-11-18T16:29:11.771Z"
 }
