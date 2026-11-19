@@ -5501,6 +5501,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1146827692",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Códigos de Grandeza.",
+      "channelUrl": "https://www.youtube.com/channel/UCU7NEofeYuttVN6pvEw7syw",
+      "phoneNumber": "+6285833460951",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-19 15:10:54",
+      "expiresAt": 1795101354900
+    },
+    {
       "id": "1145922251",
       "userId": "user-1792159465593",
       "userName": "Abid K.",
@@ -6607,5 +6624,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-19T15:08:48.793Z"
+  "updatedAt": "2026-11-19T15:10:54.790Z"
 }
