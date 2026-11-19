@@ -5501,6 +5501,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1146965347",
+      "userId": "user-1792148780308",
+      "userName": "Abdul Ahad",
+      "userEmail": "aaahadd456@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "СВЕТЛАЯ ДУША",
+      "channelUrl": "https://www.youtube.com/@%D0%A1%D0%92%D0%95%D0%A2%D0%9B%D0%90%D0%AF%D0%94%D0%A3%D0%A8%D0%90-%D1%834%D1%8D",
+      "phoneNumber": "+6285704114832",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-19 15:42:58",
+      "expiresAt": 1795103278825
+    },
+    {
       "id": "1146827692",
       "userId": "user-1792158192310",
       "userName": "Hassan",
@@ -6624,5 +6641,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-19T15:11:44.253Z"
+  "updatedAt": "2026-11-19T15:42:59.785Z"
 }
