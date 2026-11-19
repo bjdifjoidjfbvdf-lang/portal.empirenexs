@@ -5475,6 +5475,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1145922251",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "BIBLE S INSIGHTS",
+      "channelUrl": "https://www.youtube.com/channel/UCsNo5LkL_h115YlR8RbQnHw",
+      "phoneNumber": "+6285643971749",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "451269",
+      "status": "COMPLETED",
+      "cost": "$0.026",
+      "createdAt": "2026-11-19 11:52:56",
+      "expiresAt": 1795089476540
+    },
+    {
       "id": "1141593181",
       "userId": "user-1792584612677",
       "userName": "Madih Ahmad",
@@ -6564,5 +6581,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-19T11:52:57.753Z"
+  "updatedAt": "2026-11-19T11:53:43.576Z"
 }
