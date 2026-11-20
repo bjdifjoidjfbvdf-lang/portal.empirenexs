@@ -5549,6 +5549,32 @@
       "timestamp": "01:54 AM",
       "createdAt": "2026-11-20T20:54:23.839Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795208389060",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "channel name:@LaMentedelAmor-f4l  link:https://www.youtube.com/@nishabrand-j9w",
+      "timestamp": "01:59 AM",
+      "createdAt": "2026-11-20T20:59:49.059Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-err-1795208389089",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "⚠️ **Daily Limit Exceeded:** You have already used your allowance of 1 verified number in the last 24 hours. Daily quota only locks when an OTP code is received.",
+      "timestamp": "01:59 AM",
+      "createdAt": "2026-11-20T20:59:49.059Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -6744,5 +6770,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-20T20:54:22.872Z"
+  "updatedAt": "2026-11-20T20:59:48.125Z"
 }
