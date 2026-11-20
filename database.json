@@ -5527,6 +5527,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1152468190",
+      "userId": "user-1792140055584",
+      "userName": "Nisha",
+      "userEmail": "nishwork234@gmail.com",
+      "branchId": "rahim-yar-khan",
+      "channelName": "Palabras de Fe con Ernesto Cuevas",
+      "channelUrl": "https://www.youtube.com/@nishabrand-u7n",
+      "phoneNumber": "+6285645287382",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-20 15:47:27",
+      "expiresAt": 1795189947852
+    },
+    {
       "id": "1152425473",
       "userId": "user-1792140055584",
       "userName": "Nisha",
@@ -6684,5 +6701,5 @@
     "proxyBalance": 5.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-20T15:43:13.538Z"
+  "updatedAt": "2026-11-20T15:47:26.546Z"
 }
