@@ -5579,6 +5579,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1157651556",
+      "userId": "user-1792143539742",
+      "userName": "Atif M Altaf",
+      "userEmail": "atifmaltaf2004@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Код Невидимого",
+      "channelUrl": "https://www.youtube.com/channel/UCDovPGf1OGa0rzbDf5Gd6Hw",
+      "phoneNumber": "+6285657285838",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-21 16:21:12",
+      "expiresAt": 1795278372374
+    },
+    {
       "id": "1152497114",
       "userId": "user-1792140055584",
       "userName": "Nisha",
@@ -6811,5 +6828,5 @@
     "proxyBalance": 3.79,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-21T13:02:47.469Z"
+  "updatedAt": "2026-11-21T16:21:12.855Z"
 }
