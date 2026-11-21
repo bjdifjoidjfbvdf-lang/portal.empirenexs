@@ -6380,6 +6380,29 @@
   ],
   "proxies": [
     {
+      "id": "px-1795266167290",
+      "proxy6Id": "42932179",
+      "userId": "user-1792246485379",
+      "userName": "hafsa",
+      "userEmail": "hafsasiddique9191@gmail.com",
+      "branchId": "musafirkhana",
+      "ip": "170.83.234.223",
+      "port": "8000",
+      "user": "DLey2d",
+      "pass": "Yfk9Jx",
+      "type": "auto",
+      "country": "US",
+      "version": "ipv4",
+      "assignedChannelName": "El Suspiro Secreto",
+      "assignedChannelUrl": "",
+      "costUsd": 1,
+      "periodDays": 14,
+      "renewCount": 0,
+      "status": "ACTIVE",
+      "createdAt": "2026-11-21T13:02:47.290Z",
+      "expiresAt": "2026-12-05 16:02:47"
+    },
+    {
       "id": "px-1794809767913",
       "proxy6Id": "42814075",
       "userId": "user-1792845249533",
@@ -6694,6 +6717,24 @@
   ],
   "proxyTransactions": [
     {
+      "id": "tx-1795266167290-156",
+      "userId": "user-1792246485379",
+      "userName": "hafsa",
+      "userEmail": "hafsasiddique9191@gmail.com",
+      "branchId": "musafirkhana",
+      "type": "PROXY_PURCHASE",
+      "chargeAmount": 1,
+      "paidAmount": 0,
+      "netChange": 1,
+      "description": "Dedicated IP Purchase (14 Days - $1.00) • El Suspiro Secreto",
+      "channelName": "El Suspiro Secreto",
+      "proxyId": "px-1795266167290",
+      "proxyIp": "170.83.234.223",
+      "periodDays": 14,
+      "recordedBy": "System (Auto)",
+      "createdAt": "2026-11-21T13:02:47.290Z"
+    },
+    {
       "id": "tx-1794809767913-264",
       "userId": "user-1792845249533",
       "userName": "Ayesha Munir",
@@ -6767,8 +6808,8 @@
     }
   ],
   "settings": {
-    "proxyBalance": 5.89,
+    "proxyBalance": 3.79,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-20T20:59:48.125Z"
+  "updatedAt": "2026-11-21T13:02:47.469Z"
 }
