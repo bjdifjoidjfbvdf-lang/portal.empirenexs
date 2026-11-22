@@ -6397,6 +6397,29 @@
   ],
   "proxies": [
     {
+      "id": "px-1795325525762",
+      "proxy6Id": "42940490",
+      "userId": "user-1792092595203",
+      "userName": "Khansa Saddique",
+      "userEmail": "khansasaddique061@gmail.com",
+      "branchId": "musafirkhana",
+      "ip": "168.181.52.245",
+      "port": "8000",
+      "user": "90XRKA",
+      "pass": "8UokV7",
+      "type": "auto",
+      "country": "US",
+      "version": "ipv4",
+      "assignedChannelName": "El Latido Secreto",
+      "assignedChannelUrl": "",
+      "costUsd": 2,
+      "periodDays": 28,
+      "renewCount": 0,
+      "status": "ACTIVE",
+      "createdAt": "2026-11-22T05:32:05.762Z",
+      "expiresAt": "2026-12-20 08:32:05"
+    },
+    {
       "id": "px-1795266167290",
       "proxy6Id": "42932179",
       "userId": "user-1792246485379",
@@ -6734,6 +6757,24 @@
   ],
   "proxyTransactions": [
     {
+      "id": "tx-1795325525762-523",
+      "userId": "user-1792092595203",
+      "userName": "Khansa Saddique",
+      "userEmail": "khansasaddique061@gmail.com",
+      "branchId": "musafirkhana",
+      "type": "PROXY_PURCHASE",
+      "chargeAmount": 2,
+      "paidAmount": 0,
+      "netChange": 2,
+      "description": "Dedicated IP Purchase (28 Days - $2.00) • El Latido Secreto",
+      "channelName": "El Latido Secreto",
+      "proxyId": "px-1795325525762",
+      "proxyIp": "168.181.52.245",
+      "periodDays": 28,
+      "recordedBy": "System (Auto)",
+      "createdAt": "2026-11-22T05:32:05.762Z"
+    },
+    {
       "id": "tx-1795266167290-156",
       "userId": "user-1792246485379",
       "userName": "hafsa",
@@ -6825,8 +6866,8 @@
     }
   ],
   "settings": {
-    "proxyBalance": 3.79,
+    "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-21T16:21:50.055Z"
+  "updatedAt": "2026-11-22T05:32:05.915Z"
 }
