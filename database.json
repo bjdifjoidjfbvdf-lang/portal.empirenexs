@@ -5658,6 +5658,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1166845613",
+      "userId": "user-1792143539742",
+      "userName": "Atif M Altaf",
+      "userEmail": "atifmaltaf2004@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Свет Избранных",
+      "channelUrl": "https://www.youtube.com/channel/UCt5XE4vMUUBcMtHp-OwQ80w",
+      "phoneNumber": "+62882017580888",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-23 13:39:43",
+      "expiresAt": 1795441484017
+    },
+    {
       "id": "1157651556",
       "userId": "user-1792143539742",
       "userName": "Atif M Altaf",
@@ -6948,5 +6965,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-23T11:43:26.669Z"
+  "updatedAt": "2026-11-23T13:39:44.680Z"
 }
