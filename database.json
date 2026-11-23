@@ -5627,6 +5627,32 @@
       "timestamp": "04:32 PM",
       "createdAt": "2026-11-23T11:32:45.513Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795433689708",
+      "userId": "user-1794329648927",
+      "userName": "Hareem",
+      "userEmail": "hareemathar04@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "channel name.......Suspiros del Corazón         channel link........https://www.youtube.com/@SuspirosdelCoraz%C3%B3n-s5n",
+      "timestamp": "04:34 PM",
+      "createdAt": "2026-11-23T11:34:49.708Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-wait-1795433690637",
+      "userId": "user-1794329648927",
+      "userName": "Hareem",
+      "userEmail": "hareemathar04@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **.......Suspiros del Corazón ........**\n- **Link:** https://www.youtube.com/@SuspirosdelCoraz%C3%B3n-s5n\n- **Phone (Indonesia):** `+6285126835532`\n- **Purchased By:** Hareem\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "04:34 PM",
+      "createdAt": "2026-11-23T11:34:49.708Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -6921,5 +6947,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-23T11:32:47.098Z"
+  "updatedAt": "2026-11-23T11:34:52.230Z"
 }
