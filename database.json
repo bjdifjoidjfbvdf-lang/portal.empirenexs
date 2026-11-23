@@ -5668,8 +5668,8 @@
       "phoneNumber": "+62882017580888",
       "provider": "Hero-SMS",
       "country": "Indonesia (+62)",
-      "otpCode": null,
-      "status": "PENDING_OTP",
+      "otpCode": "803244",
+      "status": "COMPLETED",
       "cost": "$0.026",
       "createdAt": "2026-11-23 13:39:43",
       "expiresAt": 1795441484017
@@ -6965,5 +6965,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-23T13:39:44.680Z"
+  "updatedAt": "2026-11-23T13:40:33.551Z"
 }
