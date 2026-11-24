@@ -5710,6 +5710,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1171019219",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "BloomAfterBroken",
+      "channelUrl": "https://www.youtube.com/channel/UCWZfhHyxfCh-h_4IGFhMIQQ",
+      "phoneNumber": "+6285804260500",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "544435",
+      "status": "COMPLETED",
+      "cost": "$0.026",
+      "createdAt": "2026-11-24 08:50:30",
+      "expiresAt": 1795510530057
+    },
+    {
       "id": "1166845613",
       "userId": "user-1792143539742",
       "userName": "Atif M Altaf",
@@ -7017,5 +7034,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-24T08:50:30.735Z"
+  "updatedAt": "2026-11-24T08:51:12.703Z"
 }
