@@ -5736,6 +5736,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1172322339",
+      "userId": "user-1792584612677",
+      "userName": "Madih Ahmad",
+      "userEmail": "madihahmad27@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "ТАЙНЫ ВЕЧНОСТИ",
+      "channelUrl": "https://youtube.com/channel/UC2cNK7AV2z5yde2kxiEA73Q?si=W2I6izHR3P9xG6BP",
+      "phoneNumber": "+6285751855821",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-24 14:08:48",
+      "expiresAt": 1795529628509
+    },
+    {
       "id": "1171812304",
       "userId": "user-1792148780308",
       "userName": "Abdul Ahad",
@@ -7128,5 +7145,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-24T12:03:58.006Z"
+  "updatedAt": "2026-11-24T14:07:50.010Z"
 }
