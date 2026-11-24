@@ -5746,8 +5746,8 @@
       "phoneNumber": "+6285755204436",
       "provider": "Hero-SMS",
       "country": "Indonesia (+62)",
-      "otpCode": null,
-      "status": "PENDING_OTP",
+      "otpCode": "491279",
+      "status": "COMPLETED",
       "cost": "$0.026",
       "createdAt": "2026-11-24 10:47:40",
       "expiresAt": 1795517560189
@@ -7094,5 +7094,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-24T10:47:41.427Z"
+  "updatedAt": "2026-11-24T10:48:18.556Z"
 }
