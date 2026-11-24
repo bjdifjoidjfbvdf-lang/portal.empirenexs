@@ -5680,6 +5680,32 @@
       "timestamp": "01:49 PM",
       "createdAt": "2026-11-24T08:49:30.893Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795510229304",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Name : BloomAfterBroken Link : https://www.youtube.com/channel/UCWZfhHyxfCh-h_4IGFhMIQQ",
+      "timestamp": "01:50 PM",
+      "createdAt": "2026-11-24T08:50:29.303Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-wait-1795510230058",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **BloomAfterBroken**\n- **Link:** https://www.youtube.com/channel/UCWZfhHyxfCh-h_4IGFhMIQQ\n- **Phone (Indonesia):** `+6285804260500`\n- **Purchased By:** Mohsin Chattha\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "01:50 PM",
+      "createdAt": "2026-11-24T08:50:29.303Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -6991,5 +7017,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-24T08:49:31.583Z"
+  "updatedAt": "2026-11-24T08:50:30.735Z"
 }
