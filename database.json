@@ -5736,6 +5736,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1171703082",
+      "userId": "user-1792145642574",
+      "userName": "Muhammad Nadeem",
+      "userEmail": "nadeemkhanofficial747@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Избранные Богом",
+      "channelUrl": "https://www.youtube.com/channel/UCBuVZEARdmdA-zDh556kqJg",
+      "phoneNumber": "+6285658030863",
+      "provider": "Hero-SMS",
+      "country": "Philippines (+63)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "",
+      "createdAt": "2026-11-24 11:36:24",
+      "expiresAt": 1795520484041
+    },
+    {
       "id": "1171490167",
       "userId": "user-1792329257506",
       "userName": "Muhammad Ahmad",
@@ -7094,5 +7111,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-24T10:48:18.556Z"
+  "updatedAt": "2026-11-24T11:36:25.283Z"
 }
