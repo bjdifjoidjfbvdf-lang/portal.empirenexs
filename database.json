@@ -5736,6 +5736,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1171812304",
+      "userId": "user-1792148780308",
+      "userName": "Abdul Ahad",
+      "userEmail": "aaahadd456@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "СВЕТ ИСТИНO",
+      "channelUrl": "https://www.youtube.com/@%D0%A1%D0%92%D0%95%D0%A2%D0%98%D0%A1%D0%A2%D0%98%D0%9D%D0%AB-%D0%B19%D0%B7",
+      "phoneNumber": "+6285745767815",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-24 12:03:19",
+      "expiresAt": 1795522099580
+    },
+    {
       "id": "1171703082",
       "userId": "user-1792145642574",
       "userName": "Muhammad Nadeem",
@@ -7111,5 +7128,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-24T11:39:34.380Z"
+  "updatedAt": "2026-11-24T12:03:20.997Z"
 }
