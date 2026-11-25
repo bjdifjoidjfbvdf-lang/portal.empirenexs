@@ -5777,6 +5777,32 @@
       "timestamp": "07:58 AM",
       "createdAt": "2026-11-24T15:58:10.164Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795595870022",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Request YouTube verification OTP number",
+      "timestamp": "01:37 PM",
+      "createdAt": "2026-11-25T08:37:50.006Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-ask-1795595870022",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "Bhai YouTube OTP verification number hasil karne ke liye please **Channel Name** aur **YouTube Channel URL** provide karein.\n\nExample:\n`name: Vikzai Shorts link: https://youtube.com/@vikzai`",
+      "timestamp": "01:37 PM",
+      "createdAt": "2026-11-25T08:37:50.006Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -7207,5 +7233,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-25T08:36:41.805Z"
+  "updatedAt": "2026-11-25T08:37:51.168Z"
 }
