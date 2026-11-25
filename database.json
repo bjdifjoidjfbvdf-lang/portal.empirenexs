@@ -5859,6 +5859,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1177788610",
+      "userId": "user-1792665217736",
+      "userName": "Haider Ali",
+      "userEmail": "ha0876495@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Сильнее Судьбы",
+      "channelUrl": "https://www.youtube.com/channel/UCO44QWnFL7K8QultoW2cATQ",
+      "phoneNumber": "+6285779135485",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-25 14:31:22",
+      "expiresAt": 1795617382840
+    },
+    {
       "id": "1176780076",
       "userId": "user-1792159465593",
       "userName": "Abid K.",
@@ -7319,5 +7336,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-25T10:12:32.165Z"
+  "updatedAt": "2026-11-25T14:31:10.189Z"
 }
