@@ -5807,6 +5807,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1176442936",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "Inspired By Neville",
+      "channelUrl": "https://www.youtube.com/channel/UCeKpMXoyA874-yF-GsUQhXQ",
+      "phoneNumber": "+6285167854924",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-25 08:40:23",
+      "expiresAt": 1795596323697
+    },
+    {
       "id": "1172778601",
       "userId": "user-1792158192310",
       "userName": "Hassan",
@@ -7233,5 +7250,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-25T08:37:51.168Z"
+  "updatedAt": "2026-11-25T08:40:24.488Z"
 }
