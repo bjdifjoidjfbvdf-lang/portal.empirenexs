@@ -5829,6 +5829,32 @@
       "timestamp": "03:05 PM",
       "createdAt": "2026-11-25T10:05:52.413Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795601218164",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Name : Тайны Семьи Link : www.youtube.com/@ТайныСемьи-щ2ф",
+      "timestamp": "03:06 PM",
+      "createdAt": "2026-11-25T10:06:58.164Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-ask-1795601218165",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "Bhai YouTube OTP verification number hasil karne ke liye please **Channel Name** aur **YouTube Channel URL** provide karein.\n\nExample:\n`name: Vikzai Shorts link: https://youtube.com/@vikzai`",
+      "timestamp": "03:06 PM",
+      "createdAt": "2026-11-25T10:06:58.164Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -7276,5 +7302,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-25T10:05:52.594Z"
+  "updatedAt": "2026-11-25T10:06:58.333Z"
 }
