@@ -5859,6 +5859,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1176780076",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "branchId": "musafirkhana",
+      "channelName": "Тайны Семьи",
+      "channelUrl": "https://www.youtube.com/@%D0%A2%D0%B0%D0%B9%D0%BD%D1%8B%D0%A1%D0%B5%D0%BC%D1%8C%D0%B8-%D1%892%D1%84",
+      "phoneNumber": "+6285602042879",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-25 10:07:25",
+      "expiresAt": 1795601545890
+    },
+    {
       "id": "1176442936",
       "userId": "user-1793449879923",
       "userName": "Mohsin Chattha",
@@ -7302,5 +7319,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-25T10:06:58.333Z"
+  "updatedAt": "2026-11-25T10:07:26.093Z"
 }
