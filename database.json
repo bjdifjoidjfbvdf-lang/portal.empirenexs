@@ -5959,6 +5959,32 @@
       "timestamp": "04:21 PM",
       "createdAt": "2026-11-26T11:21:24.295Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795692105045",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Name : Загадки Психики Link : https://www.youtube.com/channel/UC4xpPDOXRcTct_WwHn0lnng",
+      "timestamp": "04:21 PM",
+      "createdAt": "2026-11-26T11:21:45.045Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-wait-1795692105899",
+      "userId": "user-1792159465593",
+      "userName": "Abid K.",
+      "userEmail": "abidakmal891@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **Загадки Психики**\n- **Link:** https://www.youtube.com/channel/UC4xpPDOXRcTct_WwHn0lnng\n- **Phone (Indonesia):** `+6285869238437`\n- **Purchased By:** Abid K.\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "04:21 PM",
+      "createdAt": "2026-11-26T11:21:45.045Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -7474,5 +7500,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-26T11:21:25.030Z"
+  "updatedAt": "2026-11-26T11:21:46.622Z"
 }
