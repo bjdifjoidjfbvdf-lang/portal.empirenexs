@@ -6011,6 +6011,32 @@
       "timestamp": "03:27 AM",
       "createdAt": "2026-11-25T22:27:43.960Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795645754311",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Name : Тайны Семьи Link : https://www.youtube.com/channel/UC6VtO6faudb4HSF32M3mg8w",
+      "timestamp": "03:29 AM",
+      "createdAt": "2026-11-25T22:29:14.311Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-err-1795645754322",
+      "userId": "user-1793449879923",
+      "userName": "Mohsin Chattha",
+      "userEmail": "chatthamohsin603@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⚠️ **Daily Limit Exceeded:** You have already used your allowance of 1 verified number in the last 24 hours. Daily quota only locks when an OTP code is received.",
+      "timestamp": "03:29 AM",
+      "createdAt": "2026-11-25T22:29:14.311Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -7543,5 +7569,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-26T11:57:21.320Z"
+  "updatedAt": "2026-11-26T11:58:51.655Z"
 }
