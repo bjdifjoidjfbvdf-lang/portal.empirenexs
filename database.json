@@ -5881,6 +5881,32 @@
       "timestamp": "01:19 AM",
       "createdAt": "2026-11-26T09:19:51.001Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795684821923",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Request YouTube verification OTP number",
+      "timestamp": "01:20 AM",
+      "createdAt": "2026-11-26T09:20:21.898Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-err-1795684821940",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⚠️ **Duplicate Channel Blocked:** Channel \"Ecos del Alma\" (http://www.youtube.com/@EcosdelAlma-k2h) has already received a verified phone number (+6283185592976 - Status: 786047). Multiple numbers for the same channel are strictly prohibited.",
+      "timestamp": "01:20 AM",
+      "createdAt": "2026-11-26T09:20:21.898Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -7379,5 +7405,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-26T09:19:51.408Z"
+  "updatedAt": "2026-11-26T09:20:22.983Z"
 }
