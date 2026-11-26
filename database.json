@@ -5907,6 +5907,32 @@
       "timestamp": "01:20 AM",
       "createdAt": "2026-11-26T09:20:21.898Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795684986858",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "Name : Secret of Hearts Link  : https://www.youtube.com/channel/UCCjSZLAe3iW5vFLb9zVzS3w",
+      "timestamp": "01:23 AM",
+      "createdAt": "2026-11-26T09:23:06.857Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-wait-1795684987715",
+      "userId": "user-1792922769967",
+      "userName": "Shahzaman",
+      "userEmail": "shahzamaann21@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **Secret of Hearts**\n- **Link:** https://www.youtube.com/channel/UCCjSZLAe3iW5vFLb9zVzS3w\n- **Phone (Indonesia):** `+6285860311613`\n- **Purchased By:** Shahzaman\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "01:23 AM",
+      "createdAt": "2026-11-26T09:23:06.857Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -7405,5 +7431,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-26T09:20:22.983Z"
+  "updatedAt": "2026-11-26T09:23:08.699Z"
 }
