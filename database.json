@@ -6379,6 +6379,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1188247535",
+      "userId": "user-1792419178041",
+      "userName": "Maha Ch",
+      "userEmail": "mahachudary31@gmail.com",
+      "branchId": "rahim-yar-khan",
+      "channelName": "brandftu",
+      "channelUrl": "https://www.youtube.com/@brandftu",
+      "phoneNumber": "+6285800792604",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-27 16:16:20",
+      "expiresAt": 1795796480787
+    },
+    {
       "id": "1188033668",
       "userId": "user-1792242533886",
       "userName": "Faizan Zubair",
@@ -8050,5 +8067,5 @@
     "proxyBalance": 8.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-27T16:15:20.938Z"
+  "updatedAt": "2026-11-27T16:16:18.551Z"
 }
