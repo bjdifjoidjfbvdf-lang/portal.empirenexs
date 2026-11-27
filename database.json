@@ -6223,6 +6223,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1187338269",
+      "userId": "user-1792158192310",
+      "userName": "Hassan",
+      "userEmail": "hasumalik114@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Inspired by Neville VORYX.",
+      "channelUrl": "https://www.youtube.com/channel/UCDQL8C_MrgXkraWxXV_Yrzw",
+      "phoneNumber": "+6285861613538",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": "736092",
+      "status": "COMPLETED",
+      "cost": "$0.026",
+      "createdAt": "2026-11-27 12:27:39",
+      "expiresAt": 1795782759736
+    },
+    {
       "id": "1187228930",
       "userId": "user-1792242533886",
       "userName": "Faizan Zubair",
@@ -7802,5 +7819,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-27T12:27:39.590Z"
+  "updatedAt": "2026-11-27T12:28:51.712Z"
 }
