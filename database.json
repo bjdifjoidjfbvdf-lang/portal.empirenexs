@@ -6245,6 +6245,32 @@
       "timestamp": "09:12 PM",
       "createdAt": "2026-11-27T16:12:15.767Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795795993141",
+      "userId": "user-1792419178041",
+      "userName": "Maha Ch",
+      "userEmail": "mahachudary31@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "user",
+      "text": "namechannel url https://studio.youtube.com/channel/UCm1waxqWkIksrW8GJdFEr3w",
+      "timestamp": "09:13 PM",
+      "createdAt": "2026-11-27T16:13:13.140Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-asklink-1795795993144",
+      "userId": "user-1792419178041",
+      "userName": "Maha Ch",
+      "userEmail": "mahachudary31@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "rahim-yar-khan",
+      "sender": "assistant",
+      "text": "Channel **\"channel\"** ke liye please **YouTube Channel Link (URL)** provide karein taake duplicate check kar ke number book kiya ja sake.",
+      "timestamp": "09:13 PM",
+      "createdAt": "2026-11-27T16:13:13.140Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -7920,5 +7946,5 @@
     "proxyBalance": 8.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-27T16:12:13.612Z"
+  "updatedAt": "2026-11-27T16:13:11.025Z"
 }
