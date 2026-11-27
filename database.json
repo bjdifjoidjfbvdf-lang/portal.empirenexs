@@ -6223,6 +6223,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1188033668",
+      "userId": "user-1792242533886",
+      "userName": "Faizan Zubair",
+      "userEmail": "faizanzubair7860@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Вечность Вдвоём",
+      "channelUrl": "https://www.youtube.com/channel/UCNQkT5qlVSLbNHn124yl3qw",
+      "phoneNumber": "+6285735491939",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-27 15:26:52",
+      "expiresAt": 1795793512801
+    },
+    {
       "id": "1187660482",
       "userId": "user-1792143539742",
       "userName": "Atif M Altaf",
@@ -7877,5 +7894,5 @@
     "proxyBalance": 8.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-27T15:07:20.920Z"
+  "updatedAt": "2026-11-27T15:26:52.928Z"
 }
