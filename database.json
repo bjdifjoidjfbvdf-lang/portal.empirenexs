@@ -6223,6 +6223,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1187660482",
+      "userId": "user-1792143539742",
+      "userName": "Atif M Altaf",
+      "userEmail": "atifmaltaf2004@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Молитва Сердца",
+      "channelUrl": "https://www.youtube.com/channel/UC7XamTd5dhSzq3WTUOWrIVw",
+      "phoneNumber": "+6285881573244",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-27 13:55:48",
+      "expiresAt": 1795788048127
+    },
+    {
       "id": "1187338269",
       "userId": "user-1792158192310",
       "userName": "Hassan",
@@ -7819,5 +7836,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-27T12:28:54.115Z"
+  "updatedAt": "2026-11-27T13:55:48.543Z"
 }
