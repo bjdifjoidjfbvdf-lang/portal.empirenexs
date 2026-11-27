@@ -7364,6 +7364,29 @@
   ],
   "proxies": [
     {
+      "id": "px-1795792040658",
+      "proxy6Id": "43054596",
+      "userId": "user-1792845249533",
+      "userName": "Ayesha Munir",
+      "userEmail": "ayeshamunir7645@gmail.com",
+      "branchId": "bahawalpur",
+      "ip": "23.229.74.161",
+      "port": "8000",
+      "user": "ZDGa9Y",
+      "pass": "Qy8RbH",
+      "type": "auto",
+      "country": "US",
+      "version": "ipv4",
+      "assignedChannelName": "El Sentir Oculto",
+      "assignedChannelUrl": "https://youtube.com/ayeshaaaa",
+      "costUsd": 1,
+      "periodDays": 14,
+      "renewCount": 0,
+      "status": "ACTIVE",
+      "createdAt": "2026-11-27T15:07:20.658Z",
+      "expiresAt": "2026-12-11 18:07:20"
+    },
+    {
       "id": "px-1795325525762",
       "proxy6Id": "42940490",
       "userId": "user-1792092595203",
@@ -7724,6 +7747,24 @@
   ],
   "proxyTransactions": [
     {
+      "id": "tx-1795792040658-934",
+      "userId": "user-1792845249533",
+      "userName": "Ayesha Munir",
+      "userEmail": "ayeshamunir7645@gmail.com",
+      "branchId": "bahawalpur",
+      "type": "PROXY_PURCHASE",
+      "chargeAmount": 1,
+      "paidAmount": 0,
+      "netChange": 1,
+      "description": "Dedicated IP Purchase (14 Days - $1.00) • El Sentir Oculto",
+      "channelName": "El Sentir Oculto",
+      "proxyId": "px-1795792040658",
+      "proxyIp": "23.229.74.161",
+      "periodDays": 14,
+      "recordedBy": "System (Auto)",
+      "createdAt": "2026-11-27T15:07:20.658Z"
+    },
+    {
       "id": "tx-1795325525762-523",
       "userId": "user-1792092595203",
       "userName": "Khansa Saddique",
@@ -7833,8 +7874,8 @@
     }
   ],
   "settings": {
-    "proxyBalance": 3.09,
+    "proxyBalance": 8.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-27T13:56:25.642Z"
+  "updatedAt": "2026-11-27T15:07:20.920Z"
 }
