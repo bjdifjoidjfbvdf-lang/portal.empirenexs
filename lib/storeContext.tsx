@@ -2079,7 +2079,7 @@ Instructions:
   const requestProxy = async (
     channelName: string,
     channelUrl: string = '',
-    country: string = 'us',
+    country: string = 'de',
     type: 'http' | 'socks' = 'http',
     period: number = 28
   ): Promise<{ success: boolean; message: string; proxy?: ProxyRecord }> => {

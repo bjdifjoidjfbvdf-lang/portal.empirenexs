@@ -48,13 +48,15 @@ import {
 } from 'lucide-react';
 
 const COUNTRY_OPTIONS = [
-  { code: 'US', name: 'United States', flag: '🇺🇸' },
-  { code: 'DE', name: 'Germany', flag: '🇩🇪' },
-  { code: 'GB', name: 'United Kingdom', flag: '🇬🇧' },
-  { code: 'NL', name: 'Netherlands', flag: '🇳🇱' },
-  { code: 'CA', name: 'Canada', flag: '🇨🇦' },
-  { code: 'FR', name: 'France', flag: '🇫🇷' },
-  { code: 'SG', name: 'Singapore', flag: '🇸🇬' },
+  { code: 'DE', name: 'Germany', flag: '🇩🇪', status: 'In Stock' },
+  { code: 'CA', name: 'Canada', flag: '🇨🇦', status: 'In Stock' },
+  { code: 'NL', name: 'Netherlands', flag: '🇳🇱', status: 'In Stock' },
+  { code: 'FR', name: 'France', flag: '🇫🇷', status: 'In Stock' },
+  { code: 'ES', name: 'Spain', flag: '🇪🇸', status: 'In Stock' },
+  { code: 'PL', name: 'Poland', flag: '🇵🇱', status: 'In Stock' },
+  { code: 'AU', name: 'Australia', flag: '🇦🇺', status: 'In Stock' },
+  { code: 'GB', name: 'United Kingdom', flag: '🇬🇧', status: 'In Stock' },
+  { code: 'US', name: 'United States', flag: '🇺🇸', status: 'Low/Out of Stock' },
 ];
 
 export const ProxiesManager: React.FC = () => {
@@ -86,7 +88,7 @@ export const ProxiesManager: React.FC = () => {
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
   const [selectedChannel, setSelectedChannel] = useState('');
   const [selectedChannelUrl, setSelectedChannelUrl] = useState('');
-  const [selectedCountry, setSelectedCountry] = useState('US');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
   const [selectedType, setSelectedType] = useState<'http' | 'socks'>('http');
   const [selectedPeriod, setSelectedPeriod] = useState<number>(28);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -1131,10 +1133,13 @@ export const ProxiesManager: React.FC = () => {
                 >
                   {COUNTRY_OPTIONS.map((c) => (
                     <option key={c.code} value={c.code}>
-                      {c.flag} {c.name} ({c.code}) - High-Speed Datacenter
+                      {c.flag} {c.name} ({c.code}) - {c.status}
                     </option>
                   ))}
                 </select>
+                <p className="text-[10px] text-slate-400 mt-1">
+                  💡 Tip: Germany (DE), Canada (CA), and Netherlands (NL) have abundant active stock and are fully optimized for YouTube Studio. If any region reports &quot;Error active proxy allow&quot;, simply switch to another in-stock country.
+                </p>
               </div>
 
               {/* Protocol */}

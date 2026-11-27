@@ -149,7 +149,7 @@ export async function POST(req: NextRequest) {
         branchId,
         channelName,
         channelUrl,
-        country = 'us',
+        country = 'de',
         type = 'http',
         period: requestedPeriod = 28,
         apiKey,
