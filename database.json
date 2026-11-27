@@ -6167,6 +6167,32 @@
       "timestamp": "04:36 PM",
       "createdAt": "2026-11-27T11:36:22.821Z",
       "month": "2026-11"
+    },
+    {
+      "id": "log-msg-1795779420486",
+      "userId": "user-1795595800000",
+      "userName": "Muhammad Toheed",
+      "userEmail": "toheedshah998@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "user",
+      "text": "name: Kwento ng Buhay link: https://youtube.com/@vikzasgfddsfgdsfg",
+      "timestamp": "04:37 PM",
+      "createdAt": "2026-11-27T11:37:00.486Z",
+      "month": "2026-11"
+    },
+    {
+      "id": "log-msg-wait-1795779421284",
+      "userId": "user-1795595800000",
+      "userName": "Muhammad Toheed",
+      "userEmail": "toheedshah998@gmail.com",
+      "userRole": "TEAM_MEMBER",
+      "branchId": "musafirkhana",
+      "sender": "assistant",
+      "text": "⏳ **Hero-SMS Real Number Purchased!**\n- **Channel:** **Kwento ng Buhay**\n- **Link:** https://youtube.com/@vikzasgfddsfgdsfg\n- **Phone (Indonesia):** `+6285647510721`\n- **Purchased By:** Muhammad Toheed\n\n👉 **Next Step:** Copy this phone number into YouTube Studio phone verification. The system is listening live for your YouTube SMS code (5-minute window). As soon as YouTube sends the code, it will be posted here automatically!",
+      "timestamp": "04:37 PM",
+      "createdAt": "2026-11-27T11:37:00.486Z",
+      "month": "2026-11"
     }
   ],
   "otpOrders": [
@@ -7716,5 +7742,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-27T11:36:23.723Z"
+  "updatedAt": "2026-11-27T11:37:02.227Z"
 }
