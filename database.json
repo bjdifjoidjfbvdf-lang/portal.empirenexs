@@ -6197,6 +6197,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1187228930",
+      "userId": "user-1792242533886",
+      "userName": "Faizan Zubair",
+      "userEmail": "faizanzubair7860@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Тихий Свет Души",
+      "channelUrl": "https://www.youtube.com/channel/UCNQkT5qlVSLbNHn124yl3qw",
+      "phoneNumber": "+6285137594307",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-27 11:57:29",
+      "expiresAt": 1795780949993
+    },
+    {
       "id": "1187151964",
       "userId": "user-1795595800000",
       "userName": "Muhammad Toheed",
@@ -7759,5 +7776,5 @@
     "proxyBalance": 3.09,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-27T11:37:43.313Z"
+  "updatedAt": "2026-11-27T11:57:29.919Z"
 }
