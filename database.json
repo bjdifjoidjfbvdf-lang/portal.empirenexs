@@ -6379,6 +6379,23 @@
   ],
   "otpOrders": [
     {
+      "id": "1191558564",
+      "userId": "user-1792329257506",
+      "userName": "Muhammad Ahmad",
+      "userEmail": "ahmaddnb00@gmail.com",
+      "branchId": "bahawalpur",
+      "channelName": "Пламя Мудрости",
+      "channelUrl": "https://youtube.com/channel/UCplvtNVfz_pvOdzyYt3Llzw?si=tAi2rPmhfaOCcyUR",
+      "phoneNumber": "+6285833294308",
+      "provider": "Hero-SMS",
+      "country": "Indonesia (+62)",
+      "otpCode": null,
+      "status": "PENDING_OTP",
+      "cost": "$0.026",
+      "createdAt": "2026-11-28 09:09:12",
+      "expiresAt": 1795857252560
+    },
+    {
       "id": "1188247535",
       "userId": "user-1792419178041",
       "userName": "Maha Ch",
@@ -8067,5 +8084,5 @@
     "proxyBalance": 8.89,
     "proxy6ApiKey": "31e70f0958-42f8755ad4-890c13f45a"
   },
-  "updatedAt": "2026-11-27T16:21:11.722Z"
+  "updatedAt": "2026-11-28T09:09:14.328Z"
 }
